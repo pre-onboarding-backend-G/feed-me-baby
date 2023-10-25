@@ -27,10 +27,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       }`,
     );
 
-    if (exception instanceof BadRequestException) {
-      response.status(exception.getStatus()).json(exception);
-      return;
-    }
     response.status(status).json({
       statusCode: status,
       message: exception.message || 'Internal server error',
