@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install application dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the application source code
 COPY . .
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run your NestJS application
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start"]
