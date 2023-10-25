@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  nest-app:
+    container_name: NestJS
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    ports:
+      - '3000:3000'
+    # depends_on:
+    #   - database
+    # environment:
+    #   DATABASE_HOST: database
+
+  # database:
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_DB: mydb
+  #     POSTGRES_USER: myuser
+  #     POSTGRES_PASSWORD: mypassword
