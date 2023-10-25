@@ -32,30 +32,18 @@ git config --local commit.template .gitmessage.txt
 git commit
 ```
 
-## 설치
+## 처음 로컬 환경에서 도커 시작
 
 ```bash
-$ npm install
+# 빌드 후 시작
+docker compose up --build
 ```
 
 ## 앱 시작
 
 ```bash
 # 로컬 환경 시작
-$ npm run start
-
-# 개발 환경 시작
-$ npm run start:dev
-
-# 프로덕션 환경 시작
-$ npm run start:prod
-```
-
-## 도커로 앱 시작
-
-```bash
-# 빌드 후 시작
-docker compose up --build
+$ docker compose up
 
 # 백그라운드 환경에서 시작
 docker compose up -d
