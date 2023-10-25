@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - 'develop'
+      - 'feature/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
+      - name: Run Tests with Coverage using Docker Compose
+        run: docker-compose exec nest-app npm run test:cov
+
+      - name: Run Format using Docker Compose
+        run: docker-compose exec nest-app npm run format
+
+      - name: Run Lint using Docker Compose
+        run: docker-compose exec nest-app npm run lint
+
+      - name: Shut down Docker Compose
+        run: docker-compose down
