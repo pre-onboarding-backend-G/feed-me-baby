@@ -13,9 +13,6 @@ class EnvironmentVariables {
 
   @IsString()
   ALLOWED_ORIGINS: string;
-
-  @IsString()
-  DYNAMODB_TABLE_PREFIX: string;
 }
 
 export function validate(
