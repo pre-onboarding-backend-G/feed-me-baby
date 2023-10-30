@@ -1,17 +1,21 @@
 import { plainToClass } from 'class-transformer';
-import { IsEnum, IsString, validateSync } from 'class-validator';
-
-enum Environment {
-  Production = 'production',
-  Local = 'local',
-}
+import { IsString, validateSync } from 'class-validator';
 
 class EnvironmentVariables {
-  @IsEnum(Environment)
-  NODE_ENV: Environment;
-
   @IsString()
   ALLOWED_ORIGINS: string;
+
+  @IsString()
+  DATABASE_NAME: string;
+
+  @IsString()
+  DATABASE_USER: string;
+
+  @IsString()
+  DATABASE_PASS: string;
+
+  @IsString()
+  DATABASE_URI: string;
 }
 
 export function validate(

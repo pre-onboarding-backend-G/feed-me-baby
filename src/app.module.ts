@@ -7,7 +7,7 @@ import { validate } from './common/env.validation';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath: '.env',
       isGlobal: true,
       validate,
     }),
@@ -15,4 +15,4 @@ import { validate } from './common/env.validation';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
