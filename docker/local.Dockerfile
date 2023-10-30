@@ -15,6 +15,3 @@ COPY . .
 
 # Expose the port the app runs on
 EXPOSE 3000
-
-# Define the command to run your NestJS application
-CMD ["npm", "run", "start"]

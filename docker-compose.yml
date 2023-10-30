@@ -1,20 +1,34 @@
 version: '3.9'
+
+# volumes:
+#   mongodb: {}
+
 services:
   nest-app:
-    container_name: NestJS
+    container_name: projects-NestJS
     build:
       context: .
       dockerfile: docker/local.Dockerfile
     ports:
+    # app port
       - '3000:3000'
+    # debugging port
+      - '9229:9229'
+    volumes:
+      - .:/usr/src/app
+    # npm run start
+    # npm run start:debug -> this is debugging mode
+    command: npm run start
     # depends_on:
     #   - database
-    # environment:
-    #   DATABASE_HOST: database
+    networks:
+      - mynetwork
+    environment:
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASS}
+      DATABASE_URI: ${DATABASE_URI}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
 
-  # database:
-  #   image: postgres
-  #   environment:
-  #     POSTGRES_DB: mydb
-  #     POSTGRES_USER: myuser
-  #     POSTGRES_PASSWORD: mypassword
+networks:
+  mynetwork:
