@@ -15,7 +15,7 @@ class EnvironmentVariables {
   DATABASE_PASS: string;
 
   @IsString()
-  DATABASE_URI: string;
+  DATABASE_HOST: string;
 }
 
 export function validate(
