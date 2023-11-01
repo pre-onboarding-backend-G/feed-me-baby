@@ -1,13 +1,13 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
-  
+
   const validationPipeOptions = {
     whitelist: true,
     transform: true,
@@ -29,7 +29,7 @@ async function bootstrap(): Promise<void> {
 
   app
     .useGlobalPipes(new ValidationPipe(validationPipeOptions))
-    .useGlobalFilters(new HttpExceptionFilter())
+    .useGlobalFilters(new HttpExceptionFilter(new Logger()))
     .enableCors(corsOptions)
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
