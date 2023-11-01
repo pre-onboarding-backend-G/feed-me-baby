@@ -32,19 +32,50 @@ git config --local commit.template .gitmessage.txt
 git commit
 ```
 
+## vscode 확장앱 설치
+
+<img width="1635" alt="스크린샷 2023-10-27 오후 10 16 17" src="https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/eda1da6a-d3f1-4af4-adb4-6e84f6f3c87a">
+
 ## 처음 로컬 환경에서 도커 시작
 
 ```bash
 # 빌드 후 시작
 docker compose up --build
+# 빌드가 완료되면 도커 종료
 ```
 
-## 앱 시작
+![스크린샷 2023-11-01 오후 12 52 33](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/ecde9923-53a3-42f7-9daa-152f63592510)
 
-```bash
-# 로컬 환경 시작
-$ docker compose up
+## DevContainer로 시작
 
-# 백그라운드 환경에서 시작
-docker compose up -d
-```
+- [DevContainer란?](https://zamoca42.github.io/blog/etc/docker/dev-container.html)
+
+1. 명령팔레트에서 `F1` 누르고 컨테이너 다시 빌드하고 다시 열기 선택
+
+    ![스크린샷 2023-11-01 오후 12 58 45](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/382597d1-1f83-44f6-95ab-eb819efdc74b)
+
+2. 기다리기 (오래 걸림)
+
+3. 왼쪽 아래 상태바를 확인
+
+    ![스크린샷 2023-11-01 오후 12 47 10](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/df9c1158-aaa1-4a87-9550-3df51ce45aac)
+
+## Nest - TypeORM - Postgres 설정 과정 요약
+
+- [NestJS-TypeORM 문서](https://docs.nestjs.com/recipes/sql-typeorm#getting-started)
+
+postgresql 연결 확인
+
+![스크린샷 2023-11-01 오후 1 55 44](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/70c52f8f-8e06-4c9f-b3e9-d6ac0a92efc5)
+
+pgadmin에 postgresql 연결
+
+![스크린샷 2023-11-01 오후 2 06 18](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/20cb6666-8612-4325-818e-02df7220be23)
+
+pgadmin 연결 확인
+
+![스크린샷 2023-11-01 오후 2 06 48](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/3e0fde53-64c4-4894-b81a-d2ce20f5b60b)
+
+nest 연결 확인
+
+![스크린샷 2023-11-01 오후 2 17 51](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/7214da31-ce47-4d02-a15b-f94bf1ec70cb)
