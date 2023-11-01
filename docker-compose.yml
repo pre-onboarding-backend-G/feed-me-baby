@@ -1,11 +1,38 @@
 version: '3.9'
 
-# volumes:
-#   mongodb: {}
+volumes:
+  postgres: {}
 
-services:
+services:  
+  database:
+    container_name: feed-me-baby-postgres
+    image: 'postgis/postgis'
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
+    networks:
+      - mynetwork
+    ports:
+      - "5432:5432"
+    volumes:
+      - './postgres:/var/lib/postgresql/data'
+
+  pgadmin:
+    container_name: feed-me-baby-pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    networks:
+      - mynetwork
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: ${DATABASE_PASS}
+    ports:
+      - "5050:80"
+    
   nest-app:
-    container_name: projects-NestJS
+    container_name: feed-me-baby-NestJS
     build:
       context: .
       dockerfile: docker/local.Dockerfile
@@ -19,16 +46,16 @@ services:
     # npm run start
     # npm run start:debug -> this is debugging mode
     command: npm run start
-    # depends_on:
-    #   - database
+    depends_on:
+      - database
     networks:
       - mynetwork
     environment:
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASS: ${DATABASE_PASS}
-      DATABASE_URI: ${DATABASE_URI}
+      DATABASE_HOST: ${DATABASE_HOST}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
-
+      
 networks:
   mynetwork:
