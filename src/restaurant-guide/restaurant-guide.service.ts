@@ -19,7 +19,8 @@ export class RestaurantGuideService {
   // 대충  메서드 작성
 
 
-
+  
+  // 맛집 목록 api (query param 3개) (유저 기본 위도, 경도) -> 연규
 
   // 대충  메서드 작성
 
@@ -35,7 +36,7 @@ export class RestaurantGuideService {
    * @desc [description]
    */
 
-
+  // 시군구 메서드 + 상세정보 api 메서드 + 맛집 평점 메서드 (+ 맛집 목록 api) -> 상운님
 
 
   // 대충  메서드 작성
