@@ -14,8 +14,10 @@ export class RestaurantGuideService {
    * @desc [description]
    */
 
-  async getRestaurantList(request: RequestCoordinateWithRangeDto): Promise<void> {
-    const { lat, lon, range } = request
+  async getRestaurantList(
+    request: RequestCoordinateWithRangeDto,
+  ): Promise<void> {
+    const { lat, lon, range } = request;
     if (!lat || !lon) {
       // 유저의 위도 경도
     } else {
