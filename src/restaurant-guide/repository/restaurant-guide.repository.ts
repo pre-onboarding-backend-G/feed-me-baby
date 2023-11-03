@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { RestaurantEntity } from '../restaurant-guide.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, createQueryBuilder } from 'typeorm';
+import { CoordinateBoundDto } from '../dto/coordinate-bound.dto';
+import { RequestCoordinateWithRangeDto } from '../dto/coordinate-req.dto';
 
 @Injectable()
 export class RestaurantGuideRepository {
