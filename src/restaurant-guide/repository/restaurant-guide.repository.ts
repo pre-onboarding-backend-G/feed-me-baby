@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class RestaurantGuideService {
+export class RestaurantGuideRepository {
   // restaurant entity
   // review entity
   /**
