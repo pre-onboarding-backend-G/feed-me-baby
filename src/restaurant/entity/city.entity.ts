@@ -9,6 +9,6 @@ export class City {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany((type) => Restaurant, (restaurant) => restaurant.cityId)
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.cityId)
   restaurants: Restaurant[];
 }
