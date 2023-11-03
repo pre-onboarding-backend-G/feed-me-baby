@@ -23,7 +23,6 @@ export class AuthService {
     }
 
     user.setHashedPassword(await this.getHashedPassword(user.password));
-    console.log('user: ', user.password);
 
     const { id } = await this.userRepository.createUser(user);
 

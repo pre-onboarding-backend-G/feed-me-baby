@@ -56,6 +56,8 @@ services:
       DATABASE_PASS: ${DATABASE_PASS}
       DATABASE_HOST: ${DATABASE_HOST}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
 
 networks:
   mynetwork:
