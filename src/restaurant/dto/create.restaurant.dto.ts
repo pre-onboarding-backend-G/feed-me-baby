@@ -5,6 +5,6 @@ export class CreateRestaurantDto {
   latitude: number;
   longitude: number;
   telephone?: string;
-  categoryId: number;
-  cityId: number;
+  categoryId?: number;
+  cityId?: number;
 }
