@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
 
 @Injectable()
 export class RestaurantGuideService {
@@ -10,6 +11,15 @@ export class RestaurantGuideService {
    * @modify date 2023-11-01 22:56:10
    * @desc [description]
    */
+
+  async getRestaurantList(request: RequestCoordinateWithRangeDto): Promise<void> {
+    const { lat, lon, range } = request
+    if (!lat || !lon) {
+      // 유저의 위도 경도
+    } else {
+      //
+    }
+  }
   /**
    * 맛집 목록 api (query param 3개) (유저 기본 위도, 경도) -> 연규
    *
