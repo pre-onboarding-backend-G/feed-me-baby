@@ -119,10 +119,29 @@ export class RestaurantService {
       }
 
       const cleanedTelephone = telephone ? telephone.replace(/\s/g, '') : null;
-      const finalTelephone =
-        cleanedTelephone && !cleanedTelephone.startsWith('031')
-          ? `031${cleanedTelephone}`
-          : cleanedTelephone;
+      let finalTelephone;
+
+      if (cleanedTelephone) {
+        const startsWith031 = cleanedTelephone.startsWith('031');
+        const startsWith032 = cleanedTelephone.startsWith('032');
+        const startsWith02 = cleanedTelephone.startsWith('02');
+        const startsWith070 = cleanedTelephone.startsWith('070');
+        const startsWith050 = cleanedTelephone.startsWith('050');
+
+        if (
+          startsWith031 ||
+          startsWith032 ||
+          startsWith02 ||
+          startsWith070 ||
+          startsWith050
+        ) {
+          finalTelephone = cleanedTelephone;
+        } else {
+          finalTelephone = `031${cleanedTelephone}`;
+        }
+      } else {
+        finalTelephone = null;
+      }
       const finalAddress = address || lotnoAddress;
 
       const createOrUpdateDto = {
@@ -132,8 +151,8 @@ export class RestaurantService {
         latitude,
         longitude,
         telephone: finalTelephone,
-        category: categoryInstance.Id,
-        cityName: cityInstance.Id,
+        categoryId: categoryInstance.id,
+        cityId: cityInstance.id,
       };
 
       try {

@@ -9,6 +9,6 @@ export class Category {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany((type) => Restaurant, (restaurant) => restaurant.categoryId)
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.categoryId)
   restaurants: Restaurant[];
 }

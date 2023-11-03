@@ -9,7 +9,8 @@ export class RestaurantController {
 
   @Post('update')
   @ApiOperation({ summary: 'Update restaurants' })
-  updateRestaurants() {
-    return this.restaurantService.updateRestaurants();
+  updateRestaurants(): string {
+    this.restaurantService.updateRestaurants();
+    return '함수 실행 중...';
   }
 }

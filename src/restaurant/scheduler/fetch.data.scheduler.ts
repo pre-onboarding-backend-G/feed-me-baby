@@ -6,8 +6,8 @@ import { Cron } from '@nestjs/schedule';
 export class FetchDataScheduler {
   constructor(private restaurantService: RestaurantService) {}
 
-  // @Cron('0 0 * * * *') // 매일 자정에 실행
-  // handleCron() {
-  //   this.restaurantService.updateRestaurants();
-  // }
+  @Cron('0 0 * * * *')
+  handleCron(): void {
+    this.restaurantService.updateRestaurants();
+  }
 }
