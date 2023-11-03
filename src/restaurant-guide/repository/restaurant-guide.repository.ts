@@ -70,7 +70,6 @@ export class RestaurantGuideRepository {
       .select('DISTINCT(restaurant.district)', 'district')
       .getRawMany();
 
-    // 직접 결과를 반환합니다. 각 객체는 'district' 키를 가지고 있습니다.
     return distinctDistricts;
   }
 
@@ -78,6 +77,16 @@ export class RestaurantGuideRepository {
     const restaurantInfo = this.#restaurantGuideRepository.create({ district });
 
     return this.#restaurantGuideRepository.save(restaurantInfo);
+  }
+
+  async getRestaurantDetails(): Promise<RestaurantEntity[]> {
+    const restaurantDetails = await this.#restaurantGuideRepository
+      .createQueryBuilder('restaurant')
+      // Query 수정해야함
+      .select('DISTINCT(restaurant.district)', 'district')
+      .getRawMany();
+
+    return restaurantDetails;
   }
   /**
    *

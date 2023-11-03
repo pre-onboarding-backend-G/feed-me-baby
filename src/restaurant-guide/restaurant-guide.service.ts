@@ -62,6 +62,10 @@ export class RestaurantGuideService {
   createRestaurantInfo(district: string): Promise<RestaurantEntity> {
     return this.restaurantGuideRepository.createRestaurantInfo(district);
   }
+
+  getRestaurantDetails(): Promise<RestaurantEntity[]> {
+    return this.restaurantGuideRepository.getRestaurantDetails();
+  }
   /**
    * 시군구 메서드 + 상세정보 api 메서드 + 맛집 평점 메서드 (+ 맛집 목록 api) -> 상운님
    *

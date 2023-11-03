@@ -64,6 +64,11 @@ export class RestaurantGuideController {
   ): Promise<RestaurantEntity> {
     return this.restaurantGuideService.createRestaurantInfo(district);
   }
+
+  @Get('details')
+  getRestaurantDetails(): Promise<RestaurantEntity[]> {
+    return this.restaurantGuideService.getRestaurantDetails();
+  }
   /**
    *
    *
