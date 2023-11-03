@@ -32,13 +32,13 @@ export class Restaurant {
   @Column({ nullable: true })
   telephone?: string;
 
-  @ManyToOne((type) => Category, (category) => category.restaurants, {
+  @ManyToOne(() => Category, (category) => category.restaurants, {
     nullable: true,
   })
   @JoinColumn({ name: 'categoryId' })
   categoryId: Category;
 
-  @ManyToOne((type) => City, (city) => city.restaurants, { nullable: true })
+  @ManyToOne(() => City, (city) => city.restaurants, { nullable: true })
   @JoinColumn({ name: 'cityId' })
   cityId: City;
 

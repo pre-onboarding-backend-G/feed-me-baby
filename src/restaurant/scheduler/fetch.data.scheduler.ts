@@ -7,7 +7,7 @@ export class FetchDataScheduler {
   constructor(private restaurantService: RestaurantService) {}
 
   @Cron('0 0 * * * *')
-  handleCron() {
+  handleCron(): void {
     this.restaurantService.updateRestaurants();
   }
 }
