@@ -1,5 +1,6 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { RestaurantGuideService } from './restaurant-guide.service';
+import { RestaurantEntity } from './restaurant-guide.entity';
 
 @Controller('restaurant-guide')
 export class RestaurantGuideController {
@@ -52,6 +53,17 @@ export class RestaurantGuideController {
    * @modify date 2023-11-01 22:56:10
    * @desc [description]
    */
+  @Get('districts')
+  getDistricts(): Promise<string[]> {
+    return this.restaurantGuideService.getDistricts();
+  }
+
+  @Post('district')
+  createRestaurantInfo(
+    @Body('district') district: string,
+  ): Promise<RestaurantEntity> {
+    return this.restaurantGuideService.createRestaurantInfo(district);
+  }
   /**
    *
    *
