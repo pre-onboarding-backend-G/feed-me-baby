@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { CoordinateBoundDto } from '../dto/coordinate-bound.dto';
 import { Restaurant } from '../../restaurant/entity/restaurant.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { GetRawRestaurants } from '../dto/get-restaurant.dto';
 
 @Injectable()
 export class RestaurantGuideRepository {
@@ -16,15 +17,19 @@ export class RestaurantGuideRepository {
    * @desc 맛집 데이터베이스에서 정보를 가져와서 주어진 위치 정보(위도, 경도) 사각형 범위 내의 식당들을 찾습니다.
    */
 
-  async findRestaurantsInRange(lat: number, lon: number, range: number) {
-    const dto = new CoordinateBoundDto(lat, lon, range);
-    return await this.findRestaurantByCoordinate(dto);
-  }
-
-  private findRestaurantByCoordinate(dto: CoordinateBoundDto) {
-    const { minLat, maxLat, minLon, maxLon } = dto;
+  async findRestaurantsInRange(
+    lat: number,
+    lon: number,
+    range: number,
+  ): Promise<GetRawRestaurants[]> {
+    const { minLat, maxLat, minLon, maxLon } = new CoordinateBoundDto(
+      lat,
+      lon,
+      range,
+    );
     const queryBuilder =
       this.restaurantGuideRepository.createQueryBuilder('restaurant');
+
     return queryBuilder
       .select([
         'restaurant.id as id',
@@ -38,20 +43,6 @@ export class RestaurantGuideRepository {
       )
       .getRawMany();
   }
-  // async findRestaurantWithFilter(request) {
-  //   const filteredRestaurants = (
-  //     await this.findRestaurantInRange(request)
-  //   ).filter((restaurant) => {
-  //     const distance1 = Math.sqrt(
-  //       Math.pow(Math.abs(request.lat - restaurant.lat), 2) +
-  //         Math.pow(Math.abs(request.lon - restaurant.lon), 2),
-  //     );
-  //     const distance2 = Math.sqrt(Math.pow(request.range, 2));
-
-  //     return distance1 <= distance2;
-  //   });
-  //   return filteredRestaurants;
-  // }
 
   /**
    *
