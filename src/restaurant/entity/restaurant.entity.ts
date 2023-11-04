@@ -32,16 +32,16 @@ export class Restaurant {
   @Column({ nullable: true })
   telephone?: string;
 
+  @DeleteDateColumn()
+  deletedAt?: Date;
+
   @ManyToOne(() => Category, (category) => category.restaurants, {
     nullable: true,
   })
   @JoinColumn({ name: 'categoryId' })
-  categoryId: Category;
+  category: Category;
 
   @ManyToOne(() => City, (city) => city.restaurants, { nullable: true })
   @JoinColumn({ name: 'cityId' })
-  cityId: City;
-
-  @DeleteDateColumn()
-  deletedAt?: Date;
+  city: City;
 }
