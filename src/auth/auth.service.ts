@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { compare, hash } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { AccessTokenDto } from './auth.controller';
+import { AccessTokenDto } from './dto/access-token.dto';
 
 /**
  * jwt는 userId를 sub의 value로 생성합니다.
@@ -37,7 +37,7 @@ export class AuthService {
 
     const accessToken = await this.createJwtToken({ sub: id });
 
-    return { accessToken };
+    return new AccessTokenDto(accessToken);
   }
 
   async signIn(user: User): Promise<AccessTokenDto> {
@@ -45,7 +45,7 @@ export class AuthService {
 
     const accessToken = await this.createJwtToken({ sub: id });
 
-    return { accessToken };
+    return new AccessTokenDto(accessToken);
   }
 
   async getTokenPayload(accessToken: string): Promise<JwtPayload> {

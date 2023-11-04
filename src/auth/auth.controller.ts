@@ -3,15 +3,17 @@ import { SignUpReqDto } from './dto/sign-up-req.dto';
 import { ResponseEntity } from 'src/common/response.entity';
 import { AuthService } from './auth.service';
 import { SignInReqDto } from './dto/sign-in-req.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { AccessTokenDto } from './dto/access-token.dto';
+import { SwaggerSignIn } from './decorator/swagger/sign-in.decorator';
+import { SwaggerSignUp } from './decorator/swagger/sign-up.decorator';
 
-export interface AccessTokenDto {
-  accessToken: string;
-}
-
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @SwaggerSignUp()
   @Post('/sign-up')
   async signUp(
     @Body() dto: SignUpReqDto,
@@ -24,6 +26,7 @@ export class AuthController {
     );
   }
 
+  @SwaggerSignIn()
   @Post('sign-in')
   async signIn(
     @Body() dto: SignInReqDto,

@@ -29,19 +29,28 @@ export class ResponseEntity<T> {
     return new ResponseEntity(HttpStatus.CREATED, message, data);
   }
 
-  @ApiProperty()
+  @ApiProperty({
+    description: '요청에 대한 응답 상태코드 필드입니다',
+    enum: HttpStatus,
+    example: HttpStatus.OK,
+    required: true,
+  })
   @Expose()
   get statusCode(): HttpStatus {
     return this._statusCode;
   }
 
-  @ApiProperty()
+  @ApiProperty({
+    description: '요청에 대한 응답 메시지 필드 입니다',
+    type: String,
+    example: '요청에 성공하였습니다',
+    required: true,
+  })
   @Expose()
   get message(): string {
     return this._message;
   }
 
-  @ApiProperty()
   @Expose()
   get data(): T {
     return this._data;

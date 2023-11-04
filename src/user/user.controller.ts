@@ -5,11 +5,16 @@ import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserReqDto } from './dto/update-user-req.dto';
 import { GetUserResDto } from './dto/get-user-res.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { SwaggerGetUser } from './decorator/swagger/get-user.decorator';
+import { SwaggerUpdateUser } from './decorator/swagger/update-user.decorator';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @SwaggerGetUser()
   @UseGuards(AuthGuard)
   @Get()
   async getUser(
@@ -19,6 +24,7 @@ export class UserController {
     return ResponseEntity.OK_WITH('사용자 정보 조회 요청에 성공했습니다', user);
   }
 
+  @SwaggerUpdateUser()
   @UseGuards(AuthGuard)
   @Patch()
   async updateUser(
