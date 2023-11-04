@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
 import { RestaurantGuideRepository } from './repository/restaurant-guide.repository';
-import { RestaurantEntity } from './restaurant-guide.entity';
+import { Restaurant } from 'src/restaurant/entity/restaurant.entity';
+import { GetRestaurantListDto } from './dto/get-restaurant.dto';
 
 @Injectable()
 export class RestaurantGuideService {
+  constructor(
+    private readonly restaurantGuideRepository: RestaurantGuideRepository,
+  ) {}
   //리포지토리 주입
   /**
    * @author Yeon Kyu
@@ -16,16 +20,26 @@ export class RestaurantGuideService {
 
   async getRestaurantList(
     request: RequestCoordinateWithRangeDto,
-  ): Promise<void> {
-    const { lat, lon, range } = request;
-    if (!lat || !lon) {
-      // 유저의 위도 경도
-    } else {
-      //
-    }
+  ): Promise<GetRestaurantListDto[]> {
+    const { lat, lon, validateRange } = request;
+    const restaurants =
+      await this.restaurantGuideRepository.findRestaurantsInRange(
+        lat,
+        lon,
+        validateRange,
+      );
+    return restaurants.map(
+      (restaurant) =>
+        new GetRestaurantListDto(
+          restaurant.id,
+          restaurant.name,
+          restaurant.lat,
+          restaurant.lon,
+        ),
+    );
   }
   /**
-   * 맛집 목록 api (query param 3개) (유저 기본 위도, 경도) -> 연규
+   *
    *
    *
    *
@@ -63,19 +77,20 @@ export class RestaurantGuideService {
    * @modify date 2023-11-01 22:56:10
    * @desc [description]
    */
-  constructor(
-    private readonly restaurantGuideRepository: RestaurantGuideRepository,
-  ) {}
+  // constructor(
+  //   private readonly restaurantGuideRepository: RestaurantGuideRepository,
+  // ) { }
+
   getDistricts(): Promise<string[]> {
     return this.restaurantGuideRepository.getDistricts();
   }
 
   // 임시 메서드
-  createRestaurantInfo(district: string): Promise<RestaurantEntity> {
+  createRestaurantInfo(district: string): Promise<Restaurant> {
     return this.restaurantGuideRepository.createRestaurantInfo(district);
   }
 
-  getRestaurantDetails(): Promise<RestaurantEntity[]> {
+  getRestaurantDetails(): Promise<Restaurant[]> {
     return this.restaurantGuideRepository.getRestaurantDetails();
   }
   /**
