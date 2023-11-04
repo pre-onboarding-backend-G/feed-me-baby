@@ -62,6 +62,12 @@ export class User {
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
   deletedAt?: Date | null;
 
+  static byId(id: number): User {
+    const user = new User();
+    user.id = id;
+    return user;
+  }
+
   setHashedPassword(hashedPassword: string): void {
     this.password = hashedPassword;
   }

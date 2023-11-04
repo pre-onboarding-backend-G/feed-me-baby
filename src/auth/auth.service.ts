@@ -1,4 +1,4 @@
-import { UserRepository } from './../user/repository/user.repository';
+import { Identifier, UserRepository } from '../user/repository/user.repository';
 import { User } from '../user/entity/user.entity';
 import {
   ConflictException,
@@ -9,7 +9,12 @@ import { compare, hash } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { AccessTokenDto } from './auth.controller';
 
-interface JwtPayload {
+/**
+ * jwt는 userId를 sub의 value로 생성합니다.
+ * @prop {Number} sub - user id
+ * @author 명석
+ */
+export interface JwtPayload {
   sub: number;
 }
 
@@ -43,9 +48,22 @@ export class AuthService {
     return { accessToken };
   }
 
+  async getTokenPayload(accessToken: string): Promise<JwtPayload> {
+    const payload = await this.jwtService.verifyAsync<JwtPayload>(accessToken, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    const isExistUser = await this.isExistUser(User.byId(payload.sub));
+    if (!isExistUser) throw new Error('존재하지 않는 유저입니다.');
+
+    return payload;
+  }
+
   private async verifyUser(user: User): Promise<number> {
     const { password: plainPassword } = user;
-    const userByEmail = await this.userRepository.findUserBy(user.email);
+    const userByEmail = await this.userRepository.findUserBy({
+      email: user.email,
+    });
 
     if (
       userByEmail === null ||
@@ -67,7 +85,14 @@ export class AuthService {
   }
 
   private async isExistUser(user: User): Promise<boolean> {
-    return await this.userRepository.isExistEmail(user);
+    let identifier: Identifier;
+
+    if (user.hasOwnProperty('id')) {
+      identifier = { id: user.id };
+    } else if (user.hasOwnProperty('email')) {
+      identifier = { email: user.email };
+    }
+    return await this.userRepository.isExistBy(identifier);
   }
 
   private async getHashedPassword(password: string): Promise<string> {
