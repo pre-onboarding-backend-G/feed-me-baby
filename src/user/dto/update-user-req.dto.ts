@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { User } from '../entity/user.entity';
 
-export class UpdateUserDto {
+export class UpdateUserReqDto {
   @Expose()
   @IsNotEmpty()
   @IsLatitude()

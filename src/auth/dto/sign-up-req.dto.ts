@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { User } from '../../user/entity/user.entity';
 
-export class SignUpDto {
+export class SignUpReqDto {
   @Expose()
   @IsNotEmpty()
   @IsEmail()
