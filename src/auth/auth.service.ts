@@ -102,6 +102,4 @@ export class AuthService {
   private async createJwtToken(payload: JwtPayload): Promise<string> {
     return await this.jwtService.signAsync(payload);
   }
-
-  //todo 유저 위도, 경도 가져오는 로직만들기 -> 맛집 목록 조회에서 사용.
 }
