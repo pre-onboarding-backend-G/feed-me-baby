@@ -11,4 +11,4 @@ import { HttpExceptionFilter } from './http-exception.filter';
     },
   ],
 })
-export class ExceptionModule { }
+export class ExceptionModule {}

@@ -17,7 +17,7 @@ export class RestaurantGuideRepository {
     // const { minLat, maxLat, minLon, maxLon } = dto;
 
     const queryBuilder = createQueryBuilder()
-      .getRepository(Restaurant)
+      // .getRepository(Restaurant)
       .select([
         'restaurant.id',
         'restaurant.name',

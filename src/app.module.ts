@@ -26,9 +26,10 @@ import { City } from './restaurant/entity/city.entity';
       password: process.env.DATABASE_PASS,
       database: process.env.DATABASE_NAME,
       synchronize: true,
-      entities: [Restaurant, City, Category, RestaurantEntity],
+      entities: [Restaurant, City, Category],
     }),
-    RestaurantModule,RestaurantGuideModule
+    RestaurantModule,
+    RestaurantGuideModule
   ],
   controllers: [AppController],
   providers: [AppService],
