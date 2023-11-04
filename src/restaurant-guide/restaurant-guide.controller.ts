@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { RestaurantGuideService } from './restaurant-guide.service';
 import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
-import { RestaurantEntity } from './restaurant-guide.entity';
+import { Restaurant } from '../restaurant/entity/restaurant.entity';
+import { GeoJsonResponseDto } from './dto/geojson-response.dto';
+import { GetRestaurantListDto } from './dto/get-restaurant.dto';
 
 @Controller('restaurant-guide')
 export class RestaurantGuideController {
@@ -15,11 +17,13 @@ export class RestaurantGuideController {
    * @modify date 2023-11-01 22:56:10
    * @desc [description]
    */
-
+  @Get()
   async getRestaurantListByQuery(
-    request: RequestCoordinateWithRangeDto,
-  ): Promise<void> {
-    await this.restaurantGuideService.getRestaurantList(request);
+    @Query() request: RequestCoordinateWithRangeDto,
+  ): Promise<GeoJsonResponseDto<GetRestaurantListDto>> {
+    const restaurantList =
+      await this.restaurantGuideService.getRestaurantList(request);
+    return new GeoJsonResponseDto<GetRestaurantListDto>(restaurantList);
   }
 
   /**
@@ -71,12 +75,12 @@ export class RestaurantGuideController {
   @Post('district')
   createRestaurantInfo(
     @Body('district') district: string,
-  ): Promise<RestaurantEntity> {
+  ): Promise<Restaurant> {
     return this.restaurantGuideService.createRestaurantInfo(district);
   }
 
   @Get('details')
-  getRestaurantDetails(): Promise<RestaurantEntity[]> {
+  getRestaurantDetails(): Promise<Restaurant[]> {
     return this.restaurantGuideService.getRestaurantDetails();
   }
   /**
