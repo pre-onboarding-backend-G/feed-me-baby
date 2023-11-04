@@ -24,6 +24,6 @@ export class RequestCoordinateWithRangeDto {
   }
 
   get validateRange(): number {
-    return this.range >= 0.1 ? 0.1 : this.range;
+    return !this.range || this.range >= 0.1 ? 0.1 : this.range;
   }
 }

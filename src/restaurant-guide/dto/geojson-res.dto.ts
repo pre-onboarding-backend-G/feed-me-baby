@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-export class GeoJsonResponseDto<T> {
+export class GeoJsonResponse<T> {
   @Exclude() private readonly _type: string;
   @Exclude() private readonly _features: T[];
 
