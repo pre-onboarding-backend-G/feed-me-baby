@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { City } from './entity/city.entity';
-import { EntityManager, Repository } from 'typeorm';
-import { Restaurant } from './entity/restaurant.entity'; // 필요에 따라 import 추가
-import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere'; // 필요에 따라 import 추가
+import { EntityManager, QueryRunner, Repository } from 'typeorm';
+import { Restaurant } from './entity/restaurant.entity';
 
 @Injectable()
 export class CityRepository {
@@ -17,6 +16,7 @@ export class CityRepository {
   }
 
   async findOne(condition, manager?: EntityManager): Promise<City | undefined> {
+    console.log('findOne called with condition:', condition); // 로그 추가
     return this.getRepository(manager).findOne(condition);
   }
 
@@ -31,28 +31,69 @@ export class CityRepository {
   }
 
   async assignCity(
-    cityId: number,
+    cityName: string,
     restaurant: Restaurant,
     manager?: EntityManager,
   ): Promise<void> {
-    if (!cityId) return;
+    if (!cityName || cityName.trim() === '') {
+      console.log('Invalid city name provided:', cityName); // 유효하지 않은 경우 로깅
+      return;
+    }
 
-    const city = await this.findOrCreate(cityId, manager);
+    const city = await this.findOrCreate(cityName.trim(), manager); // cityName 앞뒤 공백 제거 후 사용
     restaurant.city = city;
   }
 
-  private async findOrCreate(
-    id: number,
-    manager?: EntityManager,
+  async findOrCreate(
+    name: string,
+    transactionalEntityManager: EntityManager,
+    retryCount: number = 3,
   ): Promise<City> {
-    const repo = this.getRepository(manager);
-    let city = await repo.findOne({ where: { id } as FindOptionsWhere<City> });
+    let city;
+    for (let attempt = 1; attempt <= retryCount; attempt++) {
+      try {
+        city = await transactionalEntityManager.findOne(City, {
+          where: { name },
+        });
 
-    if (!city) {
-      city = repo.create({ id });
-      await repo.save(city);
+        if (!city) {
+          city = transactionalEntityManager.create(City, { name });
+          await transactionalEntityManager.save(city);
+          return city;
+        }
+        return city;
+      } catch (error) {
+        const isDeadlockError = error.code === '40P01';
+        const isTransactionAbortedError = error.code === '25P02';
+        const isDuplicateKeyError = error.code === '23505';
+
+        if (isTransactionAbortedError) {
+          await transactionalEntityManager.queryRunner?.rollbackTransaction();
+        }
+
+        if (
+          (isDeadlockError || isTransactionAbortedError) &&
+          attempt < retryCount
+        ) {
+          await new Promise((resolve) => setTimeout(resolve, 50 * attempt));
+          if (isTransactionAbortedError) {
+            await transactionalEntityManager.queryRunner?.startTransaction();
+          }
+        } else if (isDuplicateKeyError) {
+          city = await transactionalEntityManager.findOne(City, {
+            where: { name },
+          });
+          if (city) {
+            return city;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 50 * attempt));
+        } else {
+          throw error;
+        }
+      }
     }
-
-    return city;
+    throw new Error(
+      `Failed to find or create the city after ${retryCount} attempts.`,
+    );
   }
 }

@@ -38,10 +38,10 @@ export class Restaurant {
   @ManyToOne(() => Category, (category) => category.restaurants, {
     nullable: true,
   })
-  @JoinColumn({ name: 'categoryId' })
+  @JoinColumn({ name: 'category' })
   category: Category;
 
   @ManyToOne(() => City, (city) => city.restaurants, { nullable: true })
-  @JoinColumn({ name: 'cityId' })
+  @JoinColumn({ name: 'city' })
   city: City;
 }

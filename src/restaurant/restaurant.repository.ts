@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, EntityManager } from 'typeorm';
+import { Repository, EntityManager, DeepPartial } from 'typeorm';
 import { Restaurant } from './entity/restaurant.entity';
-import { CreateRestaurantDto } from './dto/create.restaurant.dto';
 import { CategoryRepository } from './category.repository';
 import { CityRepository } from './city.repository';
+import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 
 @Injectable()
 export class RestaurantRepository {
@@ -20,57 +20,38 @@ export class RestaurantRepository {
       ? manager.getRepository(Restaurant)
       : this.restaurantRepository;
   }
-
-  async createRestaurant(
-    createRestaurantDto: CreateRestaurantDto,
-    manager?: EntityManager,
-  ): Promise<Restaurant> {
-    const repo = this.getRepository(manager);
-    let restaurant = repo.create(createRestaurantDto);
-    await this.assignRelations(createRestaurantDto, restaurant, manager);
-
-    await repo.save(restaurant);
-    return restaurant;
-  }
-
-  async updateRestaurant(
-    uniqueId: string,
-    updateRestaurantDto,
-    manager?: EntityManager,
-  ): Promise<Restaurant> {
-    const repo = this.getRepository(manager);
-    let restaurant = await repo.findOne({
-      where: { uniqueId, deletedAt: null },
-    });
-
-    if (!restaurant) {
-      throw new NotFoundException('Restaurant not found or has been deleted.');
-    }
-
-    Object.assign(restaurant, updateRestaurantDto);
-
-    await this.assignRelations(updateRestaurantDto, restaurant, manager);
-
-    await repo.save(restaurant);
-    return restaurant;
-  }
-
-  private async assignRelations(
-    dto: CreateRestaurantDto,
+  private async saveRestaurant(
     restaurant: Restaurant,
+    dto: CreateRestaurantDto,
     manager?: EntityManager,
-  ): Promise<void> {
-    if (dto.categoryId) {
-      await this.categoryRepository.assignCategory(
-        dto.categoryId,
-        restaurant,
-        manager,
-      );
+  ): Promise<Restaurant> {
+    await this.assignRelations(dto, restaurant, manager);
+    const repo = this.getRepository(manager);
+    await repo.save(restaurant);
+    return restaurant;
+  }
+
+  async createOrUpdateRestaurant(
+    dto: CreateRestaurantDto,
+    manager?: EntityManager,
+  ): Promise<Restaurant> {
+    const repo = this.getRepository(manager);
+    const latitude = parseFloat(dto.latitude);
+    const longitude = parseFloat(dto.longitude);
+    const entityDto = { ...dto, latitude, longitude };
+    const uniqueId = dto.uniqueId;
+
+    let restaurant;
+    if (uniqueId) {
+      restaurant = await repo.findOne({ where: { uniqueId } });
+    }
+    if (!restaurant) {
+      restaurant = repo.create(entityDto as DeepPartial<Restaurant>);
+    } else {
+      restaurant = repo.merge(restaurant, entityDto as DeepPartial<Restaurant>);
     }
 
-    if (dto.cityId) {
-      await this.cityRepository.assignCity(dto.cityId, restaurant, manager);
-    }
+    return this.saveRestaurant(restaurant, dto, manager);
   }
 
   async softDeleteRestaurant(
@@ -89,24 +70,29 @@ export class RestaurantRepository {
     return repo.findOne(conditions);
   }
 
-  async createOrUpdateRestaurant(
-    createOrUpdateDto: CreateRestaurantDto,
+  async findByUniqueId(
     uniqueId: string,
     manager?: EntityManager,
-  ): Promise<Restaurant> {
+  ): Promise<Restaurant | null> {
     const repo = this.getRepository(manager);
-    let restaurant = await repo.findOne({ where: { uniqueId } });
+    return repo.findOne({ where: { uniqueId } });
+  }
 
-    if (restaurant) {
-      Object.assign(restaurant, createOrUpdateDto);
-      await this.assignRelations(createOrUpdateDto, restaurant, manager);
-      await repo.save(restaurant);
-    } else {
-      restaurant = repo.create(createOrUpdateDto);
-      await this.assignRelations(createOrUpdateDto, restaurant, manager);
-      await repo.save(restaurant);
+  private async assignRelations(
+    dto: CreateRestaurantDto,
+    restaurant: Restaurant,
+    manager?: EntityManager,
+  ): Promise<void> {
+    if (dto.category) {
+      await this.categoryRepository.assignCategory(
+        dto.category,
+        restaurant,
+        manager,
+      );
     }
 
-    return restaurant;
+    if (dto.city) {
+      await this.cityRepository.assignCity(dto.city, restaurant, manager);
+    }
   }
 }
