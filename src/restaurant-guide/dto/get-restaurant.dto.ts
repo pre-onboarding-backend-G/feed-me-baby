@@ -8,7 +8,7 @@ export interface GetRawRestaurants {
   lon: number;
 }
 
-class Geometry {
+export class Geometry {
   @ApiProperty()
   @Expose()
   type: string;
