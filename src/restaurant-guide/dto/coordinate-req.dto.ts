@@ -1,42 +1,29 @@
 import { Type } from 'class-transformer';
-import { IsOptional, IsInt, IsLatitude, IsLongitude } from 'class-validator';
+import { IsOptional, IsNumber } from 'class-validator';
 
 export class RequestCoordinateWithRangeDto {
-  @IsLatitude()
-  @IsOptional()
-  @Type(() => String)
-  private readonly _lat?: string;
-
-  @IsLongitude()
-  @IsOptional()
-  @Type(() => String)
-  private readonly _lon?: string;
-
-  @IsInt()
+  @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  private readonly _range?: number;
+  lat?: number;
 
-  constructor(
-    lat?: string,
-    lon?: string,
-    range?: number,
-  ) {
-    this._lat = lat;
-    this._lon = lon;
-    this._range = range;
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  lon?: number;
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  range?: number;
+
+  constructor(lat: number, lon: number, range?: number) {
+    this.lat = lat;
+    this.lon = lon;
+    this.range = range;
   }
 
-  get lat(): number {
-    return parseFloat(this._lat)
-  }
-
-  get lon(): number {
-    return parseFloat(this._lon)
-  }
-
-  get range(): number {
-    return this._range === 5 ? this._range : 1
+  get validateRange(): number {
+    return !this.range || this.range >= 0.1 ? 0.1 : this.range;
   }
 }
-

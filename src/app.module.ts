@@ -25,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DATABASE_PASS,
       database: process.env.DATABASE_NAME,
       synchronize: process.env.NODE_ENV !== 'production',
+      entities: [Restaurant, City, Category],
       logging: process.env.NODE_ENV !== 'production',
       autoLoadEntities: true,
     }),

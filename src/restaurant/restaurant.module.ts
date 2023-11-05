@@ -17,12 +17,6 @@ import { RestaurantController } from './restaurant.controller';
     CityRepository,
     RestaurantService,
   ],
-  exports: [
-    RestaurantRepository,
-    CategoryRepository,
-    CityRepository,
-    RestaurantService,
-  ],
   controllers: [RestaurantController],
 })
 export class RestaurantModule {}

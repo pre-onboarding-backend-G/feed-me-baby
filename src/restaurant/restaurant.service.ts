@@ -72,6 +72,7 @@ export class RestaurantService {
     );
   }
 
+
   private async processRestaurantDataPage(
     pageIndex: number,
     retryCount = 5,
