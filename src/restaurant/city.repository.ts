@@ -95,7 +95,7 @@ export class CityRepository {
     );
   }
 
-  async seedCities(manager?: EntityManager): Promise<void> {
+  async seedCities(): Promise<void> {
     const cities = [
       '고양시',
       '안양시',

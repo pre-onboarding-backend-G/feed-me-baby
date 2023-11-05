@@ -96,7 +96,7 @@ export class CategoryRepository {
     );
   }
 
-  async seedCategories(manager?: EntityManager): Promise<void> {
+  async seedCategories(): Promise<void> {
     const categories = [
       '한식',
       '식육(숯불구이)',
