@@ -74,9 +74,11 @@ export class ReviewService {
     return ;
   }
 
-  //TODO - findAllByUserId
+  async findReviewsByUserId(userId: number): Promise<Review[]> {
+    return await this.reviewRepository.findReviewsByUserId(userId);
+  }
 
-  //TODO - findAllByRestaurantId
+  //TODO - findReviewsByRestaurantId
 
   //TODO - getAverageScoreAndCountByRestaurantId
 }
