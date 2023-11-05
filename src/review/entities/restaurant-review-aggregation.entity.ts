@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-export class RestaurantReviewAggregationEntity {
+export class RestaurantReviewAggregation {
 	@PrimaryGeneratedColumn({ name: 'id', type: 'bigint' })
 	id: number;
 
@@ -9,16 +9,29 @@ export class RestaurantReviewAggregationEntity {
 	
 	@Column({type: "decimal", precision: 10, scale: 2, default: 0})
 	average_score: number;
+	
+	@CreateDateColumn({
+		name: 'created_at',
+		type: 'timestamp',
+		nullable: false,
+	})
+	createdAt: Date;
 
-	// @OneToOne(() => RestaurantEntity)
-	// restaurantEntity: RestaurantEntity;
+	@UpdateDateColumn({
+		name: 'updated_at', 
+		type: 'timestamp', 
+		nullable: true
+	})
+	updatedAt?: Date | null;
 
-	@CreateDateColumn()
-	created_at: Date;
+	@DeleteDateColumn({
+		name: 'deleted_at', 
+		type: 'timestamp', 
+		nullable: true
+	})
+	deletedAt?: Date | null;
 
-	@UpdateDateColumn()
-	updated_at: Date;
-
-	@DeleteDateColumn()
-	deleted_at: Date;
+	// @OneToOne(() => Restaurant)
+	// @JoinColumn({ name: 'restaurant_id' })
+	// restaurant: Restaurant;
 }
