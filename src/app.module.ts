@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RestaurantGuideModule } from './restaurant-guide/restaurant-guide.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { Restaurant } from './restaurant/entity/restaurant.entity';
 import { Category } from './restaurant/entity/category.entity';
@@ -30,6 +31,7 @@ import { City } from './restaurant/entity/city.entity';
       migrationsRun: true,
     }),
     RestaurantModule,
+    RestaurantGuideModule,
   ],
   controllers: [AppController],
   providers: [AppService],
