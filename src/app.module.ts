@@ -6,9 +6,8 @@ import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantGuideModule } from './restaurant-guide/restaurant-guide.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
-import { Restaurant } from './restaurant/entity/restaurant.entity';
-import { Category } from './restaurant/entity/category.entity';
-import { City } from './restaurant/entity/city.entity';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,11 +23,15 @@ import { City } from './restaurant/entity/city.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASS,
       database: process.env.DATABASE_NAME,
-      synchronize: true,
+      synchronize: process.env.NODE_ENV !== 'production',
       entities: [Restaurant, City, Category],
+      logging: process.env.NODE_ENV !== 'production',
+      autoLoadEntities: true,
     }),
     RestaurantModule,
     RestaurantGuideModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

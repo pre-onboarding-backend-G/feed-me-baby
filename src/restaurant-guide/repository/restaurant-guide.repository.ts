@@ -20,6 +20,7 @@ export class RestaurantGuideRepository {
    * @desc 맛집 데이터베이스에서 정보를 가져와서 주어진 위치 정보(위도, 경도) 사각형 범위 내의 식당들을 찾습니다.
    */
 
+
   async findRestaurantsInRange(
     lat: number,
     lon: number,
