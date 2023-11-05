@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { CoordinateBoundDto } from '../dto/coordinate-bound.dto';
 import { Restaurant } from '../../restaurant/entity/restaurant.entity';
+import { City } from '../../restaurant/entity/city.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GetRawRestaurants } from '../dto/get-restaurant.dto';
 
@@ -10,6 +11,8 @@ export class RestaurantGuideRepository {
   constructor(
     @InjectRepository(Restaurant)
     private readonly restaurantGuideRepository: Repository<Restaurant>,
+    @InjectRepository(City)
+    private readonly cityRepository: Repository<City>,
   ) {}
   /**
    * @author Yeon Kyu
@@ -84,23 +87,15 @@ export class RestaurantGuideRepository {
    * @desc [description]
    */
   async getCityNames(): Promise<string[]> {
-    const cityNames = await this.restaurantGuideRepository
+    const cityNames = await this.cityRepository
       .createQueryBuilder('city')
       .select('city.name')
       .getRawMany();
 
-    return cityNames.map((entry) => entry.name);
+    return cityNames.map((entry) => entry.city_name);
   }
 
-  // async getRestaurantDetails(): Promise<Restaurant[]> {
-  //   const restaurantDetails = await this.restaurantGuideRepository
-  //     .createQueryBuilder('restaurant')
-  //     // Query 수정해야함
-  //     .select('DISTINCT(restaurant.district)', 'district')
-  //     .getRawMany();
 
-  //   return restaurantDetails;
-  // }
   /**
    *
    *
