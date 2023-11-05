@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { SignUpReqDto } from './dto/sign-up-req.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 import { ResponseEntity } from 'src/common/response.entity';
 import { AuthService } from './auth.service';
-import { SignInReqDto } from './dto/sign-in-req.dto';
+import { SignInDto } from './dto/sign-in.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AccessTokenDto } from './dto/access-token.dto';
 import { SwaggerSignIn } from './decorator/swagger/sign-in.decorator';
@@ -16,7 +16,7 @@ export class AuthController {
   @SwaggerSignUp()
   @Post('/sign-up')
   async signUp(
-    @Body() dto: SignUpReqDto,
+    @Body() dto: SignUpDto,
   ): Promise<ResponseEntity<AccessTokenDto>> {
     const accessToken = await this.authService.signUp(dto.toEntity());
 
@@ -29,7 +29,7 @@ export class AuthController {
   @SwaggerSignIn()
   @Post('sign-in')
   async signIn(
-    @Body() dto: SignInReqDto,
+    @Body() dto: SignInDto,
   ): Promise<ResponseEntity<AccessTokenDto>> {
     const accessToken = await this.authService.signIn(dto.toEntity());
 

@@ -11,7 +11,7 @@ import {
 import { User } from '../../user/entity/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SignUpReqDto {
+export class SignUpDto {
   @ApiProperty({
     description:
       '유저가 로그인에 사용할 email 필드입니다. 회원가입이 가능한 이메일의 도메인이 정해져 있습니다. 또한, 도메인을 포함한 아이디는 최소 10자, 최대 60자 까지 가능하며, 소문자 알파벳 및 숫자를 사용할 수 있고 -, _ 등의 특수문자를 사용할 수 있습니다. ',

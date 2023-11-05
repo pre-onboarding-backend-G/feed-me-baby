@@ -1,4 +1,4 @@
-import { SignInReqDto } from './../../dto/sign-in-req.dto';
+import { SignInDto } from '../../dto/sign-in.dto';
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import {
   ApiBody,
@@ -56,5 +56,5 @@ export const SwaggerSignIn = (): MethodDecorator =>
       },
     }),
 
-    ApiBody({ type: SignInReqDto }),
+    ApiBody({ type: SignInDto }),
   );

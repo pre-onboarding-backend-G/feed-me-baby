@@ -8,7 +8,7 @@ import {
 import { User } from '../entity/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateUserReqDto {
+export class UpdateUserDto {
   @ApiProperty({
     description: '유저가 맛집 추천 받을 주소의 위도입니다',
     required: true,
