@@ -29,15 +29,23 @@ async function bootstrap(): Promise<void> {
     .setTitle('Example API')
     .setDescription('The Example API description')
     .setVersion('1.0')
+    .addTag('auth')
+    .addTag('users')
+    //JWT 토큰 설정
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        name: 'authorization',
+        bearerFormat: 'JWT',
+        in: 'header',
+      },
+      'accessToken',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  const dataSource = app.get(DataSource);
-  const migrationsPending = await dataSource.showMigrations();
-  if (migrationsPending) {
-    Logger.log('Running migrations...', 'Migration');
-    await dataSource.runMigrations();
-  }
+
 
   app
     .useGlobalPipes(new ValidationPipe(validationPipeOptions))
