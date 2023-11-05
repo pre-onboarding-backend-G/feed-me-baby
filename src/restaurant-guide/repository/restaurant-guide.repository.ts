@@ -95,20 +95,20 @@ export class RestaurantGuideRepository {
   //   return this.#restaurantGuideRepository.find();
   // }
 
-  async getDistricts(): Promise<string[]> {
-    const distinctDistricts = await this.restaurantGuideRepository
+  async getCityLists(): Promise<string[]> {
+    const cityLists = await this.restaurantGuideRepository
       .createQueryBuilder('restaurant')
-      .select('DISTINCT(restaurant.district)', 'district')
+      .select('DISTINCT(restaurant.city)', 'city')
       .getRawMany();
 
-    return distinctDistricts;
+    return cityLists;
   }
 
-  createRestaurantInfo(district: string): Promise<Restaurant> {
-    const restaurantInfo = this.restaurantGuideRepository.create({});
+  // createRestaurantInfo(district: string): Promise<Restaurant> {
+  //   const restaurantInfo = this.restaurantGuideRepository.create({});
 
-    return this.restaurantGuideRepository.save(restaurantInfo);
-  }
+  //   return this.restaurantGuideRepository.save(restaurantInfo);
+  // }
 
   async getRestaurantDetails(): Promise<Restaurant[]> {
     const restaurantDetails = await this.restaurantGuideRepository

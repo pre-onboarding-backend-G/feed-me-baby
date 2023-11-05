@@ -83,16 +83,9 @@ export class RestaurantGuideController {
    * @modify date 2023-11-01 22:56:10
    * @desc [description]
    */
-  @Get('districts')
-  getDistricts(): Promise<string[]> {
-    return this.restaurantGuideService.getDistricts();
-  }
-
-  @Post('district')
-  createRestaurantInfo(
-    @Body('district') district: string,
-  ): Promise<Restaurant> {
-    return this.restaurantGuideService.createRestaurantInfo(district);
+  @Get('city-lists')
+  getCityLists(): Promise<string[]> {
+    return this.restaurantGuideService.getCityLists();
   }
 
   @Get('details')
