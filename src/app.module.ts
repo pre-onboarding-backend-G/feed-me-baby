@@ -14,6 +14,7 @@ import { RestaurantReviewAggregation } from './review/entity/restaurant-review-a
 import { CustomLoggerModule } from './common/logger/custom-logger.module';
 import { City } from './restaurant/entity/city.entity';
 import { LunchRecommendationModule } from './lunch-recommendation/lunch-recommendation.module';
+import { User } from './user/entity/user.entity';
 
 @Module({
   imports: [

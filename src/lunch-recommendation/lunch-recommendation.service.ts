@@ -1,22 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { Webhook, MessageBuilder } from 'discord-webhook-node';
+import {
+  DISCORD_WEBHOOK_URL,
+  LUNCH_IMAGE,
+} from './const/lunch-recommendation.const';
+import { LunchRecommendationRepository } from './lunch-recommedation.repository';
+import { Restaurant } from 'src/restaurant/entity/restaurant.entity';
+
+interface RawUser {
+  email: string;
+  lat: string;
+  lon: string;
+}
 
 @Injectable()
 export class LunchRecommendationService {
-  sendMessage(): string {
-    const hook = new Webhook(
-      'https://discord.com/api/webhooks/1170568748843946124/9aDOCN1W66q8oRlef-mvlpKOoIBLMbSo2WFycqt22xnY8DjEh1cIlF3q2P3fOTIbV7aI',
-    );
+  constructor(
+    private readonly lunchRecommendationRepository: LunchRecommendationRepository,
+  ) {}
 
-    // 메시지 빌더를 사용하여 웹훅 메시지 생성
+  sendMessage(email: string, restaurants: Restaurant[]): void {
+    const hook = new Webhook(DISCORD_WEBHOOK_URL);
+
+    const restaurantListString = restaurants
+      .map((restaurant) => `${restaurant.name} - ${restaurant.address}`)
+      .join('\n');
+
     const embed = new MessageBuilder()
-      .setTitle('오늘의 점심 추천 리스트')
-      .setAuthor(
-        'Lunch-Recommendation',
-        'https://cdn-icons-png.flaticon.com/512/7662/7662446.png',
-      )
-      .setThumbnail('https://cdn-icons-png.flaticon.com/512/7662/7662446.png')
-      .setDescription('카테고리 1\n  식당 1, 식당 2, 식당 3\n...')
+      .setTitle(`현재 ${email}님 주변에 있는 식당 리스트`)
+      .setAuthor(email, LUNCH_IMAGE)
+      .setThumbnail(LUNCH_IMAGE)
+      .setDescription(restaurantListString)
       .setTimestamp();
 
     // 웹훅으로 메시지를 비동기적으로 전송
@@ -29,6 +43,14 @@ export class LunchRecommendationService {
         console.error('Error sending webhook:', error);
       });
 
-    return 'Message sent';
+    return;
+  }
+
+  getLunchRecommendationUser(): Promise<RawUser[]> {
+    return this.lunchRecommendationRepository.getLunchRecommendationUser();
+  }
+
+  findRestaurantsInCircle(lat: number, lon: number): Promise<Restaurant[]> {
+    return this.lunchRecommendationRepository.findRestaurantsInCircle(lat, lon);
   }
 }
