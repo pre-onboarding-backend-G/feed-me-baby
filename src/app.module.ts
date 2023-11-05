@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -20,8 +21,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: process.env.DATABASE_PASS,
       database: process.env.DATABASE_NAME,
     }),
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
