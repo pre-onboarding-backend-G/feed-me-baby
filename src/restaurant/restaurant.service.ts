@@ -3,7 +3,7 @@ import { RestaurantRepository } from './restaurant.repository';
 import { SingleBar, Presets } from 'cli-progress';
 import { CityRepository } from './city.repository';
 import { CategoryRepository } from './category.repository';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { RestaurantApiResponseDto } from './dto/restaurant-api-response.dto.ts';
@@ -76,7 +76,8 @@ export class RestaurantService {
     pageIndex: number,
     retryCount = 5,
   ): Promise<boolean> {
-    const url = `https://openapi.gg.go.kr/GENRESTRT?KEY=${process.env.API_KEY}&Type=json&pIndex=${pageIndex}&pSize=1000`;
+    const pageSize = 1000;
+    const url = `https://openapi.gg.go.kr/GENRESTRT?KEY=${process.env.API_KEY}&Type=json&pIndex=${pageIndex}&pSize=${pageSize}`;
 
     try {
       const response = await axios.get(url);
@@ -99,10 +100,10 @@ export class RestaurantService {
     } catch (error) {
       if (this.shouldRetry(error)) {
         const delay = this.retryDelay + Math.random() * 1000;
-        // console.error(
-        //   `트랜잭션 실패, 재시도 ${retryCount + 1}/${this.maxRetries}:`,
-        //   error,
-        // );
+        console.error(
+          `트랜잭션 실패, 재시도 ${retryCount + 1}/${this.maxRetries}:`,
+          error,
+        );
         await new Promise((resolve) => setTimeout(resolve, delay));
 
         if (retryCount < this.maxRetries) {
@@ -121,10 +122,10 @@ export class RestaurantService {
     }
   }
 
-  private shouldRetry(error: any): boolean {
+  private shouldRetry(error: AxiosError): boolean {
     return (
       (error.response && error.response.status === 503) ||
-      error.code === '23505'
+      (error.code && error.code === 'ECONNABORTED')
     );
   }
 
@@ -240,7 +241,7 @@ export class RestaurantService {
     transactionalEntityManager: EntityManager,
   ): Promise<void> {
     try {
-      // 레스토랑 엔티티의 배타적 잠금을 시도합니다.
+      let restaurantSaved = false;
       const existingRestaurant = await transactionalEntityManager.findOne(
         Restaurant,
         {
@@ -262,6 +263,11 @@ export class RestaurantService {
           updateDto,
         );
         await transactionalEntityManager.save(Restaurant, newRestaurant);
+        restaurantSaved = true;
+      }
+
+      if (restaurantSaved) {
+        this.activeCount++;
       }
     } catch (error) {
       // 오류가 발생하면 트랜잭션을 롤백하는 로직은 상위 컨텍스트에 맡깁니다.
