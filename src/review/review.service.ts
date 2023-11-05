@@ -21,7 +21,7 @@ export class ReviewService {
       //FIXME - 개발 중에 아직 Restaurant 엔티티가 존재하지 않아서 주석 처리함, 병합 후에 해제할 것
       // let restaurant = await this.restaurantRepository(restaurantId);
       // if (restaurant === null) {
-      //   throw new NotFoundException('해당 식당이 존재하지 않습니다.')
+      //   throw new NotFoundException('해당 식당이 존재하지 않습니다')
       // }
       // rra = await this.restaurantReviewAggregatioRepository.createRepository({
       //   averageScore: 0,
@@ -43,7 +43,7 @@ export class ReviewService {
       this.reviewRepository
       .findReviewsByUserIdAndRestaurantId(userId, restaurantId);
     if (userReview !== null) {
-      throw new ConflictException('이미 해당 식당에 대해 작성한 리뷰가 있습니다.');
+      throw new ConflictException('이미 해당 식당에 대해 작성한 리뷰가 있습니다');
     }
     userReview = this.reviewRepository.createRepository(
       score,

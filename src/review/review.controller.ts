@@ -6,6 +6,7 @@ import {
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { SwaggerCreateReview } from './decorator/swagger/create-review.decorator';
 
 @ApiTags('reviews')
 @Controller('reviews')
@@ -13,6 +14,7 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   // @UseGuards(AuthGuard)
+  @SwaggerCreateReview()
   @Post()
   async create(
     // @UserId() userId: number, //FIXME - 병합 후 사용 가능 확인 후 해제할 것
