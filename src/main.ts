@@ -38,7 +38,6 @@ async function bootstrap(): Promise<void> {
     Logger.log('Running migrations...', 'Migration');
     await dataSource.runMigrations();
   }
-  
 
   app
     .useGlobalPipes(new ValidationPipe(validationPipeOptions))
