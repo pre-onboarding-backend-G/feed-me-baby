@@ -13,7 +13,7 @@ export class ReviewService {
     : RestaurantreviewAggregationRepository
   ) {}
 
-  private async getRestaurantReviewAggregation(restaurantId: number) {
+  private async getRestaurantReviewAggregationByRestaurantId(restaurantId: number) {
     let rra: RestaurantReviewAggregation = await this
       .restaurantReviewAggregatioRepository
       .findByRestaurantId(restaurantId);
@@ -67,7 +67,7 @@ export class ReviewService {
 
   async create(userId: number, score: number, content: string, restaurantId: number) {
     const rra: RestaurantReviewAggregation
-      = await this.getRestaurantReviewAggregation(restaurantId);
+      = await this.getRestaurantReviewAggregationByRestaurantId(restaurantId);
     const userReview: Review
       = await this.makeReview(userId, score, content, restaurantId, rra);
     await this.updateRestaurantReviewAverageScore(rra, userReview);
@@ -82,5 +82,15 @@ export class ReviewService {
     return await this.reviewRepository.findReviewsByRestaurantId(restaurantId);
   }
 
-  //TODO - getAverageScoreAndCountByRestaurantId
+  async getAverageScoreAndTotalCountByRestaurantId(restaurantId: number)
+  : Promise<{ averageScore: number, totalCount: number }> {
+    const rra: RestaurantReviewAggregation 
+      = await this.getRestaurantReviewAggregationByRestaurantId(
+        restaurantId
+    );
+    return {
+      averageScore: rra.averageScore,
+      totalCount: rra.totalCount
+    }
+  }
 }
