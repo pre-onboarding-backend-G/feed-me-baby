@@ -1,83 +1,98 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, EntityManager, DeepPartial } from 'typeorm';
 import { Restaurant } from './entity/restaurant.entity';
-import { Repository } from 'typeorm';
-import { CreateRestaurantDto } from './dto/create.restaurant.dto';
-import { Category } from './entity/category.entity';
-import { City } from './entity/city.entity';
+import { CategoryRepository } from './category.repository';
+import { CityRepository } from './city.repository';
+import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 
 @Injectable()
 export class RestaurantRepository {
   constructor(
     @InjectRepository(Restaurant)
     private restaurantRepository: Repository<Restaurant>,
-    @InjectRepository(Category)
-    private categoryRepository: Repository<Category>, // 이렇게 주입합니다.
-    @InjectRepository(City)
-    private cityRepository: Repository<City>, // 이렇게 주입합니다.
+    private categoryRepository: CategoryRepository,
+    private cityRepository: CityRepository,
   ) {}
 
-  async createRestaurant(
-    createRestaurantDto: CreateRestaurantDto,
+  private getRepository(manager?: EntityManager): Repository<Restaurant> {
+    return manager
+      ? manager.getRepository(Restaurant)
+      : this.restaurantRepository;
+  }
+  private async saveRestaurant(
+    restaurant: Restaurant,
+    dto: CreateRestaurantDto,
+    manager?: EntityManager,
   ): Promise<Restaurant> {
-    let restaurant = new Restaurant();
-
-    Object.assign(restaurant, createRestaurantDto);
-
-    if (createRestaurantDto.categoryId) {
-      const category = await this.categoryRepository.findOne({
-        where: { id: createRestaurantDto.categoryId },
-      });
-      if (!category) {
-        throw new NotFoundException(
-          `Category with ID ${createRestaurantDto.categoryId} not found.`,
-        );
-      }
-      restaurant.categoryId = category;
-    }
-
-    if (createRestaurantDto.cityId) {
-      const city = await this.cityRepository.findOne({
-        where: { id: createRestaurantDto.cityId },
-      });
-      if (!city) {
-        throw new NotFoundException(
-          `City with ID ${createRestaurantDto.cityId} not found.`,
-        );
-      }
-      restaurant.cityId = city;
-    }
-
-    // 저장 전 'restaurant' 인스턴스가 완전하게 구성되었는지 확인합니다.
-    restaurant = this.restaurantRepository.create(restaurant);
-    await this.restaurantRepository.save(restaurant);
+    await this.assignRelations(dto, restaurant, manager);
+    const repo = this.getRepository(manager);
+    await repo.save(restaurant);
     return restaurant;
   }
 
-  async softDeleteRestaurant(uniqueId: string): Promise<void> {
-    await this.restaurantRepository.update(
-      { uniqueId },
-      { deletedAt: new Date() },
-    );
-  }
+  async createOrUpdateRestaurant(
+    dto: CreateRestaurantDto,
+    manager?: EntityManager,
+  ): Promise<Restaurant> {
+    const repo = this.getRepository(manager);
+    const latitude = parseFloat(dto.latitude);
+    const longitude = parseFloat(dto.longitude);
+    const entityDto = { ...dto, latitude, longitude };
+    const uniqueId = dto.uniqueId;
 
-  async updateRestaurant(
-    uniqueId: string,
-    updateRestaurantDto,
-  ): Promise<Restaurant | null> {
-    const existingRestaurant = await this.restaurantRepository.findOne({
-      where: { uniqueId, deletedAt: null },
-    });
-    if (!existingRestaurant) {
-      console.log('레스토랑이 존재하지 않거나 삭제되었습니다.');
-      return null;
+    let restaurant;
+    if (uniqueId) {
+      restaurant = await repo.findOne({ where: { uniqueId } });
+    }
+    if (!restaurant) {
+      restaurant = repo.create(entityDto as DeepPartial<Restaurant>);
+    } else {
+      restaurant = repo.merge(restaurant, entityDto as DeepPartial<Restaurant>);
     }
 
-    await this.restaurantRepository.update({ uniqueId }, updateRestaurantDto);
-    return this.restaurantRepository.findOne({ where: { uniqueId } });
+    return this.saveRestaurant(restaurant, dto, manager);
   }
 
-  async findOne(conditions): Promise<Restaurant | undefined> {
-    return this.restaurantRepository.findOne(conditions);
+  async softDeleteRestaurant(
+    uniqueId: string,
+    manager?: EntityManager,
+  ): Promise<void> {
+    const repo = this.getRepository(manager);
+    await repo.update({ uniqueId }, { deletedAt: new Date() });
+  }
+
+  async findOne(
+    conditions,
+    manager?: EntityManager,
+  ): Promise<Restaurant | undefined> {
+    const repo = this.getRepository(manager);
+    return repo.findOne(conditions);
+  }
+
+  async findByUniqueId(
+    uniqueId: string,
+    manager?: EntityManager,
+  ): Promise<Restaurant | null> {
+    const repo = this.getRepository(manager);
+    return repo.findOne({ where: { uniqueId } });
+  }
+
+  private async assignRelations(
+    dto: CreateRestaurantDto,
+    restaurant: Restaurant,
+    manager?: EntityManager,
+  ): Promise<void> {
+    if (dto.category) {
+      await this.categoryRepository.assignCategory(
+        dto.category,
+        restaurant,
+        manager,
+      );
+    }
+
+    if (dto.city) {
+      await this.cityRepository.assignCity(dto.city, restaurant, manager);
+    }
   }
 }

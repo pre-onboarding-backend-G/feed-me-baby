@@ -8,6 +8,6 @@ export class FetchDataScheduler {
 
   @Cron('0 0 * * * *')
   handleCron(): void {
-    this.restaurantService.updateRestaurants();
+    this.restaurantService.syncRestaurantData();
   }
 }
