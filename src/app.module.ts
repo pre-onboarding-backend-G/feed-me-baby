@@ -1,11 +1,10 @@
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantGuideModule } from './restaurant-guide/restaurant-guide.module';
-import { RestaurantEntity } from './restaurant-guide/restaurant-guide.entity';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
