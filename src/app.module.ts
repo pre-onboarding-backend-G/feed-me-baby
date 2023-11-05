@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ReviewModule } from './review/review.module';
 import { RestaurantGuideModule } from './restaurant-guide/restaurant-guide.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { UserModule } from './user/user.module';
@@ -27,6 +28,7 @@ import { AuthModule } from './auth/auth.module';
       logging: process.env.NODE_ENV !== 'production',
       autoLoadEntities: true,
     }),
+    ReviewModule,
     RestaurantModule,
     RestaurantGuideModule,
     AuthModule,
