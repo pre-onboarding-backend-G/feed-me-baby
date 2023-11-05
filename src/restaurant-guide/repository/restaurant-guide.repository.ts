@@ -83,42 +83,24 @@ export class RestaurantGuideRepository {
    * @modify date 2023-11-01 22:56:10
    * @desc [description]
    */
-
-  // #restaurantGuideRepository: Repository<RestaurantEntity>;
-
-  // constructor(private readonly dataSource: DataSource) {
-  //   this.#restaurantGuideRepository =
-  //     this.dataSource.getRepository(RestaurantEntity);
-  // }
-
-  // getDistricts(): Promise<RestaurantEntity[]> {
-  //   return this.#restaurantGuideRepository.find();
-  // }
-
-  async getCityLists(): Promise<string[]> {
-    const cityLists = await this.restaurantGuideRepository
-      .createQueryBuilder('restaurant')
-      .select('DISTINCT(restaurant.city)', 'city')
+  async getCityNames(): Promise<string[]> {
+    const cityNames = await this.restaurantGuideRepository
+      .createQueryBuilder('city')
+      .select('city.name')
       .getRawMany();
 
-    return cityLists;
+    return cityNames.map((entry) => entry.name);
   }
 
-  // createRestaurantInfo(district: string): Promise<Restaurant> {
-  //   const restaurantInfo = this.restaurantGuideRepository.create({});
+  // async getRestaurantDetails(): Promise<Restaurant[]> {
+  //   const restaurantDetails = await this.restaurantGuideRepository
+  //     .createQueryBuilder('restaurant')
+  //     // Query 수정해야함
+  //     .select('DISTINCT(restaurant.district)', 'district')
+  //     .getRawMany();
 
-  //   return this.restaurantGuideRepository.save(restaurantInfo);
+  //   return restaurantDetails;
   // }
-
-  async getRestaurantDetails(): Promise<Restaurant[]> {
-    const restaurantDetails = await this.restaurantGuideRepository
-      .createQueryBuilder('restaurant')
-      // Query 수정해야함
-      .select('DISTINCT(restaurant.district)', 'district')
-      .getRawMany();
-
-    return restaurantDetails;
-  }
   /**
    *
    *

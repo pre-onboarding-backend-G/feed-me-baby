@@ -78,42 +78,16 @@ export class RestaurantGuideController {
    */
   /**
    * @author Sang Un
-   * @email suntail2002@naver.com
-   * @create date 2023-11-01 22:56:10
-   * @modify date 2023-11-01 22:56:10
+   * @email sangunlee6@gmail.com
    * @desc [description]
    */
   @Get('city-lists')
-  getCityLists(): Promise<string[]> {
-    return this.restaurantGuideService.getCityLists();
+  getCityNames(): Promise<string[]> {
+    return this.restaurantGuideService.getCityNames();
   }
 
-  @Get('details')
-  getRestaurantDetails(): Promise<Restaurant[]> {
-    return this.restaurantGuideService.getRestaurantDetails();
-  }
-  /**
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   */
+  // @Get('details')
+  // getRestaurantDetails(): Promise<Restaurant[]> {
+  //   return this.restaurantGuideService.getRestaurantDetails();
+  // }
 }

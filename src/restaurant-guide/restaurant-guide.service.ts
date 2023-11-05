@@ -82,48 +82,14 @@ export class RestaurantGuideService {
    */
   /**
    * @author Sang Un
-   * @email suntail2002@naver.com
-   * @create date 2023-11-01 22:56:10
-   * @modify date 2023-11-01 22:56:10
+   * @email sangunlee6@gmail.com
    * @desc [description]
    */
-  // constructor(
-  //   private readonly restaurantGuideRepository: RestaurantGuideRepository,
-  // ) { }
-
-  getCityLists(): Promise<string[]> {
-    return this.restaurantGuideRepository.getCityLists();
+  getCityNames(): Promise<string[]> {
+    return this.restaurantGuideRepository.getCityNames();
   }
 
-  // 임시 메서드
-  // createRestaurantInfo(district: string): Promise<Restaurant> {
-  //   return this.restaurantGuideRepository.createRestaurantInfo(district);
+  // getRestaurantDetails(): Promise<Restaurant[]> {
+  //   return this.restaurantGuideRepository.getRestaurantDetails();
   // }
-
-  getRestaurantDetails(): Promise<Restaurant[]> {
-    return this.restaurantGuideRepository.getRestaurantDetails();
-  }
-  /**
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   */
 }
