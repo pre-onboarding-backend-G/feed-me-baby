@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { RestaurantGuideService } from './restaurant-guide.service';
 import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
-import { Restaurant } from '../restaurant/entity/restaurant.entity';
 import { GeoJsonResponse } from './dto/geojson-res.dto';
 import { GetRestaurantsDto } from './dto/get-restaurant.dto';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
@@ -10,7 +9,7 @@ import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 export class RestaurantGuideController {
   constructor(
     private readonly restaurantGuideService: RestaurantGuideService,
-  ) {}
+  ) { }
   /**
    * @author Yeon Kyu
    * @email suntail2002@naver.com

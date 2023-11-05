@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
 import { RestaurantGuideRepository } from './repository/restaurant-guide.repository';
-import { Restaurant } from 'src/restaurant/entity/restaurant.entity';
 import { GetRestaurantsDto } from './dto/get-restaurant.dto';
 
 @Injectable()
