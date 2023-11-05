@@ -1,0 +1,10 @@
+.github
+.gitignore
+.git
+.env
+.devcontainer
+.gitmessage.txt
+node_modules/
+*.md
+pgadmin/
+postgres/

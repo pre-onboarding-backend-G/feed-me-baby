@@ -5,6 +5,12 @@ import { ConfigModule } from '@nestjs/config';
 import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewModule } from './review/review.module';
+import { RestaurantGuideModule } from './restaurant-guide/restaurant-guide.module';
+import { RestaurantEntity } from './restaurant-guide/restaurant-guide.entity';
+import { RestaurantModule } from './restaurant/restaurant.module';
+import { Restaurant } from './restaurant/entity/restaurant.entity';
+import { Category } from './restaurant/entity/category.entity';
+import { City } from './restaurant/entity/city.entity';
 
 @Module({
   imports: [
@@ -20,8 +26,11 @@ import { ReviewModule } from './review/review.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASS,
       database: process.env.DATABASE_NAME,
+      synchronize: true,
+      entities: [Restaurant, City, Category, RestaurantEntity],
     }),
     ReviewModule,
+    RestaurantModule,RestaurantGuideModule
   ],
   controllers: [AppController],
   providers: [AppService],
