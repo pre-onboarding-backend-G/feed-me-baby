@@ -18,7 +18,7 @@ export class Review {
   @Column({ name: 'content', type: 'varchar', nullable: true, length: 255 })
   content: string;
 
-  @Column({ name: 'score', type: 'tinyint', nullable: false })
+  @Column({ name: 'score', type: 'smallint', nullable: false })
   score: number;
 
   @CreateDateColumn({
