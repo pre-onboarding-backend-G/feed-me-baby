@@ -1,34 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+} from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('review')
+@ApiTags('reviews')
+@Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
+  // @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewService.create(createReviewDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.reviewService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewService.update(+id, updateReviewDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewService.remove(+id);
+  async create(
+    // @UserId() userId: number, //FIXME - 병합 후 사용 가능 확인 후 해제할 것
+    @Body() dto: CreateReviewDto,
+  )
+  // : Promise<ResponseEntity<string> //FIXME - 병합 후 사용 가능 확인 후 해제할 것
+  {
+    let userId: number = 1; // tmp to implement //FIXME - 병합 후 userId 사용 가능 확인 후 삭제할 것
+    await this.reviewService.create(userId, dto.score, dto.content, dto.restaurantId);
+    // return RepositoryEntity.OK('리뷰 작성 요청에 성공했습니다') //FIXME - 병합 후 사용 가능 확인 후 해제할 것
+    return ;
   }
 }
