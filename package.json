@@ -34,6 +34,7 @@
     "class-validator": "^0.14.0",
     "cli-progress": "^3.12.0",
     "jest-mock-axios": "^4.7.3",
+    "discord-webhook-node": "^1.1.8",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
