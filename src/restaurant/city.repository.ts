@@ -16,7 +16,6 @@ export class CityRepository {
   }
 
   async findOne(condition, manager?: EntityManager): Promise<City | undefined> {
-    console.log('findOne called with condition:', condition); // 로그 추가
     return this.getRepository(manager).findOne(condition);
   }
 
@@ -36,11 +35,10 @@ export class CityRepository {
     manager?: EntityManager,
   ): Promise<void> {
     if (!cityName || cityName.trim() === '') {
-      console.log('Invalid city name provided:', cityName); // 유효하지 않은 경우 로깅
       return;
     }
 
-    const city = await this.findOrCreate(cityName.trim(), manager); // cityName 앞뒤 공백 제거 후 사용
+    const city = await this.findOrCreate(cityName.trim(), manager);
     restaurant.city = city;
   }
 
