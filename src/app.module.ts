@@ -8,10 +8,6 @@ import { RestaurantGuideModule } from './restaurant-guide/restaurant-guide.modul
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { Restaurant } from './restaurant/entity/restaurant.entity';
-import { City } from './restaurant/entity/city.entity';
-import { Category } from './restaurant/entity/category.entity';
-import { User } from './user/entity/user.entity';
 
 @Module({
   imports: [

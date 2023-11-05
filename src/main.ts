@@ -7,7 +7,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { DataSource } from 'typeorm';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -44,8 +43,6 @@ async function bootstrap(): Promise<void> {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-
-
 
   app
     .useGlobalPipes(new ValidationPipe(validationPipeOptions))
