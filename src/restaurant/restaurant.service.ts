@@ -50,7 +50,7 @@ export class RestaurantService {
   }
 
   private async processPage(pageIndex: number): Promise<boolean> {
-    const url = `https://openapi.gg.go.kr/GENRESTRT?KEY=${process.env.API_KEY}&Type=json&pIndex=${pageIndex}&pSize=1000`;
+    const url = `https://openapi.gg.go.kr/GENRESTRT?KEY=${process.env.API_KEY}&Type=json&pIndex=${pageIndex}&pSize=10`;
     const response = await axios.get(url);
     const data = response.data;
 
