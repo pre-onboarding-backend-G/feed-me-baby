@@ -18,6 +18,6 @@ import { RestaurantController } from './restaurant.controller';
     RestaurantService,
   ],
   controllers: [RestaurantController],
-  exports: [RestaurantRepository]
+  exports: [RestaurantRepository],
 })
 export class RestaurantModule {}
