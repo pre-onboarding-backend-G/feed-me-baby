@@ -1,31 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from '../entities/review.entity';
-import { RestaurantReviewAggregation } from '../entities/restaurant-review-aggregation.entity';
 
 @Injectable()
 export class ReviewRepository {
   constructor(
     @InjectRepository(Review)
-    private readonly reviewRepository: Repository<Review>,
+    private readonly reviewRepository
+    : Repository<Review>,
   ) {}
 
-  createRepository(
-    score: number, 
-    content: string, 
-    userId: number,
-    rra: RestaurantReviewAggregation
-  ): Review {
-    return this.reviewRepository.create({
-      score: score,
-      content: content,
-      userId: userId,
-      restaurantReviewAggregation: rra
+  async save(review: Review): Promise<Review> {
+    const alreadyReview = await this.reviewRepository.findOne({
+      where: {
+        userId: review.userId,
+        restaurantReviewAggregationId: review.restaurantReviewAggregationId
+      }
     });
-  }
-
-  async saveRepository(review: Review): Promise<Review> {
+    if (alreadyReview !== null) {
+      throw new ConflictException('이미 해당 식당에 대해 작성한 리뷰가 있습니다');
+    }
     return await this.reviewRepository.save(review);
   }
 
@@ -47,14 +42,12 @@ export class ReviewRepository {
    * @param restaurantId RestaurantReviewAggregation의 Restaurant에 대한 FK 입니다.
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
-  async findReviewsByRestaurantId(restaurantId: number): Promise<Review[]> {
+  async findReviewsByRestaurantId(
+    restaurantReviewAggregationId: number
+  ): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        restaurantReviewAggregation: {
-          // restaurant: {
-          // 	id: restaurantId
-          // } //FIXME - Restaurant 엔티티 병합되면 해제할 것
-        },
+        restaurantReviewAggregationId: restaurantReviewAggregationId
       },
     });
   }
@@ -64,23 +57,19 @@ export class ReviewRepository {
    * @param userId Review의 User에 대한 FK 입니다.
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
-  async findReviewsByUserIdAndRestaurantId(
+  async findReviewByUserIdAndRestaurantId(
     userId: number, 
-    restaurantId: number
+    restaurantReviewAggregationId: number
   ): Promise<Review> {
     return await this.reviewRepository.findOne({
       where: {
         userId: userId,
-        // restaurantReviewAggregation: {
-        //   restaurant: {
-        //     id: restaurantId
-        //   }
-        // } //FIXME - Restaurant 엔티티 병합되면 해제할 것
+        restaurantReviewAggregationId: restaurantReviewAggregationId
       },
     });
   }
 
-  async updateReview(reviewId: number, review: Review): Promise<boolean> {
+  async update(reviewId: number, review: Review): Promise<boolean> {
     const result = await this.reviewRepository.update({ id: reviewId }, review);
     return result.affected > 0;
   }
