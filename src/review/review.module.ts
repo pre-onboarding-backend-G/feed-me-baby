@@ -10,17 +10,14 @@ import { RestaurantModule } from 'src/restaurant/restaurant.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      Review, 
-      RestaurantReviewAggregation
-    ]),
-    RestaurantModule
+    TypeOrmModule.forFeature([Review, RestaurantReviewAggregation]),
+    RestaurantModule,
   ],
   controllers: [ReviewController],
   providers: [
-    ReviewService, 
-    ReviewRepository, 
-    RestaurantreviewAggregationRepository
+    ReviewService,
+    ReviewRepository,
+    RestaurantreviewAggregationRepository,
   ],
   exports: [ReviewService],
 })

@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from '../entities/review.entity';
@@ -7,8 +7,7 @@ import { Review } from '../entities/review.entity';
 export class ReviewRepository {
   constructor(
     @InjectRepository(Review)
-    private readonly reviewRepository
-    : Repository<Review>,
+    private readonly reviewRepository: Repository<Review>,
   ) {}
 
   async save(review: Review): Promise<Review> {
@@ -23,7 +22,7 @@ export class ReviewRepository {
   async findReviewsByUserId(userId: number): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        userId: userId
+        userId: userId,
       },
     });
   }
@@ -34,11 +33,11 @@ export class ReviewRepository {
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
   async findReviewsByRestaurantReviewAggregationId(
-    restaurantReviewAggregationId: number
+    restaurantReviewAggregationId: number,
   ): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        restaurantReviewAggregationId: restaurantReviewAggregationId
+        restaurantReviewAggregationId: restaurantReviewAggregationId,
       },
     });
   }
@@ -49,13 +48,13 @@ export class ReviewRepository {
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
   async findReviewByUserIdAndRestaurantUniqueId(
-    userId: number, 
-    restaurantReviewAggregationId: number
+    userId: number,
+    restaurantReviewAggregationId: number,
   ): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
         userId: userId,
-        restaurantReviewAggregationId: restaurantReviewAggregationId
+        restaurantReviewAggregationId: restaurantReviewAggregationId,
       },
     });
   }

@@ -1,8 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-} from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -22,7 +18,11 @@ export class ReviewController {
     @UserId() userId: number,
     @Body() dto: CreateReviewDto,
   ): Promise<ResponseEntity<string>> {
-    await this.reviewService.create(userId, dto.toEntity(), dto.restaurantUniqueId);
+    await this.reviewService.create(
+      userId,
+      dto.toEntity(),
+      dto.restaurantUniqueId,
+    );
     return ResponseEntity.OK('리뷰 작성 요청에 성공했습니다');
   }
 }

@@ -8,54 +8,55 @@ import { RestaurantRepository } from 'src/restaurant/restaurant.repository';
 export class RestaurantreviewAggregationRepository {
   constructor(
     @InjectRepository(RestaurantReviewAggregation)
-    private readonly restaurantReviewAggregationRepository
-	  : Repository<RestaurantReviewAggregation>,
-    private readonly restaurantRepository
-    : RestaurantRepository,
+    private readonly restaurantReviewAggregationRepository: Repository<RestaurantReviewAggregation>,
+    private readonly restaurantRepository: RestaurantRepository,
   ) {}
 
   async saveRepository(
-	  restaurantReviewAggregation: RestaurantReviewAggregation
+    restaurantReviewAggregation: RestaurantReviewAggregation,
   ): Promise<RestaurantReviewAggregation> {
-    return await this.restaurantReviewAggregationRepository
-		  .save(restaurantReviewAggregation);
+    return await this.restaurantReviewAggregationRepository.save(
+      restaurantReviewAggregation,
+    );
   }
 
   async updateRepository(
-    restaurantReviewAggregationId: number, 
-    restaurantReviewAggregation: RestaurantReviewAggregation
+    restaurantReviewAggregationId: number,
+    restaurantReviewAggregation: RestaurantReviewAggregation,
   ): Promise<boolean> {
-    const result = await this.restaurantReviewAggregationRepository
-      .update({
-        id: restaurantReviewAggregationId
+    const result = await this.restaurantReviewAggregationRepository.update(
+      {
+        id: restaurantReviewAggregationId,
       },
-      restaurantReviewAggregation
+      restaurantReviewAggregation,
     );
     return result.affected > 0;
   }
 
   async findByRestaurantUniqueId(
-    restaurantUniqueId: string
+    restaurantUniqueId: string,
   ): Promise<RestaurantReviewAggregation> {
-    const restaurant 
-      = await this.restaurantRepository.findByUniqueId(restaurantUniqueId);
+    const restaurant =
+      await this.restaurantRepository.findByUniqueId(restaurantUniqueId);
     if (restaurant === null) {
-      throw new NotFoundException('해당 식당이 존재하지 않습니다')
+      throw new NotFoundException('해당 식당이 존재하지 않습니다');
     }
-    let restaurantReviewAggregation: RestaurantReviewAggregation 
-      = await this.restaurantReviewAggregationRepository.findOne({
+    let restaurantReviewAggregation: RestaurantReviewAggregation =
+      await this.restaurantReviewAggregationRepository.findOne({
         where: {
-          restaurantUniqueId: restaurantUniqueId
-        }
-    });
+          restaurantUniqueId: restaurantUniqueId,
+        },
+      });
     if (restaurantReviewAggregation === null) {
-      restaurantReviewAggregation
-        = this.restaurantReviewAggregationRepository.create({
+      restaurantReviewAggregation =
+        this.restaurantReviewAggregationRepository.create({
           averageScore: 0,
           totalCount: 0,
-          restaurantUniqueId: restaurantUniqueId
-      });
-      await this.restaurantReviewAggregationRepository.save(restaurantReviewAggregation);
+          restaurantUniqueId: restaurantUniqueId,
+        });
+      await this.restaurantReviewAggregationRepository.save(
+        restaurantReviewAggregation,
+      );
     }
     return restaurantReviewAggregation;
   }

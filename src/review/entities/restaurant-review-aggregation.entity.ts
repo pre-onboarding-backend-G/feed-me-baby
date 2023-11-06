@@ -22,7 +22,7 @@ export class RestaurantReviewAggregation {
     type: 'decimal',
     precision: 10,
     scale: 2,
-    default: 0
+    default: 0,
   })
   averageScore: number;
 
