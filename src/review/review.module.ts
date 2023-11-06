@@ -14,7 +14,11 @@ import { RestaurantreviewAggregationRepository } from './repository/restaurant-r
     // RestaurantModule // NOTE: forwardRef 필요할듯
   ],
   controllers: [ReviewController],
-  providers: [ReviewService, ReviewRepository, RestaurantreviewAggregationRepository],
+  providers: [
+    ReviewService,
+    ReviewRepository,
+    RestaurantreviewAggregationRepository,
+  ],
   exports: [ReviewService],
 })
 export class ReviewModule {}
