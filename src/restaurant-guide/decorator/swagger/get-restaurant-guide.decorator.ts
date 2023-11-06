@@ -1,6 +1,5 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import {
-  ApiBearerAuth,
   ApiHeader,
   ApiNotFoundResponse,
   ApiOperation,
@@ -9,18 +8,16 @@ import {
 } from '@nestjs/swagger';
 import { GetRestaurantsDto } from '../../../restaurant-guide/dto/get-restaurant.dto';
 
-export const CustomGetRestaurantsGuide = () =>
+export const CustomGetRestaurantsGuide = (): MethodDecorator =>
   applyDecorators(
     ApiOperation({ summary: '주변 맛집 정보들을 가져옵니다' }),
-
-    ApiBearerAuth(),
 
     ApiHeader({
       name: 'Authorization',
       description: 'Bearer 토큰',
       required: true,
       schema: {
-        type: 'bearer',
+        type: 'string',
       },
     }),
 
