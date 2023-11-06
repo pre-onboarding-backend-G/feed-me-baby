@@ -59,21 +59,15 @@ export class RestaurantService {
             return;
           }
         } else if (result.status === 'rejected') {
-          // 오류가 발생했을 경우, 페이지 사이즈를 줄임
           console.error('페이지 처리 중 오류 발생:', result.reason);
-          this.pageSize = Math.max(1, this.pageSize / this.scaleUpFactor);
+          this.adjustPageSize(false);
         }
       }
 
       totalProcessed += fulfilledCount;
 
       // 모든 프로미스가 성공하면 페이지 사이즈를 증가
-      if (fulfilledCount === this.pageSize) {
-        this.pageSize = Math.min(
-          this.maxPageSize,
-          this.pageSize * this.scaleUpFactor,
-        );
-      }
+      this.adjustPageSize(fulfilledCount === this.pageSize);
 
       // 성공한 페이지가 없으면 반복 종료
       if (fulfilledCount === 0) {
@@ -297,22 +291,28 @@ export class RestaurantService {
   }
 
   private validateAndFormatTelephone(telephone: string): string | null {
-    const startsWith031 = telephone.startsWith('031');
-    const startsWith032 = telephone.startsWith('032');
-    const startsWith02 = telephone.startsWith('02');
-    const startsWith070 = telephone.startsWith('070');
-    const startsWith050 = telephone.startsWith('050');
+    // 시작해야 하는 번호들을 배열로 선언
+    const validStartNumbers = ['031', '032', '02', '070', '050'];
 
-    if (
-      startsWith031 ||
-      startsWith032 ||
-      startsWith02 ||
-      startsWith070 ||
-      startsWith050
-    ) {
-      return telephone;
+    // 시작 번호가 유효한지 체크
+    const isValidStartNumber = validStartNumbers.some((startNumber) =>
+      telephone.startsWith(startNumber),
+    );
+
+    // 유효하면 그대로 반환, 그렇지 않으면 기본값 '031'을 붙여 반환
+    return isValidStartNumber ? telephone : `031${telephone}`;
+  }
+
+  private adjustPageSize(success: boolean): void {
+    if (success) {
+      // 성공 시 페이지 사이즈 증가
+      this.pageSize = Math.min(
+        this.maxPageSize,
+        this.pageSize * this.scaleUpFactor,
+      );
     } else {
-      return `031${telephone}`;
+      // 실패 시 페이지 사이즈 감소
+      this.pageSize = Math.max(1, this.pageSize / this.scaleUpFactor);
     }
   }
 }
