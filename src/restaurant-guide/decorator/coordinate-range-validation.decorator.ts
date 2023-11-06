@@ -10,7 +10,7 @@ import {
 export class IsLatLongInRangeConstraint
   implements ValidatorConstraintInterface
 {
-  validate(value: number, args: ValidationArguments) {
+  validate(value: number, args: ValidationArguments): boolean {
     if (typeof value !== 'number' || isNaN(value)) {
       return false;
     }
@@ -24,7 +24,7 @@ export class IsLatLongInRangeConstraint
     return true;
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage(args: ValidationArguments): string {
     const [minLatLon, maxLatLon] = args.constraints;
     const propertyName = args.property;
 
@@ -36,11 +36,11 @@ export class IsLatLongInRangeConstraint
   }
 }
 
-export function IsLatLongInRange(
+export function IsLatLongInRange<T>(
   range: [number, number],
   validationOptions?: ValidationOptions,
 ) {
-  return function (object: Object, propertyName: string) {
+  return function (object: T, propertyName: string): void {
     registerDecorator({
       name: 'IsLatLonInRange',
       target: object.constructor,
