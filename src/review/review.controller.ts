@@ -1,17 +1,18 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { SwaggerCreateReview } from './decorator/swagger/create-review.decorator';
 import { UserId } from 'src/auth/decorator/user-id.decorator';
 import { ResponseEntity } from 'src/common/response.entity';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('reviews')
 @Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @SwaggerCreateReview()
   @Post()
   async create(

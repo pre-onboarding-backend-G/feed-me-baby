@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { ReviewController } from './review.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,11 +7,13 @@ import { RestaurantReviewAggregation } from './entities/restaurant-review-aggreg
 import { ReviewRepository } from './repository/review.repository';
 import { RestaurantreviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
 import { RestaurantModule } from 'src/restaurant/restaurant.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Review, RestaurantReviewAggregation]),
     RestaurantModule,
+    UserModule
   ],
   controllers: [ReviewController],
   providers: [
