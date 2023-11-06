@@ -1,32 +1,35 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, IsNumber, IsLongitude, IsLatitude } from 'class-validator';
+import { IsOptional, IsInt, Min, Max } from 'class-validator';
+import { IsLatLongInRange } from '../decorator/coordinate-range-validation.decorator';
 
 export class RequestCoordinateWithRangeDto {
   @ApiProperty({
     description: '맛집 추천 받을 장소의 위도입니다',
-    required: false,
-    example: 37.566295,
+    required: true,
+    example: 37.237,
   })
-  @IsLatitude({ message: '위도 값이 필요합니다' })
+  @IsLatLongInRange([36, 38])
   @Type(() => Number)
   lat: number;
 
   @ApiProperty({
     description: '맛집 추천 받을 장소의 경도입니다',
-    required: false,
-    example: 126.977945,
+    required: true,
+    example: 127.199,
   })
-  @IsLongitude({ message: '경도 값이 필요합니다' })
+  @IsLatLongInRange([126, 128])
   @Type(() => Number)
   lon: number;
 
   @ApiProperty({
-    description: '찾고싶은 범위 0.1(약 11km) 이하의 값을 입력(기본 값: 0.1)',
+    description: '찾고싶은 범위 1~3KM 이하의 값을 입력(기본값: 1)',
     required: false,
-    example: 0.1,
+    example: 1,
   })
-  @IsNumber()
+  @IsInt()
+  @Min(1, { message: '1 이상의 값이 필요합니다' })
+  @Max(3, { message: '3 이하의 값이 필요합니다' })
   @IsOptional()
   @Type(() => Number)
   range?: number;
@@ -36,6 +39,6 @@ export class RequestCoordinateWithRangeDto {
   }
 
   get validateRange(): number {
-    return !this.range || this.range >= 0.1 ? 0.1 : this.range;
+    return !this.range ? 0.01 : this.range / 100;
   }
 }
