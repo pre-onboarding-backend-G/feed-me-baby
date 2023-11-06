@@ -40,7 +40,6 @@ import { RestaurantReviewAggregation } from './review/entities/restaurant-review
         RestaurantReviewAggregation,
       ],
       logging: process.env.NODE_ENV !== 'production',
-      autoLoadEntities: true,
     }),
     ReviewModule,
     RestaurantModule,
