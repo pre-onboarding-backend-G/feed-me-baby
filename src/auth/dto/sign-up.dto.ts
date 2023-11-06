@@ -2,6 +2,8 @@ import { Expose } from 'class-transformer';
 import {
   IsBoolean,
   IsEmail,
+  IsLatitude,
+  IsLongitude,
   IsNotEmpty,
   IsString,
   IsStrongPassword,
@@ -64,6 +66,26 @@ export class SignUpDto {
   @IsNotEmpty()
   @IsString()
   city: string;
+
+  @ApiProperty({
+    description: '유저가 맛집 추천 받을 주소의 위도입니다',
+    required: true,
+    example: 37.566295,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsLatitude()
+  latitude: number;
+
+  @ApiProperty({
+    description: '유저가 맛집 추천 받을 주소의 경도입니다',
+    required: true,
+    example: 126.977945,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsLongitude()
+  longitude: number;
 
   @ApiProperty({
     description: '맛집 추천을 받을지 유무에 대한 필드입니다.',
