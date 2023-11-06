@@ -11,8 +11,12 @@ import { User } from 'src/user/entity/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Restaurant, Category, City, User]), UserModule, AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Restaurant, Category, City, User]),
+    UserModule,
+    AuthModule,
+  ],
   controllers: [RestaurantGuideController],
   providers: [RestaurantGuideService, RestaurantGuideRepository, Logger],
 })
-export class RestaurantGuideModule { }
+export class RestaurantGuideModule {}

@@ -95,7 +95,6 @@ export class RestaurantGuideRepository {
     return cityNames.map((entry) => entry.city_name);
   }
 
-
   /**
    *
    *

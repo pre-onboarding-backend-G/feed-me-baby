@@ -8,8 +8,8 @@ import { UserService } from 'src/user/user.service';
 export class RestaurantGuideService {
   constructor(
     private readonly restaurantGuideRepository: RestaurantGuideRepository,
-    private readonly userService: UserService
-  ) { }
+    private readonly userService: UserService,
+  ) {}
   /**
    * @author Yeon Kyu
    * @email suntail2002@naver.com
@@ -27,8 +27,8 @@ export class RestaurantGuideService {
 
     if (!lat || !lon) {
       const { latitude, longitude } = await this.userService.getUser(userId);
-      request.lat = Number(latitude)
-      request.lon = Number(longitude)
+      request.lat = Number(latitude);
+      request.lon = Number(longitude);
     }
 
     const restaurants =
@@ -39,14 +39,16 @@ export class RestaurantGuideService {
       );
 
     if (restaurants.length === 0) {
-      throw new NotFoundException('위치 정보가 없거나 주변에 맛집이 없습니다! 안타깝군요!')
+      throw new NotFoundException(
+        '위치 정보가 없거나 주변에 맛집이 없습니다! 안타깝군요!',
+      );
     }
 
     return restaurants
       .filter((restaurant) => {
         const distance1 = Math.sqrt(
           Math.pow(Math.abs(request.lat - restaurant.lat), 2) +
-          Math.pow(Math.abs(request.lon - restaurant.lon), 2),
+            Math.pow(Math.abs(request.lon - restaurant.lon), 2),
         );
         const distance2 = Math.sqrt(Math.pow(validateRange, 2));
 

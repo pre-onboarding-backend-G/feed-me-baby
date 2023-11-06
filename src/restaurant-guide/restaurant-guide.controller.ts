@@ -6,14 +6,14 @@ import { GetRestaurantsDto } from './dto/get-restaurant.dto';
 import { CustomGetRestaurantsGuide } from './decorator/swagger/get-restaurant-guide.decorator';
 import { UserId } from '../auth/decorator/user-id.decorator';
 import { AuthGuard } from '../auth/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('restaurant-guide')
 @Controller('restaurant-guide')
 export class RestaurantGuideController {
   constructor(
     private readonly restaurantGuideService: RestaurantGuideService,
-  ) { }
+  ) {}
   /**
    * @author Yeon Kyu
    * @email suntail2002@naver.com
@@ -28,8 +28,10 @@ export class RestaurantGuideController {
     @UserId() userId: number,
     @Query() request: RequestCoordinateWithRangeDto,
   ): Promise<GeoJsonResponse<GetRestaurantsDto>> {
-    const restaurantList =
-      await this.restaurantGuideService.getRestaurantList(userId, request); //
+    const restaurantList = await this.restaurantGuideService.getRestaurantList(
+      userId,
+      request,
+    );
     return new GeoJsonResponse<GetRestaurantsDto>(restaurantList);
   }
 

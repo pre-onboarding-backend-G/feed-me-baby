@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, IsNumber, IsLongitude, IsLatitude, Max, Min } from 'class-validator';
+import { IsOptional, IsNumber, IsLongitude, IsLatitude } from 'class-validator';
 
 export class RequestCoordinateWithRangeDto {
   @ApiProperty({
@@ -11,7 +11,6 @@ export class RequestCoordinateWithRangeDto {
   @IsLatitude({ message: '위도 값이 필요합니다' })
   @Type(() => Number)
   lat: number;
-
 
   @ApiProperty({
     description: '맛집 추천 받을 장소의 경도입니다',
@@ -29,7 +28,7 @@ export class RequestCoordinateWithRangeDto {
   })
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)  
+  @Type(() => Number)
   range?: number;
 
   constructor(range?: number) {
