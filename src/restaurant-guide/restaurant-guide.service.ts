@@ -1,13 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
 import { RestaurantGuideRepository } from './repository/restaurant-guide.repository';
-import { GetRestaurantsDto } from './dto/get-restaurant.dto';
+import { GetRawRestaurants, GetRestaurantsDto } from './dto/get-restaurant.dto';
 
 @Injectable()
 export class RestaurantGuideService {
   constructor(
     private readonly restaurantGuideRepository: RestaurantGuideRepository,
-  ) {}
+  ) { }
+
   /**
    * @author Yeon Kyu
    * @email suntail2002@naver.com
@@ -22,30 +23,40 @@ export class RestaurantGuideService {
   ): Promise<GetRestaurantsDto[]> {
     const { lat, lon, validateRange } = request;
 
-    // TODO: 위, 경도 값이 주어지지 않았을 때 유저의 위치값 넣기
-
-    if (!lat || !lon) {
-      throw new BadRequestException('사용자의 위치 정보가 없습니다');
-    }
-
-    const restaurants =
+    const restaurantResults =
       await this.restaurantGuideRepository.findRestaurantsInRange(
         lat,
         lon,
         validateRange,
       );
 
-    return restaurants
-      .filter((restaurant) => {
-        const distance1 = Math.sqrt(
-          Math.pow(Math.abs(lat - restaurant.lat), 2) +
-            Math.pow(Math.abs(lon - restaurant.lon), 2),
-        );
-        const distance2 = Math.sqrt(Math.pow(validateRange, 2));
+    if (restaurantResults.length === 0) {
+      throw new NotFoundException('주변에 맛집이 없습니다! 안타깝군요!');
+    }
 
-        return distance1 <= distance2;
-      })
-      .map((restaurant) => new GetRestaurantsDto(restaurant));
+    const filteredRestaurants = this.filterRestaurantsByDistance(
+      request,
+      restaurantResults,
+    );
+
+    return filteredRestaurants.map(
+      (restaurant) => new GetRestaurantsDto(restaurant),
+    );
+  }
+
+  private filterRestaurantsByDistance(
+    request: RequestCoordinateWithRangeDto,
+    restaurants: GetRawRestaurants[],
+  ): GetRawRestaurants[] {
+    return restaurants.filter((restaurant) => {
+      const distance1 = Math.sqrt(
+        Math.pow(request.lat - restaurant.lat, 2) +
+        Math.pow(request.lon - restaurant.lon, 2),
+      );
+      const distance2 = Math.sqrt(Math.pow(request.validateRange, 2));
+
+      return distance1 <= distance2;
+    });
   }
   /**
    *
