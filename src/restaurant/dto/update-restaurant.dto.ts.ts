@@ -1,6 +1,3 @@
-import { Category } from '../entity/category.entity';
-import { City } from '../entity/city.entity';
-
 export class UpdateRestaurantDto {
   uniqueId: string;
   name: string;
@@ -8,6 +5,6 @@ export class UpdateRestaurantDto {
   latitude: number;
   longitude: number;
   telephone: string | null;
-  category: Category;
-  city: City;
+  categoryName: string;
+  cityName: string;
 }
