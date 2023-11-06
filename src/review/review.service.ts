@@ -73,6 +73,21 @@ export class ReviewService {
     );
   }
 
+  async findReviewByUserIdAndRestaurantUniqueId(
+    userId: number,
+    restaurantUniqueId: string
+  ): Promise<Review[]> {
+    const restaurantReviewAggregation: RestaurantReviewAggregation 
+      = await this.getRestaurantReviewAggregationByRestaurantUniqueId(
+        restaurantUniqueId
+    );
+    return await this.reviewRepository
+      .findReviewByUserIdAndRestaurantUniqueId(
+        userId,
+        restaurantReviewAggregation.id
+    );
+  }
+
   async getAverageScoreAndTotalCountByRestaurantId(
     restaurantUniqueId: string
   ): Promise<{ averageScore: number, totalCount: number }> {

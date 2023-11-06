@@ -12,15 +12,6 @@ export class ReviewRepository {
   ) {}
 
   async save(review: Review): Promise<Review> {
-    const alreadyReview = await this.reviewRepository.findOne({
-      where: {
-        userId: review.userId,
-        restaurantReviewAggregationId: review.restaurantReviewAggregationId
-      }
-    });
-    if (alreadyReview !== null) {
-      throw new ConflictException('이미 해당 식당에 대해 작성한 리뷰가 있습니다');
-    }
     return await this.reviewRepository.save(review);
   }
 
@@ -42,7 +33,7 @@ export class ReviewRepository {
    * @param restaurantId RestaurantReviewAggregation의 Restaurant에 대한 FK 입니다.
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
-  async findReviewsByRestaurantId(
+  async findReviewsByRestaurantReviewAggregationId(
     restaurantReviewAggregationId: number
   ): Promise<Review[]> {
     return await this.reviewRepository.find({
@@ -57,11 +48,11 @@ export class ReviewRepository {
    * @param userId Review의 User에 대한 FK 입니다.
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
-  async findReviewByUserIdAndRestaurantId(
+  async findReviewByUserIdAndRestaurantUniqueId(
     userId: number, 
     restaurantReviewAggregationId: number
-  ): Promise<Review> {
-    return await this.reviewRepository.findOne({
+  ): Promise<Review[]> {
+    return await this.reviewRepository.find({
       where: {
         userId: userId,
         restaurantReviewAggregationId: restaurantReviewAggregationId
