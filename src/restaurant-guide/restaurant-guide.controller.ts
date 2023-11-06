@@ -4,9 +4,8 @@ import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
 import { GeoJsonResponse } from './dto/geojson-res.dto';
 import { GetRestaurantsDto } from './dto/get-restaurant.dto';
 import { CustomGetRestaurantsGuide } from './decorator/swagger/get-restaurant-guide.decorator';
-import { UserId } from '../auth/decorator/user-id.decorator';
 import { AuthGuard } from '../auth/auth.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('restaurant-guide')
 @Controller('restaurant-guide')
@@ -14,6 +13,7 @@ export class RestaurantGuideController {
   constructor(
     private readonly restaurantGuideService: RestaurantGuideService,
   ) {}
+
   /**
    * @author Yeon Kyu
    * @email suntail2002@naver.com
@@ -21,17 +21,15 @@ export class RestaurantGuideController {
    * @modify date 2023-11-01 22:56:10
    * @desc GeoJson에서 볼 수 있게 데이터 포맷을 변경합니다.
    */
+
   @Get()
   @UseGuards(AuthGuard)
   @CustomGetRestaurantsGuide()
   async getRestaurantListByQuery(
-    @UserId() userId: number,
     @Query() request: RequestCoordinateWithRangeDto,
   ): Promise<GeoJsonResponse<GetRestaurantsDto>> {
-    const restaurantList = await this.restaurantGuideService.getRestaurantList(
-      userId,
-      request,
-    );
+    const restaurantList =
+      await this.restaurantGuideService.getRestaurantList(request);
     return new GeoJsonResponse<GetRestaurantsDto>(restaurantList);
   }
 
