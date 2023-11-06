@@ -6,15 +6,22 @@ import { Review } from './entities/review.entity';
 import { RestaurantReviewAggregation } from './entities/restaurant-review-aggregation.entity';
 import { ReviewRepository } from './repository/review.repository';
 import { RestaurantreviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
+import { RestaurantModule } from 'src/restaurant/restaurant.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Review, RestaurantReviewAggregation]),
-    // UserModule,
-    // RestaurantModule // NOTE: forwardRef 필요할듯
+    TypeOrmModule.forFeature([
+      Review, 
+      RestaurantReviewAggregation
+    ]),
+    RestaurantModule
   ],
   controllers: [ReviewController],
-  providers: [ReviewService, ReviewRepository, RestaurantreviewAggregationRepository],
+  providers: [
+    ReviewService, 
+    ReviewRepository, 
+    RestaurantreviewAggregationRepository
+  ],
   exports: [ReviewService],
 })
 export class ReviewModule {}
