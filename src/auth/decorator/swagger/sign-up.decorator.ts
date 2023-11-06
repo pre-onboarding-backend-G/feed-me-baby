@@ -5,7 +5,7 @@ import {
   ApiCreatedResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { SignUpDto } from 'src/auth/dto/sign-up.dto';
+import { SignUpDto } from './../../dto/sign-up.dto';
 
 export const SwaggerSignUp = (): MethodDecorator =>
   applyDecorators(
