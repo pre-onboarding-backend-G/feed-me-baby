@@ -1,13 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
 import { RestaurantGuideRepository } from './repository/restaurant-guide.repository';
 import { GetRestaurantsDto } from './dto/get-restaurant.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class RestaurantGuideService {
   constructor(
     private readonly restaurantGuideRepository: RestaurantGuideRepository,
-  ) {}
+    private readonly userService: UserService
+  ) { }
   /**
    * @author Yeon Kyu
    * @email suntail2002@naver.com
@@ -18,28 +20,33 @@ export class RestaurantGuideService {
    */
 
   async getRestaurantList(
+    userId: number,
     request: RequestCoordinateWithRangeDto,
   ): Promise<GetRestaurantsDto[]> {
     const { lat, lon, validateRange } = request;
 
-    // TODO: 위, 경도 값이 주어지지 않았을 때 유저의 위치값 넣기
-
     if (!lat || !lon) {
-      throw new BadRequestException('사용자의 위치 정보가 없습니다');
+      const { latitude, longitude } = await this.userService.getUser(userId);
+      request.lat = Number(latitude)
+      request.lon = Number(longitude)
     }
 
     const restaurants =
       await this.restaurantGuideRepository.findRestaurantsInRange(
-        lat,
-        lon,
+        request.lat,
+        request.lon,
         validateRange,
       );
+
+    if (restaurants.length === 0) {
+      throw new NotFoundException('위치 정보가 없거나 주변에 맛집이 없습니다! 안타깝군요!')
+    }
 
     return restaurants
       .filter((restaurant) => {
         const distance1 = Math.sqrt(
-          Math.pow(Math.abs(lat - restaurant.lat), 2) +
-            Math.pow(Math.abs(lon - restaurant.lon), 2),
+          Math.pow(Math.abs(request.lat - restaurant.lat), 2) +
+          Math.pow(Math.abs(request.lon - restaurant.lon), 2),
         );
         const distance2 = Math.sqrt(Math.pow(validateRange, 2));
 

@@ -10,7 +10,7 @@ export class RequestCoordinateWithRangeDto {
   })
   @IsLatitude({ message: '위도 값이 필요합니다' })
   @Type(() => Number)
-  lat?: number;
+  lat: number;
 
 
   @ApiProperty({
@@ -20,7 +20,7 @@ export class RequestCoordinateWithRangeDto {
   })
   @IsLongitude({ message: '경도 값이 필요합니다' })
   @Type(() => Number)
-  lon?: number;
+  lon: number;
 
   @ApiProperty({
     description: '찾고싶은 범위 0.1(약 11km) 이하의 값을 입력(기본 값: 0.1)',
