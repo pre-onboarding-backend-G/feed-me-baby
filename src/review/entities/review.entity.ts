@@ -49,5 +49,5 @@ export class Review {
 
   @ManyToOne(() => RestaurantReviewAggregation)
   @JoinColumn({ name: 'restaurant_review_aggregation_id' })
-  restaurantReviewAggregation: RestaurantReviewAggregation;
+  restaurantReviewAggregationId: number;
 }
