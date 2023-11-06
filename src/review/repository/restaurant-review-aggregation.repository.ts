@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RestaurantReviewAggregation } from '../entities/restaurant-review-aggregation.entity';
+import { RestaurantRepository } from 'src/restaurant/restaurant.repository';
 
 @Injectable()
 export class RestaurantreviewAggregationRepository {
   constructor(
     @InjectRepository(RestaurantReviewAggregation)
     private readonly restaurantReviewAggregationRepository
-	: Repository<RestaurantReviewAggregation>,
+	  : Repository<RestaurantReviewAggregation>,
+    private readonly restaurantRepository
+    : RestaurantRepository,
   ) {}
 
   async saveRepository(
@@ -31,16 +34,29 @@ export class RestaurantreviewAggregationRepository {
     return result.affected > 0;
   }
 
-  async findByRestaurantId(
-    restaurantId: number
+  async findByRestaurantUniqueId(
+    restaurantUniqueId: string
   ): Promise<RestaurantReviewAggregation> {
-	return await this.restaurantReviewAggregationRepository
-    .findOne({
-      where: {
-        // restaurant: {
-        // 	id: restaurantId
-        // } //FIXME - Restaurant 엔티티 병합되면 해제할 것
-      }
-    })
+    const restaurant 
+      = await this.restaurantRepository.findByUniqueId(restaurantUniqueId);
+    if (restaurant === null) {
+      throw new NotFoundException('해당 식당이 존재하지 않습니다')
+    }
+    let restaurantReviewAggregation: RestaurantReviewAggregation 
+      = await this.restaurantReviewAggregationRepository.findOne({
+        where: {
+          restaurantUniqueId: restaurantUniqueId
+        }
+    });
+    if (restaurantReviewAggregation === null) {
+      restaurantReviewAggregation
+        = this.restaurantReviewAggregationRepository.create({
+          averageScore: 0,
+          totalCount: 0,
+          restaurantUniqueId: restaurantUniqueId
+      });
+      await this.restaurantReviewAggregationRepository.save(restaurantReviewAggregation);
+    }
+    return restaurantReviewAggregation;
   }
 }
