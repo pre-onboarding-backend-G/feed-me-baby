@@ -14,12 +14,13 @@ export class ReviewRepository {
   createRepository(
     score: number, 
     content: string, 
-    // user: User, //FIXME - User 엔티티 병합되면 해제할 것
+    userId: number,
     rra: RestaurantReviewAggregation
   ): Review {
     return this.reviewRepository.create({
       score: score,
       content: content,
+      userId: userId,
       restaurantReviewAggregation: rra
     });
   }
@@ -36,9 +37,7 @@ export class ReviewRepository {
   async findReviewsByUserId(userId: number): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        // user: {
-        // 	id: userId
-        // } //FIXME - User 엔티티 병합되면 해제할 것
+        userId: userId
       },
     });
   }
@@ -71,9 +70,7 @@ export class ReviewRepository {
   ): Promise<Review> {
     return await this.reviewRepository.findOne({
       where: {
-        // user: {
-        // 	id: userId
-        // }, //FIXME - User 엔티티 병합되면 해제할 것
+        userId: userId,
         // restaurantReviewAggregation: {
         //   restaurant: {
         //     id: restaurantId
