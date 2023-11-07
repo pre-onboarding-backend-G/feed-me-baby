@@ -8,11 +8,13 @@ import { RestaurantRepository } from 'src/restaurant/restaurant.repository';
 export class RestaurantReviewAggregationRepository {
   constructor(
     @InjectRepository(RestaurantReviewAggregation)
-    private readonly restaurantReviewAggregationRepository: Repository<RestaurantReviewAggregation>,
-    private readonly restaurantRepository: RestaurantRepository,
+    private readonly restaurantReviewAggregationRepository
+    : Repository<RestaurantReviewAggregation>,
+    private readonly restaurantRepository
+    : RestaurantRepository,
   ) {}
 
-  async saveRepository(
+  async save(
     restaurantReviewAggregation: RestaurantReviewAggregation,
   ): Promise<RestaurantReviewAggregation> {
     return await this.restaurantReviewAggregationRepository.save(
@@ -20,7 +22,7 @@ export class RestaurantReviewAggregationRepository {
     );
   }
 
-  async updateRepository(
+  async update(
     id: number,
     restaurantReviewAggregation: RestaurantReviewAggregation,
   ): Promise<boolean> {

@@ -7,8 +7,10 @@ import { Review } from './entities/review.entity';
 @Injectable()
 export class ReviewService {
   constructor(
-    private readonly reviewRepository: ReviewRepository,
-    private readonly restaurantReviewAggregationRepository: RestaurantReviewAggregationRepository,
+    private readonly reviewRepository
+    : ReviewRepository,
+    private readonly restaurantReviewAggregationRepository
+    : RestaurantReviewAggregationRepository,
   ) {}
 
   private async getRestaurantReviewAggregationByRestaurantUniqueId(
@@ -31,7 +33,7 @@ export class ReviewService {
       (prevAverageScore * prevTotalCount + userReview.score) /
       (prevTotalCount + 1);
     restaurantReviewAggregation.totalCount = prevTotalCount + 1;
-    await this.restaurantReviewAggregationRepository.updateRepository(
+    await this.restaurantReviewAggregationRepository.update(
       restaurantReviewAggregation.id,
       restaurantReviewAggregation,
     );
