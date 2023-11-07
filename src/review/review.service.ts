@@ -27,8 +27,10 @@ export class ReviewService {
     restaurantReviewAggregation: RestaurantReviewAggregation,
     userReview: Review,
   ): Promise<void> {
-    const prevAverageScore: number = restaurantReviewAggregation.averageScore;
-    const prevTotalCount: number = restaurantReviewAggregation.totalCount;
+    // const prevAverageScore: number = restaurantReviewAggregation.averageScore;
+    // const prevTotalCount: number = restaurantReviewAggregation.totalCount;
+    const { averageScore: prevAverageScore, totalCount: prevTotalCount } =
+      restaurantReviewAggregation;
     restaurantReviewAggregation.averageScore =
       (prevAverageScore * prevTotalCount + userReview.score) /
       (prevTotalCount + 1);
@@ -94,9 +96,9 @@ export class ReviewService {
       await this.getRestaurantReviewAggregationByRestaurantUniqueId(
         restaurantUniqueId,
       );
-    return {
-      averageScore: restaurantReviewAggregation.averageScore,
-      totalCount: restaurantReviewAggregation.totalCount,
-    };
+    const averageScoreAndTotalCount: 
+      { averageScore: number, totalCount: number } = 
+        restaurantReviewAggregation;
+    return averageScoreAndTotalCount;
   }
 }
