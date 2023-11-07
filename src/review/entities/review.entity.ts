@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { RestaurantReviewAggregation } from './restaurant-review-aggregation.entity';
+import { User } from 'src/user/entity/user.entity';
 
 @Entity()
 export class Review {
@@ -42,12 +43,11 @@ export class Review {
   })
   deletedAt?: Date | null;
 
-  //FIXME - User 엔티티 병합되면 해제할 것
-  // @ManyToOne(() => User)
-  // @JoinColumn({ name: 'user_id' })
-  // user: User;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  userId: number;
 
   @ManyToOne(() => RestaurantReviewAggregation)
   @JoinColumn({ name: 'restaurant_review_aggregation_id' })
-  restaurantReviewAggregation: RestaurantReviewAggregation;
+  restaurantReviewAggregationId: number;
 }

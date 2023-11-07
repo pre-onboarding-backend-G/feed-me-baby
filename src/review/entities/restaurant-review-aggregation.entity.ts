@@ -1,15 +1,18 @@
+import { Restaurant } from 'src/restaurant/entity/restaurant.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-// @Unique('restaurant') //FIXME - Restaurant 엔티티 병합되면 해제할 것
+@Unique(['restaurantUniqueId'])
 export class RestaurantReviewAggregation {
   @PrimaryGeneratedColumn({ name: 'id', type: 'bigint' })
   id: number;
@@ -19,7 +22,7 @@ export class RestaurantReviewAggregation {
     type: 'decimal',
     precision: 10,
     scale: 2,
-    default: 0
+    default: 0,
   })
   averageScore: number;
 
@@ -47,8 +50,7 @@ export class RestaurantReviewAggregation {
   })
   deletedAt?: Date | null;
 
-  //FIXME - Restaurant 엔티티 병합되면 해제할 것
-  // @OneToOne(() => Restaurant)
-  // @JoinColumn({ name: 'restaurant_id' })
-  // restaurant: Restaurant;
+  @OneToOne(() => Restaurant)
+  @JoinColumn({ name: 'restaurant_unique_id' })
+  restaurantUniqueId: string;
 }

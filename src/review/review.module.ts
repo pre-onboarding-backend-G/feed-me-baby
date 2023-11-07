@@ -5,19 +5,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { RestaurantReviewAggregation } from './entities/restaurant-review-aggregation.entity';
 import { ReviewRepository } from './repository/review.repository';
-import { RestaurantreviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
+import { RestaurantReviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
+import { RestaurantModule } from 'src/restaurant/restaurant.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Review, RestaurantReviewAggregation]),
-    // UserModule,
-    // RestaurantModule // NOTE: forwardRef 필요할듯
+    RestaurantModule,
+    UserModule,
   ],
   controllers: [ReviewController],
   providers: [
     ReviewService,
     ReviewRepository,
-    RestaurantreviewAggregationRepository,
+    RestaurantReviewAggregationRepository,
   ],
   exports: [ReviewService],
 })

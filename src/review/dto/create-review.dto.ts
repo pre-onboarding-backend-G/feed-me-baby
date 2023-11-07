@@ -7,6 +7,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+import { Review } from '../entities/review.entity';
 
 export class CreateReviewDto {
   @IsNotEmpty()
@@ -21,15 +22,13 @@ export class CreateReviewDto {
   content: string;
 
   @IsNotEmpty()
-  @IsInt()
-  restaurantId: number;
+  @IsString()
+  restaurantUniqueId: string;
 
-  // toEntity(): Review {
-  //   const review = new Review();
-  //   review.score = this.score;
-  //   review.content = this.content;
-  //   //STUB - 컨트롤러에서 restaurantId 넣을 방법 찾아야 함
-
-  //   return review;
-  // }
+  toEntity(): Review {
+    const review: Review = new Review();
+    review.score = this.score;
+    review.content = this.content;
+    return review;
+  }
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from '../entities/review.entity';
-import { RestaurantReviewAggregation } from '../entities/restaurant-review-aggregation.entity';
 
 @Injectable()
 export class ReviewRepository {
@@ -11,20 +10,7 @@ export class ReviewRepository {
     private readonly reviewRepository: Repository<Review>,
   ) {}
 
-  createRepository(
-    score: number, 
-    content: string, 
-    // user: User, //FIXME - User 엔티티 병합되면 해제할 것
-    rra: RestaurantReviewAggregation
-  ): Review {
-    return this.reviewRepository.create({
-      score: score,
-      content: content,
-      restaurantReviewAggregation: rra
-    });
-  }
-
-  async saveRepository(review: Review): Promise<Review> {
+  async save(review: Review): Promise<Review> {
     return await this.reviewRepository.save(review);
   }
 
@@ -36,10 +22,8 @@ export class ReviewRepository {
   async findReviewsByUserId(userId: number): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        // user: {
-        // 	id: userId
-        // } //FIXME - User 엔티티 병합되면 해제할 것
-      },
+        userId
+      }
     });
   }
 
@@ -48,15 +32,13 @@ export class ReviewRepository {
    * @param restaurantId RestaurantReviewAggregation의 Restaurant에 대한 FK 입니다.
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
-  async findReviewsByRestaurantId(restaurantId: number): Promise<Review[]> {
+  async findReviewsByRestaurantReviewAggregationId(
+    restaurantReviewAggregationId: number,
+  ): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        restaurantReviewAggregation: {
-          // restaurant: {
-          // 	id: restaurantId
-          // } //FIXME - Restaurant 엔티티 병합되면 해제할 것
-        },
-      },
+        restaurantReviewAggregationId
+      }
     });
   }
 
@@ -65,26 +47,21 @@ export class ReviewRepository {
    * @param userId Review의 User에 대한 FK 입니다.
    * @returns Review 엔티티 배열을 Promise로 반환합니다. review가 없을 경우 빈 배열을 반환합니다.
    */
-  async findReviewsByUserIdAndRestaurantId(
-    userId: number, 
-    restaurantId: number
-  ): Promise<Review> {
-    return await this.reviewRepository.findOne({
+  async findReviewByUserIdAndRestaurantUniqueId(
+    userId: number,
+    restaurantReviewAggregationId: number,
+  ): Promise<Review[]> {
+    return await this.reviewRepository.find({
       where: {
-        // user: {
-        // 	id: userId
-        // }, //FIXME - User 엔티티 병합되면 해제할 것
-        // restaurantReviewAggregation: {
-        //   restaurant: {
-        //     id: restaurantId
-        //   }
-        // } //FIXME - Restaurant 엔티티 병합되면 해제할 것
+        userId,
+        restaurantReviewAggregationId,
       },
     });
   }
 
-  async updateReview(reviewId: number, review: Review): Promise<boolean> {
-    const result = await this.reviewRepository.update({ id: reviewId }, review);
+  async update(id: number, review: Review): Promise<boolean> {
+    const result = await this.reviewRepository
+      .update({ id }, review);
     return result.affected > 0;
   }
 }
