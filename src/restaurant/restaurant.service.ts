@@ -27,6 +27,12 @@ export class RestaurantService {
     private readonly entityManager: EntityManager,
   ) {}
 
+  /**
+   * 식당 데이터를 동기화하는 메소드입니다.
+   * 서버에서 식당 데이터를 받아와 데이터베이스와 동기화합니다.
+   * @author: Hojun Song
+   */
+
   async syncRestaurantData(): Promise<void> {
     let index = 1;
     let totalProcessed = 0;
@@ -90,6 +96,16 @@ export class RestaurantService {
     );
   }
 
+  /**
+   * 특정 페이지의 식당 데이터를 처리하는 메소드입니다.
+   * API에서 데이터를 가져와 데이터베이스에 저장하거나 업데이트합니다.
+   *
+   * @param pageIndex 처리할 페이지의 인덱스입니다.
+   * @param retryCount 현재 재시도 횟수입니다 (기본값은 5).
+   * @returns 데이터 처리 성공 여부를 반환합니다.
+   * @author Hojun Song
+   */
+
   private async processRestaurantDataPage(
     pageIndex: number,
     retryCount = 5,
@@ -140,12 +156,29 @@ export class RestaurantService {
     }
   }
 
+  /**
+   * 에러 발생 시 재시도해야 하는지 결정하는 메소드입니다.
+   *
+   * @param error 발생한 Axios 에러입니다.
+   * @returns 재시도 여부를 반환합니다.
+   * @author Hojun Song
+   */
+
   private shouldRetry(error: AxiosError): boolean {
     return (
       (error.response && error.response.status === 503) ||
       (error.code && error.code === 'ECONNABORTED')
     );
   }
+
+  /**
+   * 데이터베이스 작업을 처리하는 메소드입니다.
+   * 트랜잭션 내에서 여러 식당 데이터를 처리합니다.
+   *
+   * @param restaurants 식당 데이터의 배열입니다.
+   * @param transactionalEntityManager 트랜잭션을 관리하는 EntityManager입니다.
+   * @author Hojun Song
+   */
 
   private async handleDatabaseOperations(
     restaurants: RestaurantApiResponseDto[],
@@ -158,6 +191,15 @@ export class RestaurantService {
       );
     }
   }
+
+  /**
+   * 단일 식당 데이터를 처리하는 메소드입니다.
+   * 받아온 식당 데이터를 검증하고 데이터베이스에 저장하거나 업데이트합니다.
+   *
+   * @param restaurantData 처리할 식당 데이터입니다.
+   * @param transactionalEntityManager 트랜잭션을 관리하는 EntityManager입니다.
+   * @author Hojun Song
+   */
 
   private async processSingleRestaurantData(
     restaurantData: RestaurantApiResponseDto,
@@ -245,6 +287,13 @@ export class RestaurantService {
     }
   }
 
+  /**
+   * 식당 데이터를 생성하거나 업데이트하는 트랜잭션 내부의 메소드입니다.
+   *
+   * @param updateDto 식당 데이터를 업데이트하기 위한 DTO입니다.
+   * @param transactionalEntityManager 트랜잭션을 관리하는 EntityManager입니다.
+   * @author Hojun Song
+   */
   private async createOrUpdateRestaurantInTransaction(
     updateDto: UpdateRestaurantDto,
     transactionalEntityManager: EntityManager,
@@ -286,9 +335,25 @@ export class RestaurantService {
     }
   }
 
+  /**
+   * 다음 배치 처리를 위한 지연을 생성하는 메소드입니다.
+   *
+   * @param ms 지연 시간(밀리초)입니다.
+   * @returns Promise<void>
+   * @author Hojun Song
+   */
+
   private delayForNextBatch(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
+  /**
+   * 전화번호를 검증하고 형식을 정리하는 메소드입니다.
+   *
+   * @param telephone 검증할 전화번호입니다.
+   * @returns 정제된 전화번호 또는 null을 반환합니다.
+   * @author Hojun Song
+   */
 
   private validateAndFormatTelephone(telephone: string): string | null {
     // 시작해야 하는 번호들을 배열로 선언
@@ -302,6 +367,13 @@ export class RestaurantService {
     // 유효하면 그대로 반환, 그렇지 않으면 기본값 '031'을 붙여 반환
     return isValidStartNumber ? telephone : `031${telephone}`;
   }
+
+  /**
+   * 처리 성공 여부에 따라 페이지 사이즈를 조정하는 메소드입니다.
+   *
+   * @param success 데이터 처리 성공 여부입니다.
+   * @Author Hojun Song
+   */
 
   private adjustPageSize(success: boolean): void {
     if (success) {
