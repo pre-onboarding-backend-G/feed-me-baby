@@ -88,7 +88,7 @@ describe('RestaurantService', () => {
     jest.clearAllMocks();
   });
 
-  it('should save valid restaurant data from API and return true', async () => {
+  it('TEST processSingleRestaurantData method, should increment activeCount when valid datas are provided', async () => {
     const restaurantData1 = {
       UNITY_BSN_STATE_NM: '영업/정상',
       MANAGE_NO: '3960100-101-2000-00123',
@@ -105,27 +105,6 @@ describe('RestaurantService', () => {
     const mockTransactionalEntityManager = {
       save: jest.fn().mockResolvedValue(true),
     };
-
-    mockEntityManager.transaction.mockImplementation(
-      (isolationLevelOrCallback: any, maybeCallback?: any) => {
-        let callback: (entityManager: EntityManager) => Promise<any>;
-        if (
-          typeof isolationLevelOrCallback === 'function' &&
-          maybeCallback === undefined
-        ) {
-          callback = isolationLevelOrCallback;
-        } else if (typeof maybeCallback === 'function') {
-          callback = maybeCallback;
-        } else {
-          throw new Error(
-            'Invalid arguments for transaction mock implementation',
-          );
-        }
-        return callback(
-          mockTransactionalEntityManager as unknown as EntityManager,
-        );
-      },
-    );
 
     await service['processSingleRestaurantData'](
       restaurantData1,
@@ -148,7 +127,7 @@ describe('RestaurantService', () => {
     expect((service as any).activeCount).toBe(1);
   });
 
-  it('should increment noDataCount when invalid latitude and longitude are provided', async () => {
+  it('TEST processSingleRestaurantData method, should increment noDataCount when invalid latitude and longitude are provided', async () => {
     const invalidRestaurantData = {
       UNITY_BSN_STATE_NM: '영업/정상',
       MANAGE_NO: '3960100-101-2000-00123',
@@ -168,5 +147,35 @@ describe('RestaurantService', () => {
     );
 
     expect((service as any).noDataCount).toBe(1);
+  });
+
+  describe('validateAndFormatTelephone', () => {
+    it('should format a telephone number with a valid start number correctly', () => {
+      const validTelephones = [
+        '031-1234-5678',
+        '032-1234-5678',
+        '02-1234-5678',
+        '070-1234-5678',
+        '050-1234-5678',
+      ];
+
+      validTelephones.forEach((number) => {
+        expect(service['validateAndFormatTelephone'](number)).toBe(number);
+      });
+    });
+
+    it('should prepend "031" to a telephone number with an invalid start number', () => {
+      const invalidTelephones = [
+        '123-4567-8901',
+        '041-1234-5678',
+        '330-1234-5678',
+      ];
+
+      invalidTelephones.forEach((number) => {
+        expect(service['validateAndFormatTelephone'](number)).toBe(
+          `031${number}`,
+        );
+      });
+    });
   });
 });

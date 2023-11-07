@@ -50,19 +50,19 @@ export class RestaurantRepository {
     restaurant: Restaurant,
     transactionalEntityManager: EntityManager,
   ): Promise<void> {
-    const cityInstance = await this.cityRepository.findOrCreate(
+    const city = await this.cityRepository.findOrCreate(
       updateDto.cityName,
       transactionalEntityManager,
     );
 
-    const categoryInstance = await this.categoryRepository.findOrCreate(
+    const category = await this.categoryRepository.findOrCreate(
       updateDto.categoryName,
       transactionalEntityManager,
     );
 
     // 관계 설정: restaurant 인스턴스에 찾거나 생성한 인스턴스를 할당합니다.
-    restaurant.city = cityInstance;
-    restaurant.category = categoryInstance;
+    restaurant.city = city;
+    restaurant.category = category;
 
     await transactionalEntityManager.save(restaurant);
   }
