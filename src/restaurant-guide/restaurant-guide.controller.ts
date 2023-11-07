@@ -9,7 +9,7 @@ import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 export class RestaurantGuideController {
   constructor(
     private readonly restaurantGuideService: RestaurantGuideService,
-  ) { }
+  ) {}
   /**
    * @author Yeon Kyu
    * @email suntail2002@naver.com
