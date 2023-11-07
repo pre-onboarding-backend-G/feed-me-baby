@@ -28,7 +28,7 @@ export class User {
     type: 'decimal',
     precision: 12,
     scale: 3,
-    nullable: true,
+    nullable: false,
   })
   latitude: number;
 
@@ -37,7 +37,7 @@ export class User {
     type: 'decimal',
     precision: 12,
     scale: 3,
-    nullable: true,
+    nullable: false,
   })
   longitude: number;
 

@@ -1,12 +1,12 @@
 import { User } from '../../user/entity/user.entity';
-import { SignUpReqDto } from './sign-up-req.dto';
+import { SignUpDto } from './sign-up.dto';
 
 describe('sign-up-req.dto.ts', () => {
   describe('SignUpReqDto', () => {
     describe('toEntity', () => {
       it('SUCCESS: Request Body에 올바른 값이 전달되었을 때 그 필드들을 가진 user 엔티티 리턴', () => {
         // When
-        const signUpReqDto = new SignUpReqDto();
+        const signUpReqDto = new SignUpDto();
         signUpReqDto.email = 'feed-me-admin1@naver.com';
         signUpReqDto.password = 'Feed-me1!';
         signUpReqDto.city = '서울특별시';

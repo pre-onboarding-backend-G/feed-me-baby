@@ -12,4 +12,5 @@ export class RestaurantController {
     this.restaurantService.syncRestaurantData();
     return '함수 실행 중...';
   }
+
 }

@@ -96,15 +96,6 @@ export class RestaurantService {
     );
   }
 
-  /**
-   * 특정 페이지의 식당 데이터를 처리하는 메소드입니다.
-   * API에서 데이터를 가져와 데이터베이스에 저장하거나 업데이트합니다.
-   *
-   * @param pageIndex 처리할 페이지의 인덱스입니다.
-   * @param retryCount 현재 재시도 횟수입니다 (기본값은 5).
-   * @returns 데이터 처리 성공 여부를 반환합니다.
-   * @author Hojun Song
-   */
 
   private async processRestaurantDataPage(
     pageIndex: number,
@@ -256,10 +247,10 @@ export class RestaurantService {
         return;
       }
 
-      // 전화번호 정제
-      const cleanedTelephone = telephone ? telephone.replace(/\s/g, '') : null;
-      const finalTelephone =
-        cleanedTelephone && this.validateAndFormatTelephone(cleanedTelephone);
+    // 전화번호 정제
+    const cleanedTelephone = telephone ? telephone.replace(/\s/g, '') : null;
+    let finalTelephone =
+      cleanedTelephone && this.validateAndFormatTelephone(cleanedTelephone);
 
       // 최종 주소 결정 (도로명 주소가 우선, 없으면 지번 주소 사용)
       const finalAddress = address || lotnoAddress;
