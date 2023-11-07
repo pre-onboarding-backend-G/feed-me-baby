@@ -5,7 +5,7 @@ import {
   IsLongitude,
   IsNotEmpty,
 } from 'class-validator';
-import { User } from '../entity/user.entity';
+import { UserUpdateProps } from '../entity/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
@@ -39,12 +39,11 @@ export class UpdateUserDto {
   @IsBoolean()
   isRecommendateLunch: boolean;
 
-  toEntity(): User {
-    const user = new User();
-    user.latitude = this.latitude;
-    user.longitude = this.longitude;
-    user.isRecommendateLunch = this.isRecommendateLunch;
-
-    return user;
+  getProps(): UserUpdateProps {
+    return {
+      latitude: this.latitude,
+      longitude: this.longitude,
+      isRecommendateLunch: this.isRecommendateLunch,
+    };
   }
 }
