@@ -15,6 +15,7 @@ import { Category } from './restaurant/entity/category.entity';
 import { User } from './user/entity/user.entity';
 import { Review } from './review/entities/review.entity';
 import { RestaurantReviewAggregation } from './review/entities/restaurant-review-aggregation.entity';
+import { CustomLoggerModule } from './common/logger/custom-logger.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RestaurantReviewAggregation } from './review/entities/restaurant-review
       isGlobal: true,
       validate,
     }),
+    CustomLoggerModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,

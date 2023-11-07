@@ -1,4 +1,3 @@
-import { SignInDto } from '../../dto/sign-in.dto';
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import {
   ApiBody,
@@ -6,6 +5,7 @@ import {
   ApiCreatedResponse,
   ApiOperation,
 } from '@nestjs/swagger';
+import { SignUpDto } from 'src/auth/dto/sign-up.dto';
 
 export const SwaggerSignUp = (): MethodDecorator =>
   applyDecorators(
@@ -53,5 +53,5 @@ export const SwaggerSignUp = (): MethodDecorator =>
         ],
       },
     }),
-    ApiBody({ type: SignInDto }),
+    ApiBody({ type: SignUpDto }),
   );
