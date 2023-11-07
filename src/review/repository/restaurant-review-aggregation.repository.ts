@@ -21,15 +21,11 @@ export class RestaurantReviewAggregationRepository {
   }
 
   async updateRepository(
-    restaurantReviewAggregationId: number,
+    id: number,
     restaurantReviewAggregation: RestaurantReviewAggregation,
   ): Promise<boolean> {
-    const result = await this.restaurantReviewAggregationRepository.update(
-      {
-        id: restaurantReviewAggregationId,
-      },
-      restaurantReviewAggregation,
-    );
+    const result = await this.restaurantReviewAggregationRepository
+      .update({ id }, restaurantReviewAggregation);
     return result.affected > 0;
   }
 
@@ -44,7 +40,7 @@ export class RestaurantReviewAggregationRepository {
     let restaurantReviewAggregation: RestaurantReviewAggregation =
       await this.restaurantReviewAggregationRepository.findOne({
         where: {
-          restaurantUniqueId: restaurantUniqueId,
+          restaurantUniqueId
         },
       });
     if (restaurantReviewAggregation === null) {
@@ -52,7 +48,7 @@ export class RestaurantReviewAggregationRepository {
         this.restaurantReviewAggregationRepository.create({
           averageScore: 0,
           totalCount: 0,
-          restaurantUniqueId: restaurantUniqueId,
+          restaurantUniqueId,
         });
       await this.restaurantReviewAggregationRepository.save(
         restaurantReviewAggregation,

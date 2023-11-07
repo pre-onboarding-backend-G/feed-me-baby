@@ -22,8 +22,8 @@ export class ReviewRepository {
   async findReviewsByUserId(userId: number): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        userId: userId,
-      },
+        userId
+      }
     });
   }
 
@@ -37,8 +37,8 @@ export class ReviewRepository {
   ): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        restaurantReviewAggregationId: restaurantReviewAggregationId,
-      },
+        restaurantReviewAggregationId
+      }
     });
   }
 
@@ -53,14 +53,15 @@ export class ReviewRepository {
   ): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
-        userId: userId,
-        restaurantReviewAggregationId: restaurantReviewAggregationId,
+        userId,
+        restaurantReviewAggregationId,
       },
     });
   }
 
-  async update(reviewId: number, review: Review): Promise<boolean> {
-    const result = await this.reviewRepository.update({ id: reviewId }, review);
+  async update(id: number, review: Review): Promise<boolean> {
+    const result = await this.reviewRepository
+      .update({ id }, review);
     return result.affected > 0;
   }
 }
