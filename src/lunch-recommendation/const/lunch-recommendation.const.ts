@@ -1,9 +1,7 @@
 /**team G webhook URL */
-// export const DISCORD_WEBHOOK_URL =
-//   'https://discord.com/api/webhooks/1169806570637496341/PQPfdxohAcw25uHUL1w5BdaGUHm-TUcZkLaD9x-JhlTHVKgpiZh-g8-XsepSJa6Dr0vO';
-
 export const DISCORD_WEBHOOK_URL =
-  'https://discord.com/api/webhooks/1170568748843946124/9aDOCN1W66q8oRlef-mvlpKOoIBLMbSo2WFycqt22xnY8DjEh1cIlF3q2P3fOTIbV7aI';
+  'https://discord.com/api/webhooks/1169806570637496341/PQPfdxohAcw25uHUL1w5BdaGUHm-TUcZkLaD9x-JhlTHVKgpiZh-g8-XsepSJa6Dr0vO';
+
 export const LUNCH_IMAGE =
   'https://cdn-icons-png.flaticon.com/512/7662/7662446.png';
 

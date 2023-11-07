@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { RestaurantGuideService } from './restaurant-guide.service';
 import { RestaurantGuideController } from './restaurant-guide.controller';
 import { RestaurantGuideRepository } from './repository/restaurant-guide.repository';
