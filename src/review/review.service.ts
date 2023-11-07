@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewRepository } from './repository/review.repository';
-import { RestaurantreviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
+import { RestaurantReviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
 import { RestaurantReviewAggregation } from './entities/restaurant-review-aggregation.entity';
 import { Review } from './entities/review.entity';
 
@@ -8,7 +8,7 @@ import { Review } from './entities/review.entity';
 export class ReviewService {
   constructor(
     private readonly reviewRepository: ReviewRepository,
-    private readonly restaurantReviewAggregationRepository: RestaurantreviewAggregationRepository,
+    private readonly restaurantReviewAggregationRepository: RestaurantReviewAggregationRepository,
   ) {}
 
   private async getRestaurantReviewAggregationByRestaurantUniqueId(

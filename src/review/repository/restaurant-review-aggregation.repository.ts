@@ -5,7 +5,7 @@ import { RestaurantReviewAggregation } from '../entities/restaurant-review-aggre
 import { RestaurantRepository } from 'src/restaurant/restaurant.repository';
 
 @Injectable()
-export class RestaurantreviewAggregationRepository {
+export class RestaurantReviewAggregationRepository {
   constructor(
     @InjectRepository(RestaurantReviewAggregation)
     private readonly restaurantReviewAggregationRepository: Repository<RestaurantReviewAggregation>,

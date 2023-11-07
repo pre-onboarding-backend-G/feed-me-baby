@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { RestaurantReviewAggregation } from './entities/restaurant-review-aggregation.entity';
 import { ReviewRepository } from './repository/review.repository';
-import { RestaurantreviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
+import { RestaurantReviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
 import { RestaurantModule } from 'src/restaurant/restaurant.module';
 import { UserModule } from 'src/user/user.module';
 
@@ -19,7 +19,7 @@ import { UserModule } from 'src/user/user.module';
   providers: [
     ReviewService,
     ReviewRepository,
-    RestaurantreviewAggregationRepository,
+    RestaurantReviewAggregationRepository,
   ],
   exports: [ReviewService],
 })
