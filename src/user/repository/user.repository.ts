@@ -25,7 +25,7 @@ export class UserRepository {
   }
 
   async findUserBy(user: User): Promise<User> {
-    const where: FindUserOptionWhere = this.getFindUserOptionsWhere(user);
+    const where = this.getFindUserOptionsWhere(user);
     return await this.userRepository.findOne({ where });
   }
 

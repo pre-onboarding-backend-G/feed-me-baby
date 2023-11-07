@@ -68,7 +68,7 @@ describe('UserService', () => {
       const userInDb = await userRepository.findUserBy(
         User.byId(alreadyUserId),
       );
-      console.log('userInDb: ', userInDb);
+
       const expectedResult = new GetUserResDto(userInDb);
 
       // When
