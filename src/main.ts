@@ -28,8 +28,8 @@ async function bootstrap(): Promise<void> {
     .setTitle('Example API')
     .setDescription('The Example API description')
     .setVersion('1.0')
-    .addTag('auth')
-    .addTag('users')
+    .addTag('인증')
+    .addTag('사용자')
     //JWT 토큰 설정
     .addBearerAuth(
       {

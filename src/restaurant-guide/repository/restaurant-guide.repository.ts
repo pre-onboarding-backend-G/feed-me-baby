@@ -37,11 +37,11 @@ export class RestaurantGuideRepository {
       .select([
         'restaurant.id as id',
         'restaurant.name as name',
-        'restaurant.latitude as lat',
-        'restaurant.longitude as lon',
+        'restaurant.lat as lat',
+        'restaurant.lon as lon',
       ])
       .where(
-        'latitude >= :minLat AND latitude <= :maxLat AND longitude >= :minLon AND longitude <= :maxLon',
+        'lat >= :minLat AND lat <= :maxLat AND lon >= :minLon AND lon <= :maxLon',
         { minLat, maxLat, minLon, maxLon },
       )
       .getRawMany();

@@ -36,9 +36,9 @@ export class RestaurantRepository {
     manager?: EntityManager,
   ): Promise<Restaurant> {
     const repo = this.getRepository(manager);
-    const latitude = parseFloat(dto.latitude);
-    const longitude = parseFloat(dto.longitude);
-    const entityDto = { ...dto, latitude, longitude };
+    const lat = parseFloat(dto.lat);
+    const lon = parseFloat(dto.lon);
+    const entityDto = { ...dto, lat, lon };
     const uniqueId = dto.uniqueId;
 
     let restaurant;

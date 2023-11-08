@@ -2,8 +2,8 @@ export class CreateRestaurantDto {
   uniqueId: string;
   name: string;
   address: string;
-  latitude: string;
-  longitude: string;
+  lat: string;
+  lon: string;
   telephone?: string;
   category: string;
   city: string;

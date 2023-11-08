@@ -150,8 +150,8 @@ export class RestaurantService {
       MANAGE_NO: uniqueId,
       BIZPLC_NM: name,
       REFINE_ROADNM_ADDR: address,
-      REFINE_WGS84_LAT: latitude,
-      REFINE_WGS84_LOGT: longitude,
+      REFINE_WGS84_LAT: lat,
+      REFINE_WGS84_LOGT: lon,
       LOCPLC_FACLT_TELNO: telephone,
       SANITTN_BIZCOND_NM: category,
       REFINE_LOTNO_ADDR: lotnoAddress,
@@ -176,20 +176,18 @@ export class RestaurantService {
     }
 
     // 필수 정보가 없는 경우 처리
-    if (!name || !address || !latitude || !longitude) {
+    if (!name || !address || !lat || !lon) {
       this.noDataCount++;
       return;
     }
 
     // 문자열을 숫자로 변환
-    const parsedLatitude = parseFloat(latitude);
-    const parsedLongitude = parseFloat(longitude);
+    const parsedLat = parseFloat(lat);
+    const parsedLon = parseFloat(lon);
 
     // 변환된 숫자가 유효하지 않으면 처리 중단
-    if (isNaN(parsedLatitude) || isNaN(parsedLongitude)) {
-      console.error(
-        `Invalid latitude or longitude value: ${latitude}, ${longitude}`,
-      );
+    if (isNaN(parsedLat) || isNaN(parsedLon)) {
+      console.error(`Invalid latitude or longitude value: ${lat}, ${lon}`);
       this.noDataCount++;
       return;
     }
@@ -222,8 +220,8 @@ export class RestaurantService {
       uniqueId,
       name,
       address: finalAddress,
-      latitude: parsedLatitude,
-      longitude: parsedLongitude,
+      lat: parsedLat,
+      lon: parsedLon,
       telephone: finalTelephone,
       city: cityInstance,
       category: categoryInstance,

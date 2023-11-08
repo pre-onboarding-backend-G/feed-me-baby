@@ -24,10 +24,10 @@ export class Restaurant {
   address: string;
 
   @Column('float')
-  latitude: number;
+  lat: number;
 
   @Column('float')
-  longitude: number;
+  lon: number;
 
   @Column({ nullable: true })
   telephone?: string;
