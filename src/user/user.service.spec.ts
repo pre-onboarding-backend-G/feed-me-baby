@@ -93,8 +93,8 @@ describe('UserService', () => {
 
   describe('updateUser()', () => {
     const userUpdateProps = {
-      latitude: 37.6,
-      longitude: 126.24,
+      lat: 37.6,
+      lon: 126.24,
       isRecommendateLunch: true,
     };
 

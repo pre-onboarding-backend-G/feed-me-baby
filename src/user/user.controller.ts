@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { SwaggerGetUser } from './decorator/swagger/get-user.decorator';
 import { SwaggerUpdateUser } from './decorator/swagger/update-user.decorator';
 
-@ApiTags('users')
+@ApiTags('사용자')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
