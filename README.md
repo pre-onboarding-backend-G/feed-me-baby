@@ -18,7 +18,7 @@ Feed Me Baby는 사용자 위치에 맞게 맛집 및 메뉴를 추천하며, �
 - [API Reference](#api-reference)
 - [프로젝트 진행 및 이슈 관리](#프로젝트-진행-및-이슈-관리)
 - [구현과정(설계 및 의도)](#구현과정설계-및-의도)
-- [TIL 및 회고](#til-및-회고)
+- [Did You Know:bulb:](#did-you-know)
 - [설치](#설치)
 - [팀원](#팀원)
 - [참고자료](#참고자료)
@@ -39,20 +39,23 @@ Feed Me Baby는 사용자 위치에 맞게 맛집 및 메뉴를 추천하며, �
 
 ## 사용 기술
 
-<div align="center">
+<div align="left">
 <br/>
 
-언어 및 프레임워크<br>
+언어 및 프레임워크
+
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
 <br/>
 
-데이터 베이스<br>
+데이터 베이스
+
 ![PostgreSQL](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
 <br/>
 
-문서화<br>
+문서화
+
 ![Swagger](https://img.shields.io/badge/swagger-%23Clojure.svg?style=for-the-badge&logo=swagger&logoColor=white)
 
 </div>
@@ -126,20 +129,16 @@ src
 | users            |             | `GET`   | 유저 정보 조회   |
 | users            |             | `PATCH` | 유저 정보 수정   |
 | reviews          |             | `POST`  | 리뷰 작성        |
-| restaurants      | /update     | `POST`  | 맛집 데이터      |
-| restaurants      | /cities     | `POST`  | 맛집 지역 데이터 |
-| restaurants      | /categories | `POST`  | 맛집 전처리      |
 | restaurant-guide |             | `GET`   | 맛집 목록 조회   |
 | restaurant-guide | /city-lists | `GET`   | 지역 조회        |
 
-## API Reference
+<br/>
 
-Swagger : http://localhost:{port}/api-docs/
+## API Reference
 
 <details>
 
-- 최종 swagger 변경하면 스크린샷 업데이트
-<summary>Get all feeds - click</summary>
+<summary>Swagger 이미지</summary>
 <img src="" alt="logo" width="80%" />
 
 </details>
@@ -149,8 +148,6 @@ Swagger : http://localhost:{port}/api-docs/
 ## 프로젝트 진행 및 이슈 관리
 
 [![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)](https://www.notion.so/dev-j/6a83f5bfa7874dc49e4fac30653aaa53?v=25c6ca9163064a8c879dcf124a914f29&pvs=4)
-
-[프로젝트 관리 페이지](https://dev-j.notion.site/FeedDaMoA-fcb079d693404ae28986a9c868aab152?pvs=4)
 
 <br>
 
@@ -225,13 +222,16 @@ Swagger : http://localhost:{port}/api-docs/
 <summary>데이터 동기화 고려사항</summary>
 
 - **데이터 보호 및 접근 제어**
+
   1. API 키는 환경 변수를 통해 안전하게 관리되며, 코드 내에 직접적으로 노출되지 않습니다.
   2. 데이터베이스 트랜잭션은 식당 데이터 처리 시 일관성과 원자성을 보장하기 위해 사용됩니다.
   3. 예외 처리 로직을 통해 장애가 발생하더라도 시스템이 계속 작동할 수 있도록 설계 되어 있습니다.
 - **데이터 검증 및 취약점 방지**
+
   1. 입력 데이터는 엄격하게 검증되며, 잘못된 위도나 경도 값은 거부됩니다.
   2. 전화번호는 정제 과정을 거쳐 형식이 맞지 않는 경우에는 기본값을 붙여 데이터의 일관성을 유지합니다.
 - **신뢰성 및 가용성 향상**
+
   1. `Promise.allSettled`를 사용함으로써, 비동기 처리 중 일부 프로미스가 실패하더라도 전체 프로세스가 중단되지 않고, 가능한 많은 데이터 처리를 시도합니다.
   2. 재시도 로직을 통해 일시적인 네트워크 장애나 API 응답 문제가 발생하더라도 데이터 동기화 작업이 중단되지 않습니다.
   3. 프로그레스 바와 상세한 로깅을 통해 시스템의 현재 상태와 진행률을 모니터링할 수 있습니다.
@@ -244,15 +244,18 @@ Swagger : http://localhost:{port}/api-docs/
 <summary>평가 기능 고려사항</summary>
 
 - **맛집 평가 종합 테이블을 이용한 평점 업데이트 효율화**
+
   1. 평가 총점 계산 시, 맛집 평가 종합 테이블을 이용하여 테이블 조회를 최소화합니다.
   2. 맛집 테이블의 평점 정보를 맛집 평가 종합 테이블로 분리했습니다.
   3. 평가, 평가 종합 테이블을 평가 모듈에서 관리하여 테이블 캡슐화하였습니다.
 
 - **AOP에 기반한 데이터 유효성 검사**
+
   1. 입력 데이터의 유효성을 검증하며, 책임을 DTO로 분리했습니다.
   2. 평가 점수와 후기의 길이의 최소값과 최대값을 정의하여 데이터의 일관성 유지합니다.
 
 - **테스트 용이한 코드 작성**
+
   1. DB 관련 로직을 엔티티로 캡슐화하여 응집도를 높였습니다.
   2. 구조분해 할당을 이용하여 간결한 코드로 작성하였습니다.
   3. TypeORM 단축 속성을 이용하여 코드 중복을 최소화 하였습니다.
@@ -261,9 +264,7 @@ Swagger : http://localhost:{port}/api-docs/
 
 <br/>
 
-## TIL 및 회고
-
-### TIL / 코드리뷰
+## Did You Know :bulb:
 
 - [Custom Validator](https://zamoca42.github.io/blog/js-ts/nest-js/custom-validator.html)
 - [맛집 목록 가져와서 지도에 표시하기](https://zamoca42.github.io/blog/js-ts/nest-js/query-range.html)
@@ -271,8 +272,6 @@ Swagger : http://localhost:{port}/api-docs/
 <br/>
 
 ## 설치
-
-<br/>
 
 <details>
 <summary> Feed Me baby 설치 방법 </summary>
@@ -307,8 +306,6 @@ Dev 컨테이너를 사용하기 위해서, 'Rebuild and Reopen in Container' �
 
 ## 참고자료
 
-<br/>
-
 <details>
 <summary>Redis</summary>
 
@@ -318,7 +315,6 @@ Dev 컨테이너를 사용하기 위해서, 'Rebuild and Reopen in Container' �
 
 </details>
 
-<br/>
 
 <details>
 <summary>Unit Test</summary>
