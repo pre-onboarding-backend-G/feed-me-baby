@@ -1,4 +1,4 @@
-import { Identifier, UserRepository } from '../user/repository/user.repository';
+import { UserRepository } from '../user/repository/user.repository';
 import { User } from '../user/entity/user.entity';
 import {
   ConflictException,
@@ -27,23 +27,42 @@ export class AuthService {
 
   //todo signUp 과정을 하나의 트랜잭션으로.
   async signUp(user: User): Promise<AccessTokenDto> {
-    if (await this.isExistUser(user)) {
+    if (await this.userRepository.isExist(user)) {
       throw new ConflictException('이미 가입된 회원입니다.');
     }
 
-    user.setHashedPassword(await this.getHashedPassword(user.password));
+    user.setHashedPassword(await hash(user.password, 10));
 
-    const { id } = await this.userRepository.createUser(user);
+    const savedUser = await this.userRepository.save(user);
 
-    const accessToken = await this.createJwtToken({ sub: id });
+    const accessToken = await this.jwtService.signAsync({ sub: savedUser.id });
 
     return new AccessTokenDto(accessToken);
   }
 
   async signIn(user: User): Promise<AccessTokenDto> {
-    const id = await this.verifyUser(user);
+    const userByEmail: User | null = await this.userRepository.findUserBy(user);
 
-    const accessToken = await this.createJwtToken({ sub: id });
+    if (userByEmail === null) {
+      throw new UnauthorizedException(
+        '로그인에 실패했습니다. 이메일과 비밀번호를 다시 입력해주세요.',
+      );
+    }
+
+    const isSamePassword: boolean = await compare(
+      user.password,
+      userByEmail.password,
+    );
+
+    if (!isSamePassword) {
+      throw new UnauthorizedException(
+        '로그인에 실패했습니다. 이메일과 비밀번호를 다시 입력해주세요.',
+      );
+    }
+
+    const accessToken = await this.jwtService.signAsync({
+      sub: userByEmail.id,
+    });
 
     return new AccessTokenDto(accessToken);
   }
@@ -53,53 +72,12 @@ export class AuthService {
       secret: process.env.JWT_SECRET,
     });
 
-    const isExistUser = await this.isExistUser(User.byId(payload.sub));
+    const isExistUser = await this.userRepository.isExist(
+      User.byId(payload.sub),
+    );
+
     if (!isExistUser) throw new Error('존재하지 않는 유저입니다.');
 
     return payload;
-  }
-
-  private async verifyUser(user: User): Promise<number> {
-    const { password: plainPassword } = user;
-    const userByEmail = await this.userRepository.findUserBy({
-      email: user.email,
-    });
-
-    if (
-      userByEmail === null ||
-      !(await this.isPasswordMatch(plainPassword, userByEmail.password))
-    ) {
-      throw new UnauthorizedException(
-        '로그인에 실패했습니다. 이메일과 비밀번호를 다시 입력해주세요.',
-      );
-    }
-
-    return userByEmail.id;
-  }
-
-  private async isPasswordMatch(
-    plainPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
-    return await compare(plainPassword, hashedPassword);
-  }
-
-  private async isExistUser(user: User): Promise<boolean> {
-    let identifier: Identifier;
-
-    if (user.hasOwnProperty('id')) {
-      identifier = { id: user.id };
-    } else if (user.hasOwnProperty('email')) {
-      identifier = { email: user.email };
-    }
-    return await this.userRepository.isExistBy(identifier);
-  }
-
-  private async getHashedPassword(password: string): Promise<string> {
-    return await hash(password, 10);
-  }
-
-  private async createJwtToken(payload: JwtPayload): Promise<string> {
-    return await this.jwtService.signAsync(payload);
   }
 }

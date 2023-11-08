@@ -8,6 +8,24 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export interface UserCreateProps {
+  email: string;
+  password: string;
+  city: string;
+  latitude: number;
+  longitude: number;
+  isRecommendateLunch: boolean;
+}
+
+export interface UserSignInProps
+  extends Pick<UserCreateProps, 'email' | 'password'> {}
+
+export interface UserUpdateProps {
+  latitude: number;
+  longitude: number;
+  isRecommendateLunch: boolean;
+}
+
 @Entity('users')
 @Unique(['email'])
 export class User {
@@ -65,6 +83,49 @@ export class User {
   static byId(id: number): User {
     const user = new User();
     user.id = id;
+    return user;
+  }
+
+  static create({
+    email,
+    password,
+    city,
+    latitude,
+    longitude,
+    isRecommendateLunch,
+  }: UserCreateProps): User {
+    const user = new User();
+
+    user.email = email;
+    user.password = password;
+    user.city = city;
+    user.latitude = latitude;
+    user.longitude = longitude;
+    user.isRecommendateLunch = isRecommendateLunch;
+
+    return user;
+  }
+
+  static of({ email, password }: UserSignInProps): User {
+    const user = new User();
+
+    user.email = email;
+    user.password = password;
+
+    return user;
+  }
+
+  static updateBy({
+    latitude,
+    longitude,
+    isRecommendateLunch,
+  }: UserUpdateProps): User {
+    const user = new User();
+
+    user.latitude = latitude;
+    user.longitude = longitude;
+    user.isRecommendateLunch = isRecommendateLunch;
+
     return user;
   }
 

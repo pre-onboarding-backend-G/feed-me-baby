@@ -4,12 +4,11 @@ import { SignUpDto } from './sign-up.dto';
 
 export class SignInDto extends PickType(SignUpDto, ['email', 'password']) {
   toEntity(): User {
-    const user = new User();
+    const props = {
+      email: this.email,
+      password: this.password,
+    };
 
-    Object.entries(this).forEach(([key, value]) => {
-      user[key] = value;
-    });
-
-    return user;
+    return User.of(props);
   }
 }
