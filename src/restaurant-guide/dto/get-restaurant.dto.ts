@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 
 export interface GetRawRestaurants {
   id: number;
@@ -24,20 +24,24 @@ export class Geometry {
 }
 
 class Properties {
-  constructor() {}
+  @ApiProperty()
+  @Expose()
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
 }
 
 export class GetRestaurantsDto {
   @Exclude() private readonly _id: number;
-  @Exclude() private readonly _name: string;
   @Exclude() private readonly _type: string;
   @Exclude() private readonly _properties?: Properties;
   @Exclude() private readonly _geometry: Geometry;
 
   constructor(resturant: GetRawRestaurants) {
     this._id = resturant.id;
-    this._name = resturant.name;
-    this._properties = new Properties();
+    this._properties = new Properties(resturant.name);
     this._type = 'Feature';
     this._geometry = new Geometry(resturant.lon, resturant.lat);
   }
@@ -50,18 +54,13 @@ export class GetRestaurantsDto {
 
   @ApiProperty()
   @Expose()
-  get name(): string {
-    return this._name;
-  }
-
-  @ApiProperty()
-  @Expose()
   get type(): string {
     return this._type;
   }
 
   @ApiProperty()
   @Expose()
+  @Type(() => Properties)
   get properties(): Properties {
     return this._properties;
   }
