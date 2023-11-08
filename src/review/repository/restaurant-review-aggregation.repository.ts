@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RestaurantReviewAggregation } from '../entities/restaurant-review-aggregation.entity';
+import { RestaurantReviewAggregation } from '../entity/restaurant-review-aggregation.entity';
 import { RestaurantRepository } from 'src/restaurant/restaurant.repository';
 
 @Injectable()
