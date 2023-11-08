@@ -85,72 +85,73 @@ describe('RestaurantService', () => {
         );
       }) as any,
     };
-    jest.clearAllMocks();
   });
 
-  it('TEST processSingleRestaurantData method, should increment activeCount when valid datas are provided', async () => {
-    const restaurantData1 = {
-      UNITY_BSN_STATE_NM: '영업/정상',
-      MANAGE_NO: '3960100-101-2000-00123',
-      BIZPLC_NM: '남양주 맛집',
-      REFINE_ROADNM_ADDR: '경기도 남양주시 화도읍 먹갓로27번길 25 (묵현리)',
-      REFINE_WGS84_LAT: '37.659391',
-      REFINE_WGS84_LOGT: '127.2720471',
-      LOCPLC_FACLT_TELNO: '031-1234-5678',
-      SANITTN_BIZCOND_NM: '한식',
-      REFINE_LOTNO_ADDR: '경기도 남양주시 화도읍 묵현리 588번지',
-      SIGUN_NM: '남양주시',
-    };
+  describe('processSingleRestaurantData 메소드 테스트', () => {
+    it('유효한 데이터가 제공될 때 activeCount가 증가해야합니다.', async () => {
+      const restaurantData1 = {
+        UNITY_BSN_STATE_NM: '영업/정상',
+        MANAGE_NO: '3960100-101-2000-00123',
+        BIZPLC_NM: '남양주 맛집',
+        REFINE_ROADNM_ADDR: '경기도 남양주시 화도읍 먹갓로27번길 25 (묵현리)',
+        REFINE_WGS84_LAT: '37.659391',
+        REFINE_WGS84_LOGT: '127.2720471',
+        LOCPLC_FACLT_TELNO: '031-1234-5678',
+        SANITTN_BIZCOND_NM: '한식',
+        REFINE_LOTNO_ADDR: '경기도 남양주시 화도읍 묵현리 588번지',
+        SIGUN_NM: '남양주시',
+      };
 
-    const mockTransactionalEntityManager = {
-      save: jest.fn().mockResolvedValue(true),
-    };
+      const mockTransactionalEntityManager = {
+        save: jest.fn().mockResolvedValue(true),
+      };
 
-    await service['processSingleRestaurantData'](
-      restaurantData1,
-      mockTransactionalEntityManager as any,
-    );
+      await service['processSingleRestaurantData'](
+        restaurantData1,
+        mockTransactionalEntityManager as any,
+      );
 
-    mockTransactionalEntityManager.save.mockResolvedValue({
-      id: 1,
-      uniqueId: '3960100-101-2000-00123',
-      name: '남양주 맛집',
-      address: '경기도 남양주시 화도읍 먹갓로27번길 25 (묵현리)',
-      latitude: 37.659391,
-      longitude: 127.2720471,
-      telephone: '031-1234-5678',
-      category: mockCategory,
-      city: mockCity,
+      mockTransactionalEntityManager.save.mockResolvedValue({
+        id: 1,
+        uniqueId: '3960100-101-2000-00123',
+        name: '남양주 맛집',
+        address: '경기도 남양주시 화도읍 먹갓로27번길 25 (묵현리)',
+        latitude: 37.659391,
+        longitude: 127.2720471,
+        telephone: '031-1234-5678',
+        category: mockCategory,
+        city: mockCity,
+      });
+
+      expect(mockTransactionalEntityManager.save).toHaveBeenCalledTimes(1);
+      expect((service as any).activeCount).toBe(1);
     });
 
-    expect(mockTransactionalEntityManager.save).toHaveBeenCalledTimes(1);
-    expect((service as any).activeCount).toBe(1);
-  });
+    it('유효하지 않은 위도와 경도가 제공될 때 noDataCount가 증가해야합니다.', async () => {
+      const invalidRestaurantData = {
+        UNITY_BSN_STATE_NM: '영업/정상',
+        MANAGE_NO: '3960100-101-2000-00123',
+        BIZPLC_NM: '남양주 맛집',
+        REFINE_ROADNM_ADDR: '경기도 남양주시 화도읍 먹갓로27번길 25 (묵현리)',
+        REFINE_WGS84_LAT: null,
+        REFINE_WGS84_LOGT: null,
+        LOCPLC_FACLT_TELNO: '031-1234-5678',
+        SANITTN_BIZCOND_NM: '한식',
+        REFINE_LOTNO_ADDR: '경기도 남양주시 화도읍 묵현리 588번지',
+        SIGUN_NM: null,
+      };
 
-  it('TEST processSingleRestaurantData method, should increment noDataCount when invalid latitude and longitude are provided', async () => {
-    const invalidRestaurantData = {
-      UNITY_BSN_STATE_NM: '영업/정상',
-      MANAGE_NO: '3960100-101-2000-00123',
-      BIZPLC_NM: '남양주 맛집',
-      REFINE_ROADNM_ADDR: '경기도 남양주시 화도읍 먹갓로27번길 25 (묵현리)',
-      REFINE_WGS84_LAT: null,
-      REFINE_WGS84_LOGT: null,
-      LOCPLC_FACLT_TELNO: '031-1234-5678',
-      SANITTN_BIZCOND_NM: '한식',
-      REFINE_LOTNO_ADDR: '경기도 남양주시 화도읍 묵현리 588번지',
-      SIGUN_NM: null,
-    };
+      await service['processSingleRestaurantData'](
+        invalidRestaurantData,
+        mockTransactionEntityManager as unknown as EntityManager,
+      );
 
-    await service['processSingleRestaurantData'](
-      invalidRestaurantData,
-      mockTransactionEntityManager as unknown as EntityManager,
-    );
-
-    expect((service as any).noDataCount).toBe(1);
+      expect((service as any).noDataCount).toBe(1);
+    });
   });
 
   describe('validateAndFormatTelephone', () => {
-    it('should format a telephone number with a valid start number correctly', () => {
+    it('유효한 시작 번호를 가진 전화번호를 올바른 형식으로 내보냅니다.', () => {
       const validTelephones = [
         '031-1234-5678',
         '032-1234-5678',
@@ -164,7 +165,7 @@ describe('RestaurantService', () => {
       });
     });
 
-    it('should prepend "031" to a telephone number with an invalid start number', () => {
+    it('유효하지 않은 시작 번호를 가진 전화번호에 "031"을 붙여줍니다', () => {
       const invalidTelephones = [
         '123-4567-8901',
         '041-1234-5678',
