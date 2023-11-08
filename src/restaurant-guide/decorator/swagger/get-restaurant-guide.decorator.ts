@@ -1,5 +1,6 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiHeader,
   ApiNotFoundResponse,
   ApiOperation,
@@ -10,6 +11,8 @@ import { GetRestaurantsDto } from '../../../restaurant-guide/dto/get-restaurant.
 
 export const CustomGetRestaurantsGuide = (): MethodDecorator =>
   applyDecorators(
+    ApiBearerAuth('accessToken'),
+    
     ApiOperation({ summary: '주변 맛집 정보들을 가져옵니다' }),
 
     ApiHeader({
