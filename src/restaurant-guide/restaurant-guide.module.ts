@@ -17,6 +17,6 @@ import { AuthModule } from 'src/auth/auth.module';
     AuthModule,
   ],
   controllers: [RestaurantGuideController],
-  providers: [RestaurantGuideService, RestaurantGuideRepository, Logger],
+  providers: [RestaurantGuideService, RestaurantGuideRepository],
 })
 export class RestaurantGuideModule {}
