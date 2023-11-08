@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewRepository } from './repository/review.repository';
 import { RestaurantReviewAggregationRepository } from './repository/restaurant-review-aggregation.repository';
-import { RestaurantReviewAggregation } from './entities/restaurant-review-aggregation.entity';
-import { Review } from './entities/review.entity';
+import { RestaurantReviewAggregation } from './entity/restaurant-review-aggregation.entity';
+import { Review } from './entity/review.entity';
 
 @Injectable()
 export class ReviewService {

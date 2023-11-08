@@ -7,7 +7,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { Review } from '../entities/review.entity';
+import { Review } from '../entity/review.entity';
 
 export class CreateReviewDto {
   @IsNotEmpty()

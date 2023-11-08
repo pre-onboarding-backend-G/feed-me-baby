@@ -13,8 +13,8 @@ import { Restaurant } from './restaurant/entity/restaurant.entity';
 import { City } from './restaurant/entity/city.entity';
 import { Category } from './restaurant/entity/category.entity';
 import { User } from './user/entity/user.entity';
-import { Review } from './review/entities/review.entity';
-import { RestaurantReviewAggregation } from './review/entities/restaurant-review-aggregation.entity';
+import { Review } from './review/entity/review.entity';
+import { RestaurantReviewAggregation } from './review/entity/restaurant-review-aggregation.entity';
 import { CustomLoggerModule } from './common/logger/custom-logger.module';
 
 @Module({
