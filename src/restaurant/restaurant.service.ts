@@ -256,10 +256,10 @@ export class RestaurantService {
         return;
       }
 
-    // 전화번호 정제
-    const cleanedTelephone = telephone ? telephone.replace(/\s/g, '') : null;
-    let finalTelephone =
-      cleanedTelephone && this.validateAndFormatTelephone(cleanedTelephone);
+      // 전화번호 정제
+      const cleanedTelephone = telephone ? telephone.replace(/\s/g, '') : null;
+      let finalTelephone =
+        cleanedTelephone && this.validateAndFormatTelephone(cleanedTelephone);
 
       // 최종 주소 결정 (도로명 주소가 우선, 없으면 지번 주소 사용)
       const finalAddress = address || lotnoAddress;
@@ -269,8 +269,8 @@ export class RestaurantService {
         uniqueId,
         name,
         address: finalAddress,
-        latitude: parsedLatitude,
-        longitude: parsedLongitude,
+        lat: parsedLatitude,
+        lon: parsedLongitude,
         telephone: finalTelephone,
         cityName,
         categoryName,
