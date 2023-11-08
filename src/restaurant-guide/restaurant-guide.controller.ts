@@ -7,7 +7,7 @@ import { CustomGetRestaurantsGuide } from './decorator/swagger/get-restaurant-gu
 import { AuthGuard } from '../auth/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('restaurant-guide')
+@ApiTags('맛집 조회')
 @Controller('restaurant-guide')
 export class RestaurantGuideController {
   constructor(

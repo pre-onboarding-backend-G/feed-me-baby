@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RestaurantGuideService } from './restaurant-guide.service';
 import { RestaurantGuideRepository } from './repository/restaurant-guide.repository';
-import { Geometry, GetRawRestaurants, GetRestaurantsDto } from './dto/get-restaurant.dto';
+import {
+  Geometry,
+  GetRawRestaurants,
+  GetRestaurantsDto,
+} from './dto/get-restaurant.dto';
 import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
 import { BadRequestException } from '@nestjs/common';
 
@@ -50,7 +54,7 @@ describe('RestaurantGuideService', () => {
       const request: RequestCoordinateWithRangeDto = {
         validateRange: 0.1,
         lat: 0,
-        lon: 0
+        lon: 0,
       };
       try {
         await restaurantGuideService.getRestaurantList(request);

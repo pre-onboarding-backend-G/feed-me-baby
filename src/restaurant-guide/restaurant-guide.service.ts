@@ -7,7 +7,7 @@ import { GetRawRestaurants, GetRestaurantsDto } from './dto/get-restaurant.dto';
 export class RestaurantGuideService {
   constructor(
     private readonly restaurantGuideRepository: RestaurantGuideRepository,
-  ) { }
+  ) {}
 
   /**
    * @author Yeon Kyu
@@ -51,7 +51,7 @@ export class RestaurantGuideService {
     return restaurants.filter((restaurant) => {
       const distance1 = Math.sqrt(
         Math.pow(request.lat - restaurant.lat, 2) +
-        Math.pow(request.lon - restaurant.lon, 2),
+          Math.pow(request.lon - restaurant.lon, 2),
       );
       const distance2 = Math.sqrt(Math.pow(request.validateRange, 2));
 
