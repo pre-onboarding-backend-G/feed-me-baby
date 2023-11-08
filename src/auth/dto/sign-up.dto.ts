@@ -2,13 +2,15 @@ import { Expose } from 'class-transformer';
 import {
   IsBoolean,
   IsEmail,
+  IsLatitude,
+  IsLongitude,
   IsNotEmpty,
   IsString,
   IsStrongPassword,
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { User } from '../../user/entity/user.entity';
+import { User, UserCreateProps } from '../../user/entity/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class SignUpDto {
@@ -66,6 +68,26 @@ export class SignUpDto {
   city: string;
 
   @ApiProperty({
+    description: '유저가 맛집 추천 받을 주소의 위도입니다',
+    required: true,
+    example: 37.566295,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsLatitude()
+  lat: number;
+
+  @ApiProperty({
+    description: '유저가 맛집 추천 받을 주소의 경도입니다',
+    required: true,
+    example: 126.977945,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsLongitude()
+  lon: number;
+
+  @ApiProperty({
     description: '맛집 추천을 받을지 유무에 대한 필드입니다.',
     required: true,
     example: true,
@@ -76,12 +98,15 @@ export class SignUpDto {
   isRecommendateLunch: boolean;
 
   toEntity(): User {
-    const user = new User();
+    const userProps: UserCreateProps = {
+      email: this.email,
+      password: this.password,
+      city: this.city,
+      lat: this.lat,
+      lon: this.lon,
+      isRecommendateLunch: this.isRecommendateLunch,
+    };
 
-    Object.entries(this).forEach(([key, value]) => {
-      user[key] = value;
-    });
-
-    return user;
+    return User.create(userProps);
   }
 }

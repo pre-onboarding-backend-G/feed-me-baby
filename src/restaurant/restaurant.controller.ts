@@ -24,12 +24,12 @@ export class RestaurantController {
   }
 
   @Post('cities')
-  async seedCities() {
+  async seedCities(): Promise<void> {
     await this.cityRepository.seedCities();
   }
 
   @Post('categories')
-  async seedCategories() {
+  async seedCategories(): Promise<void> {
     await this.categoryRepository.seedCategories();
   }
 }

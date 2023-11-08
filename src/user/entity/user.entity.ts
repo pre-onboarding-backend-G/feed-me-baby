@@ -8,6 +8,24 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export interface UserCreateProps {
+  email: string;
+  password: string;
+  city: string;
+  lat: number;
+  lon: number;
+  isRecommendateLunch: boolean;
+}
+
+export interface UserSignInProps
+  extends Pick<UserCreateProps, 'email' | 'password'> {}
+
+export interface UserUpdateProps {
+  lat: number;
+  lon: number;
+  isRecommendateLunch: boolean;
+}
+
 @Entity('users')
 @Unique(['email'])
 export class User {
@@ -24,22 +42,22 @@ export class User {
   city: string;
 
   @Column({
-    name: 'latitude',
+    name: 'lat',
     type: 'decimal',
     precision: 12,
     scale: 3,
-    nullable: true,
+    nullable: false,
   })
-  latitude: number;
+  lat: number;
 
   @Column({
-    name: 'longitude',
+    name: 'lon',
     type: 'decimal',
     precision: 12,
     scale: 3,
-    nullable: true,
+    nullable: false,
   })
-  longitude: number;
+  lon: number;
 
   @Column({
     name: 'is_recommendate_lunch',
@@ -65,6 +83,45 @@ export class User {
   static byId(id: number): User {
     const user = new User();
     user.id = id;
+    return user;
+  }
+
+  static create({
+    email,
+    password,
+    city,
+    lat,
+    lon,
+    isRecommendateLunch,
+  }: UserCreateProps): User {
+    const user = new User();
+
+    user.email = email;
+    user.password = password;
+    user.city = city;
+    user.lat = lat;
+    user.lon = lon;
+    user.isRecommendateLunch = isRecommendateLunch;
+
+    return user;
+  }
+
+  static of({ email, password }: UserSignInProps): User {
+    const user = new User();
+
+    user.email = email;
+    user.password = password;
+
+    return user;
+  }
+
+  static updateBy({ lat, lon, isRecommendateLunch }: UserUpdateProps): User {
+    const user = new User();
+
+    user.lat = lat;
+    user.lon = lon;
+    user.isRecommendateLunch = isRecommendateLunch;
+
     return user;
   }
 

@@ -1,8 +1,8 @@
+import { CustomLogger } from './../common/logger/custom.logger';
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
@@ -10,10 +10,8 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly logger: Logger,
-  ) {}
+  private readonly logger: CustomLogger = new CustomLogger(AuthGuard.name);
+  constructor(private readonly authService: AuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
@@ -27,7 +25,7 @@ export class AuthGuard implements CanActivate {
       const payload = await this.authService.getTokenPayload(token);
       req['user'] = { id: payload.sub };
     } catch (error) {
-      this.logger.debug(error.stack);
+      this.logger.debug(error.stack, 'authGuard');
       throw new UnauthorizedException('로그인 후 이용 가능합니다.', error);
     }
 

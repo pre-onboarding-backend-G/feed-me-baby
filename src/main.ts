@@ -1,15 +1,15 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
-import {
-  ClassSerializerInterceptor,
-  Logger,
-  ValidationPipe,
-} from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { CustomLogger } from './common/logger/custom.logger';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
   const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 
   const validationPipeOptions = {
@@ -28,8 +28,8 @@ async function bootstrap(): Promise<void> {
     .setTitle('Example API')
     .setDescription('The Example API description')
     .setVersion('1.0')
-    .addTag('auth')
-    .addTag('users')
+    .addTag('인증')
+    .addTag('사용자')
     //JWT 토큰 설정
     .addBearerAuth(
       {
@@ -44,13 +44,15 @@ async function bootstrap(): Promise<void> {
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
+  app.useLogger(app.get(CustomLogger));
   app
     .useGlobalPipes(new ValidationPipe(validationPipeOptions))
-    .useGlobalFilters(new HttpExceptionFilter(new Logger()))
+    .useGlobalFilters(new HttpExceptionFilter(app.get(CustomLogger)))
     .enableCors(corsOptions);
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   SwaggerModule.setup('api-docs', app, document);
+
   await app.listen(3000);
 }
 bootstrap();

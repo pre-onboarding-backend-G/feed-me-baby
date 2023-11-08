@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { SwaggerGetUser } from './decorator/swagger/get-user.decorator';
 import { SwaggerUpdateUser } from './decorator/swagger/update-user.decorator';
 
-@ApiTags('users')
+@ApiTags('사용자')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -31,7 +31,8 @@ export class UserController {
     @UserId() userId: number,
     @Body() dto: UpdateUserDto,
   ): Promise<ResponseEntity<string>> {
-    await this.userService.updateUser(userId, dto.toEntity());
+    await this.userService.updateUser(userId, dto.getProps());
+    // todo 204 no content로 상태코드 변경 예정
     return ResponseEntity.OK('사용자 설정 업데이트 요청에 성공했습니다');
   }
 }

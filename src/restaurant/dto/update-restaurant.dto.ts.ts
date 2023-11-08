@@ -5,8 +5,8 @@ export class UpdateRestaurantDto {
   uniqueId: string;
   name: string;
   address: string;
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lon: number;
   telephone: string | null;
   category: Category;
   city: City;

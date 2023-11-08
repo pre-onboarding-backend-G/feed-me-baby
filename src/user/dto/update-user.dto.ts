@@ -5,7 +5,7 @@ import {
   IsLongitude,
   IsNotEmpty,
 } from 'class-validator';
-import { User } from '../entity/user.entity';
+import { UserUpdateProps } from '../entity/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
@@ -17,7 +17,7 @@ export class UpdateUserDto {
   @Expose()
   @IsNotEmpty()
   @IsLatitude()
-  latitude: number;
+  lat: number;
 
   @ApiProperty({
     description: '유저가 맛집 추천 받을 주소의 경도입니다',
@@ -27,7 +27,7 @@ export class UpdateUserDto {
   @Expose()
   @IsNotEmpty()
   @IsLongitude()
-  longitude: number;
+  lon: number;
 
   @ApiProperty({
     description: '맛집 추천을 받을지 유무에 대한 필드입니다.',
@@ -39,12 +39,11 @@ export class UpdateUserDto {
   @IsBoolean()
   isRecommendateLunch: boolean;
 
-  toEntity(): User {
-    const user = new User();
-    user.latitude = this.latitude;
-    user.longitude = this.longitude;
-    user.isRecommendateLunch = this.isRecommendateLunch;
-
-    return user;
+  getProps(): UserUpdateProps {
+    return {
+      lat: this.lat,
+      lon: this.lon,
+      isRecommendateLunch: this.isRecommendateLunch,
+    };
   }
 }
