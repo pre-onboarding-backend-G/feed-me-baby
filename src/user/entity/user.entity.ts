@@ -12,8 +12,8 @@ export interface UserCreateProps {
   email: string;
   password: string;
   city: string;
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lon: number;
   isRecommendateLunch: boolean;
 }
 
@@ -21,8 +21,8 @@ export interface UserSignInProps
   extends Pick<UserCreateProps, 'email' | 'password'> {}
 
 export interface UserUpdateProps {
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lon: number;
   isRecommendateLunch: boolean;
 }
 
@@ -42,22 +42,22 @@ export class User {
   city: string;
 
   @Column({
-    name: 'latitude',
+    name: 'lat',
     type: 'decimal',
     precision: 12,
     scale: 3,
     nullable: false,
   })
-  latitude: number;
+  lat: number;
 
   @Column({
-    name: 'longitude',
+    name: 'lon',
     type: 'decimal',
     precision: 12,
     scale: 3,
     nullable: false,
   })
-  longitude: number;
+  lon: number;
 
   @Column({
     name: 'is_recommendate_lunch',
@@ -90,8 +90,8 @@ export class User {
     email,
     password,
     city,
-    latitude,
-    longitude,
+    lat,
+    lon,
     isRecommendateLunch,
   }: UserCreateProps): User {
     const user = new User();
@@ -99,8 +99,8 @@ export class User {
     user.email = email;
     user.password = password;
     user.city = city;
-    user.latitude = latitude;
-    user.longitude = longitude;
+    user.lat = lat;
+    user.lon = lon;
     user.isRecommendateLunch = isRecommendateLunch;
 
     return user;
@@ -115,15 +115,11 @@ export class User {
     return user;
   }
 
-  static updateBy({
-    latitude,
-    longitude,
-    isRecommendateLunch,
-  }: UserUpdateProps): User {
+  static updateBy({ lat, lon, isRecommendateLunch }: UserUpdateProps): User {
     const user = new User();
 
-    user.latitude = latitude;
-    user.longitude = longitude;
+    user.lat = lat;
+    user.lon = lon;
     user.isRecommendateLunch = isRecommendateLunch;
 
     return user;

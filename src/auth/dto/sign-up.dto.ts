@@ -75,7 +75,7 @@ export class SignUpDto {
   @Expose()
   @IsNotEmpty()
   @IsLatitude()
-  latitude: number;
+  lat: number;
 
   @ApiProperty({
     description: '유저가 맛집 추천 받을 주소의 경도입니다',
@@ -85,7 +85,7 @@ export class SignUpDto {
   @Expose()
   @IsNotEmpty()
   @IsLongitude()
-  longitude: number;
+  lon: number;
 
   @ApiProperty({
     description: '맛집 추천을 받을지 유무에 대한 필드입니다.',
@@ -102,8 +102,8 @@ export class SignUpDto {
       email: this.email,
       password: this.password,
       city: this.city,
-      latitude: this.latitude,
-      longitude: this.longitude,
+      lat: this.lat,
+      lon: this.lon,
       isRecommendateLunch: this.isRecommendateLunch,
     };
 

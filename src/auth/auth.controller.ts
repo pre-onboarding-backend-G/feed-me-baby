@@ -8,7 +8,7 @@ import { AccessTokenDto } from './dto/access-token.dto';
 import { SwaggerSignIn } from './decorator/swagger/sign-in.decorator';
 import { SwaggerSignUp } from './decorator/swagger/sign-up.decorator';
 
-@ApiTags('auth')
+@ApiTags('인증')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

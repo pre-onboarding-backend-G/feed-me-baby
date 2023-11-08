@@ -16,7 +16,7 @@ export class RestaurantGuideRepository {
   ) {}
   /**
    * @author Yeon Kyu
-   * @param ( lat, lon, range)
+   * @param ( lat, lon, range )
    * @desc 맛집 데이터베이스에서 정보를 가져와서 주어진 위치 정보(위도, 경도) 사각형 범위 내의 식당들을 찾습니다.
    */
 
@@ -37,11 +37,11 @@ export class RestaurantGuideRepository {
       .select([
         'restaurant.id as id',
         'restaurant.name as name',
-        'restaurant.latitude as lat',
-        'restaurant.longitude as lon',
+        'restaurant.lat as lat',
+        'restaurant.lon as lon',
       ])
       .where(
-        'latitude >= :minLat AND latitude <= :maxLat AND longitude >= :minLon AND longitude <= :maxLon',
+        'lat >= :minLat AND lat <= :maxLat AND lon >= :minLon AND lon <= :maxLon',
         { minLat, maxLat, minLon, maxLon },
       )
       .getRawMany();

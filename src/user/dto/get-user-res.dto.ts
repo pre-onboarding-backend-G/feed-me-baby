@@ -7,8 +7,8 @@ export class GetUserResDto {
   @Exclude() private readonly _email: string;
   @Exclude() private readonly _password: string;
   @Exclude() private readonly _city: string;
-  @Exclude() private readonly _latitude: number;
-  @Exclude() private readonly _longitude: number;
+  @Exclude() private readonly _lat: number;
+  @Exclude() private readonly _lon: number;
   @Exclude() private readonly _isRecommendateLunch: boolean;
   @Exclude() private readonly _createdAt: Date;
   @Exclude() private readonly _updatedAt?: Date | null;
@@ -48,8 +48,8 @@ export class GetUserResDto {
     example: 37.566295,
   })
   @Expose()
-  get latitude(): number {
-    return this._latitude;
+  get lat(): number {
+    return this._lat;
   }
 
   @ApiProperty({
@@ -57,8 +57,8 @@ export class GetUserResDto {
     example: 126.977945,
   })
   @Expose()
-  get longitude(): number {
-    return this._longitude;
+  get lon(): number {
+    return this._lon;
   }
 
   @ApiProperty({

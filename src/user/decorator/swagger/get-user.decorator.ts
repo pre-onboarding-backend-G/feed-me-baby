@@ -36,8 +36,8 @@ export const SwaggerGetUser = (): MethodDecorator =>
                     example: 'feed-me-admin1@naver.com',
                   },
                   city: { type: 'string', example: '서울특별시' },
-                  latitude: { type: 'number', example: 37.566295 },
-                  longitude: { type: 'number', example: 126.977945 },
+                  lat: { type: 'number', example: 37.566295 },
+                  lon: { type: 'number', example: 126.977945 },
                   isRecommendateLunch: { type: 'boolean', example: true },
                   createdAt: {
                     type: 'date',
