@@ -1,6 +1,5 @@
 /**team G webhook URL */
-export const DISCORD_WEBHOOK_URL =
-  'https://discord.com/api/webhooks/1169806570637496341/PQPfdxohAcw25uHUL1w5BdaGUHm-TUcZkLaD9x-JhlTHVKgpiZh-g8-XsepSJa6Dr0vO';
+export const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 export const LUNCH_IMAGE =
   'https://cdn-icons-png.flaticon.com/512/7662/7662446.png';

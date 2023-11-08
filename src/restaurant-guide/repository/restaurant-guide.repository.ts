@@ -47,38 +47,25 @@ export class RestaurantGuideRepository {
       .getRawMany();
   }
 
-  /**
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   */
+  async candidateRestaurants(
+    minLat: number,
+    minLon: number,
+    maxLat: number,
+    maxLon: number,
+  ): Promise<Restaurant[]> {
+    return await this.restaurantGuideRepository
+      .createQueryBuilder('restaurant')
+      .where('restaurant.lat BETWEEN :minLat AND :maxLat', {
+        minLat,
+        maxLat,
+      })
+      .andWhere('restaurant.lon BETWEEN :minLon AND :maxLon', {
+        minLon,
+        maxLon,
+      })
+      .getMany();
+  }
+
   /**
    * @author Sang Un
    * @email suntail2002@naver.com
@@ -94,19 +81,4 @@ export class RestaurantGuideRepository {
 
     return cityNames.map((entry) => entry.city_name);
   }
-
-  /**
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   */
 }

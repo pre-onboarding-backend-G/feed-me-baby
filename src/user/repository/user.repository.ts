@@ -9,6 +9,12 @@ export type FindUserOptionWhere =
   ? { id: number } | { email: string }
   : never;
 
+interface RawUser {
+  email: string;
+  lat: string;
+  lon: string;
+}
+
 @Injectable()
 export class UserRepository {
   constructor(
@@ -32,6 +38,26 @@ export class UserRepository {
   async updateUser(userId: number, user: User): Promise<boolean> {
     const result = await this.userRepository.update({ id: userId }, user);
     return result.affected > 0;
+  }
+
+  /**
+   * @author Sang Un
+   * @desc [description]
+   */
+  async getLunchRecommendationUser(): Promise<RawUser[]> {
+    const lunchRecommendationUsers = await this.userRepository
+      .createQueryBuilder('users')
+      .select(['users.email as email', 'users.lat as lat', 'users.lon as lon'])
+      .where('users.is_recommendate_lunch = :isRecommendate', {
+        isRecommendate: true,
+      })
+      .getRawMany();
+
+    return lunchRecommendationUsers.map((user) => ({
+      email: user.email,
+      lat: user.lat,
+      lon: user.lon,
+    }));
   }
 
   /**

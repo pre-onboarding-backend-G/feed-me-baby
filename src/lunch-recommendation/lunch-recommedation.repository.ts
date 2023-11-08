@@ -1,44 +1,13 @@
+import { RestaurantGuideRepository } from './../restaurant-guide/repository/restaurant-guide.repository';
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entity/user.entity';
 import { Restaurant } from 'src/restaurant/entity/restaurant.entity';
 import { calculateDistanceBetweenCoordinates } from './const/haversine';
-
-interface RawUser {
-  email: string;
-  lat: string;
-  lon: string;
-}
 
 @Injectable()
 export class LunchRecommendationRepository {
   constructor(
-    @InjectRepository(Restaurant)
-    private readonly restaurantGuideRepository: Repository<Restaurant>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly restaurantGuideRepository: RestaurantGuideRepository,
   ) {}
-
-  /**
-   * @author Sang Un
-   * @desc [description]
-   */
-  async getLunchRecommendationUser(): Promise<RawUser[]> {
-    const lunchRecommendationUsers = await this.userRepository
-      .createQueryBuilder('users')
-      .select(['users.email', 'users.latitude', 'users.longitude'])
-      .where('users.is_recommendate_lunch = :isRecommendate', {
-        isRecommendate: true,
-      })
-      .getRawMany();
-
-    return lunchRecommendationUsers.map((user) => ({
-      email: user.users_email,
-      lat: user.users_latitude,
-      lon: user.users_longitude,
-    }));
-  }
 
   async findRestaurantsInCircle(
     lat: number,
@@ -56,17 +25,13 @@ export class LunchRecommendationRepository {
     const maxLon = lon + deltaLon;
 
     // DB에서 후보군 조회
-    const candidateRestaurants = await this.restaurantGuideRepository
-      .createQueryBuilder('restaurant')
-      .where('restaurant.latitude BETWEEN :minLat AND :maxLat', {
+    const candidateRestaurants =
+      await this.restaurantGuideRepository.candidateRestaurants(
         minLat,
-        maxLat,
-      })
-      .andWhere('restaurant.longitude BETWEEN :minLon AND :maxLon', {
         minLon,
+        maxLat,
         maxLon,
-      })
-      .getMany();
+      );
 
     // 후보군 내에서 반경 내에 있는 음식점만 도출
     const restaurantsWithinRadius = candidateRestaurants.filter(
@@ -74,8 +39,8 @@ export class LunchRecommendationRepository {
         const distance = calculateDistanceBetweenCoordinates(
           lat,
           lon,
-          restaurant.latitude,
-          restaurant.longitude,
+          restaurant.lat,
+          restaurant.lon,
         );
         return distance < radius;
       },

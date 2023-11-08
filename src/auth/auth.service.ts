@@ -25,7 +25,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  //todo signUp 과정을 하나의 트랜잭션으로.
   async signUp(user: User): Promise<AccessTokenDto> {
     if (await this.userRepository.isExist(user)) {
       throw new ConflictException('이미 가입된 회원입니다.');

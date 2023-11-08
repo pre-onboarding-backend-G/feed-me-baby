@@ -58,38 +58,7 @@ export class RestaurantGuideService {
       return distance1 <= distance2;
     });
   }
-  /**
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   */
+
   /**
    * @author Sang Un
    * @email sangunlee6@gmail.com
