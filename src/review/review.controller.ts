@@ -7,7 +7,7 @@ import { UserId } from 'src/auth/decorator/user-id.decorator';
 import { ResponseEntity } from 'src/common/response.entity';
 import { AuthGuard } from 'src/auth/auth.guard';
 
-@ApiTags('reviews')
+@ApiTags('리뷰')
 @Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
@@ -24,6 +24,6 @@ export class ReviewController {
       dto.toEntity(),
       dto.restaurantUniqueId,
     );
-    return ResponseEntity.OK('리뷰 작성 요청에 성공했습니다');
+    return ResponseEntity.CREATED('리뷰 작성 요청에 성공했습니다');
   }
 }
