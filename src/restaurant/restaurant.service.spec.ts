@@ -34,7 +34,7 @@ const mockRepository: MockRestaurantRepository = {
     entity: {
       id: 1,
       uniqueId: '3960100-101-2000-00123',
-      name: '남양주 맛집',
+      name: '남양주네',
       address: '경기도 남양주시 화도읍 먹갓로27번길 25 (묵현리)',
       latitude: 37.659391,
       longitude: 127.2720471,

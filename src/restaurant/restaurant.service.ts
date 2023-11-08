@@ -32,7 +32,6 @@ export class RestaurantService {
    * 서버에서 식당 데이터를 받아와 데이터베이스와 동기화합니다.
    * @author: Hojun Song
    */
-
   async syncRestaurantData(): Promise<void> {
     let index = 1;
     let totalProcessed = 0;
@@ -105,7 +104,6 @@ export class RestaurantService {
    * @returns 데이터 처리 성공 여부를 반환합니다.
    * @author Hojun Song
    */
-
   private async processRestaurantDataPage(
     pageIndex: number,
     retryCount = 5,
@@ -163,7 +161,6 @@ export class RestaurantService {
    * @returns 재시도 여부를 반환합니다.
    * @author Hojun Song
    */
-
   private shouldRetry(error: AxiosError): boolean {
     return (
       (error.response && error.response.status === 503) ||
@@ -179,7 +176,6 @@ export class RestaurantService {
    * @param transactionalEntityManager 트랜잭션을 관리하는 EntityManager입니다.
    * @author Hojun Song
    */
-
   private async handleDatabaseOperations(
     restaurants: RestaurantApiResponseDto[],
     transactionalEntityManager: EntityManager,
@@ -200,7 +196,6 @@ export class RestaurantService {
    * @param transactionalEntityManager 트랜잭션을 관리하는 EntityManager입니다.
    * @author Hojun Song
    */
-
   private async processSingleRestaurantData(
     restaurantData: RestaurantApiResponseDto,
     transactionalEntityManager: EntityManager,
@@ -354,7 +349,6 @@ export class RestaurantService {
    * @returns 정제된 전화번호 또는 null을 반환합니다.
    * @author Hojun Song
    */
-
   private validateAndFormatTelephone(telephone: string): string | null {
     // 시작해야 하는 번호들을 배열로 선언
     const validStartNumbers = ['031', '032', '02', '070', '050'];
@@ -374,7 +368,6 @@ export class RestaurantService {
    * @param success 데이터 처리 성공 여부입니다.
    * @Author Hojun Song
    */
-
   private adjustPageSize(success: boolean): void {
     if (success) {
       // 성공 시 페이지 사이즈 증가
