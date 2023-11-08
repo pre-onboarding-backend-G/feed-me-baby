@@ -18,7 +18,7 @@ Feed Me Baby는 사용자 위치에 맞게 맛집 및 메뉴를 추천하며, �
 - [API Reference](#api-reference)
 - [프로젝트 진행 및 이슈 관리](#프로젝트-진행-및-이슈-관리)
 - [구현과정(설계 및 의도)](#구현과정설계-및-의도)
-- [Did You Know:bulb:](#did-you-know)
+- [Did You Know](#did-you-know)
 - [설치](#설치)
 - [팀원](#팀원)
 - [참고자료](#참고자료)
@@ -139,7 +139,13 @@ src
 <details>
 
 <summary>Swagger 이미지</summary>
-<img src="" alt="logo" width="80%" />
+
+![스크린샷 2023-11-08 오후 8 39 47](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/5b241a91-a740-4ce4-a8df-5452c8f5bec0)
+![스크린샷 2023-11-08 오후 8 40 06](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/ee25ff75-0004-4090-bb03-36dbefcff42b)
+![스크린샷 2023-11-08 오후 8 40 22](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/1b6dd53b-e0bf-42ed-adb8-1e8b484b91d6)
+![스크린샷 2023-11-08 오후 8 40 32](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/649244e7-b2fc-47a4-a83a-33b4654b3342)
+![스크린샷 2023-11-08 오후 8 40 49](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/fde22e26-db52-4d64-8b3e-4a89d8e688bb)
+![스크린샷 2023-11-08 오후 8 41 02](https://github.com/pre-onboarding-backend-G/feed-me-baby/assets/96982072/31e41731-2e58-464b-a0c6-5a8b10ce5889)
 
 </details>
 
@@ -264,7 +270,7 @@ src
 
 <br/>
 
-## Did You Know :bulb:
+## Did You Know
 
 - [Custom Validator](https://zamoca42.github.io/blog/js-ts/nest-js/custom-validator.html)
 - [맛집 목록 가져와서 지도에 표시하기](https://zamoca42.github.io/blog/js-ts/nest-js/query-range.html)
