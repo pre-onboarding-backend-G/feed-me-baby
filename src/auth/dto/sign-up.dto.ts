@@ -10,7 +10,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { User } from '../../user/entity/user.entity';
+import { User, UserCreateProps } from '../../user/entity/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class SignUpDto {
@@ -98,12 +98,15 @@ export class SignUpDto {
   isRecommendateLunch: boolean;
 
   toEntity(): User {
-    const user = new User();
+    const userProps: UserCreateProps = {
+      email: this.email,
+      password: this.password,
+      city: this.city,
+      latitude: this.latitude,
+      longitude: this.longitude,
+      isRecommendateLunch: this.isRecommendateLunch,
+    };
 
-    Object.entries(this).forEach(([key, value]) => {
-      user[key] = value;
-    });
-
-    return user;
+    return User.create(userProps);
   }
 }
