@@ -4,18 +4,17 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ReviewModule } from './review/review.module';
 import { RestaurantGuideModule } from './restaurant-guide/restaurant-guide.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
 import { Restaurant } from './restaurant/entity/restaurant.entity';
-import { City } from './restaurant/entity/city.entity';
 import { Category } from './restaurant/entity/category.entity';
 import { User } from './user/entity/user.entity';
 import { Review } from './review/entity/review.entity';
 import { RestaurantReviewAggregation } from './review/entity/restaurant-review-aggregation.entity';
 import { CustomLoggerModule } from './common/logger/custom-logger.module';
+import { City } from './restaurant/entity/city.entity';
+import { LunchRecommendationModule } from './lunch-recommendation/lunch-recommendation.module';
+import { User } from './user/entity/user.entity';
 
 @Module({
   imports: [
@@ -43,11 +42,9 @@ import { CustomLoggerModule } from './common/logger/custom-logger.module';
       ],
       logging: process.env.NODE_ENV !== 'production',
     }),
-    ReviewModule,
     RestaurantModule,
     RestaurantGuideModule,
-    AuthModule,
-    UserModule,
+    LunchRecommendationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
