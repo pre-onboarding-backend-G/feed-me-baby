@@ -244,21 +244,19 @@ export class RestaurantService {
       }
 
       // 문자열을 숫자로 변환
-      const parsedLat= parseFloat(lat);
+      const parsedLat = parseFloat(lat);
       const parsedLon = parseFloat(lon);
 
       // 변환된 숫자가 유효하지 않으면 처리 중단
       if (isNaN(parsedLat) || isNaN(parsedLon)) {
-        console.error(
-          `Invalid latitude or longitude value: ${lat}, ${lon}`,
-        );
+        console.error(`Invalid latitude or longitude value: ${lat}, ${lon}`);
         this.noDataCount++;
         return;
       }
 
       // 전화번호 정제
       const cleanedTelephone = telephone ? telephone.replace(/\s/g, '') : null;
-      let finalTelephone =
+      const finalTelephone =
         cleanedTelephone && this.validateAndFormatTelephone(cleanedTelephone);
 
       // 최종 주소 결정 (도로명 주소가 우선, 없으면 지번 주소 사용)

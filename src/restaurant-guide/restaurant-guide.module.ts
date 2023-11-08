@@ -7,16 +7,11 @@ import { Restaurant } from 'src/restaurant/entity/restaurant.entity';
 import { Category } from 'src/restaurant/entity/category.entity';
 import { City } from 'src/restaurant/entity/city.entity';
 import { UserModule } from 'src/user/user.module';
-import { User } from 'src/user/entity/user.entity';
-import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Restaurant, Category, City, User]),
-    UserModule,
-    AuthModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Restaurant, Category, City]), UserModule],
   controllers: [RestaurantGuideController],
   providers: [RestaurantGuideService, RestaurantGuideRepository],
+  exports: [RestaurantGuideRepository],
 })
 export class RestaurantGuideModule {}

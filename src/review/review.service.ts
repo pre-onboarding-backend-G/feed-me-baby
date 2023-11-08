@@ -7,10 +7,8 @@ import { Review } from './entity/review.entity';
 @Injectable()
 export class ReviewService {
   constructor(
-    private readonly reviewRepository
-    : ReviewRepository,
-    private readonly restaurantReviewAggregationRepository
-    : RestaurantReviewAggregationRepository,
+    private readonly reviewRepository: ReviewRepository,
+    private readonly restaurantReviewAggregationRepository: RestaurantReviewAggregationRepository,
   ) {}
 
   private async getRestaurantReviewAggregationByRestaurantUniqueId(
@@ -27,8 +25,6 @@ export class ReviewService {
     restaurantReviewAggregation: RestaurantReviewAggregation,
     userReview: Review,
   ): Promise<void> {
-    // const prevAverageScore: number = restaurantReviewAggregation.averageScore;
-    // const prevTotalCount: number = restaurantReviewAggregation.totalCount;
     const { averageScore: prevAverageScore, totalCount: prevTotalCount } =
       restaurantReviewAggregation;
     restaurantReviewAggregation.averageScore =
@@ -96,9 +92,10 @@ export class ReviewService {
       await this.getRestaurantReviewAggregationByRestaurantUniqueId(
         restaurantUniqueId,
       );
-    const averageScoreAndTotalCount: 
-      { averageScore: number, totalCount: number } = 
-        restaurantReviewAggregation;
+    const averageScoreAndTotalCount: {
+      averageScore: number;
+      totalCount: number;
+    } = restaurantReviewAggregation;
     return averageScoreAndTotalCount;
   }
 }

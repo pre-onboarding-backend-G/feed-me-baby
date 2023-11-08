@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './common/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,7 +12,7 @@ import { RestaurantReviewAggregation } from './review/entity/restaurant-review-a
 import { CustomLoggerModule } from './common/logger/custom-logger.module';
 import { City } from './restaurant/entity/city.entity';
 import { LunchRecommendationModule } from './lunch-recommendation/lunch-recommendation.module';
-import { User } from './user/entity/user.entity';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -45,8 +43,7 @@ import { User } from './user/entity/user.entity';
     RestaurantModule,
     RestaurantGuideModule,
     LunchRecommendationModule,
+    ReviewModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

@@ -7,7 +7,6 @@ import { RestaurantRepository } from './restaurant.repository';
 import { CategoryRepository } from './category.repository';
 import { CityRepository } from './city.repository';
 import { RestaurantService } from './restaurant.service';
-import { RestaurantController } from './restaurant.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Restaurant, Category, City])],
@@ -17,7 +16,6 @@ import { RestaurantController } from './restaurant.controller';
     CityRepository,
     RestaurantService,
   ],
-  controllers: [RestaurantController],
   exports: [RestaurantRepository],
 })
 export class RestaurantModule {}

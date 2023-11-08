@@ -89,9 +89,5 @@ describe('RestaurantGuideService', () => {
      * @modify date 2023-11-01 22:56:10
      * @desc [description]
      */
-
-    // 대충  메서드 작성
-
-    // 대충  메서드 작성
   });
 });

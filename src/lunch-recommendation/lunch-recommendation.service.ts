@@ -1,3 +1,4 @@
+import { UserRepository } from './../user/repository/user.repository';
 import { Injectable } from '@nestjs/common';
 import { Webhook, MessageBuilder } from 'discord-webhook-node';
 import {
@@ -17,6 +18,7 @@ interface RawUser {
 export class LunchRecommendationService {
   constructor(
     private readonly lunchRecommendationRepository: LunchRecommendationRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   sendMessage(email: string, restaurants: Restaurant[]): void {
@@ -47,7 +49,7 @@ export class LunchRecommendationService {
   }
 
   getLunchRecommendationUser(): Promise<RawUser[]> {
-    return this.lunchRecommendationRepository.getLunchRecommendationUser();
+    return this.userRepository.getLunchRecommendationUser();
   }
 
   findRestaurantsInCircle(lat: number, lon: number): Promise<Restaurant[]> {

@@ -22,6 +22,9 @@ class EnvironmentVariables {
 
   @IsString()
   JWT_EXPIRES_IN: string;
+
+  @IsString()
+  DISCORD_WEBHOOK_URL: string;
 }
 
 export function validate(
