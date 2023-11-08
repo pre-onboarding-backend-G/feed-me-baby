@@ -9,7 +9,6 @@ import {
 } from 'class-validator';
 import { Review } from '../entity/review.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
 
 export class CreateReviewDto {
   @ApiProperty({
@@ -24,7 +23,6 @@ export class CreateReviewDto {
   @Max(5)
   score: number;
 
-  // @Expose()
   @ApiProperty({
     description:
       '리뷰 시 작성 내용 필드입니다. 최소 0자, 최대 255자 까지 가능합니다.',
