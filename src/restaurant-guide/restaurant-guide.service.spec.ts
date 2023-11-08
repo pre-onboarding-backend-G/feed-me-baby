@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RestaurantGuideService } from './restaurant-guide.service';
 import { RestaurantGuideRepository } from './repository/restaurant-guide.repository';
-import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
-import { BadRequestException } from '@nestjs/common';
 import {
   Geometry,
   GetRawRestaurants,
   GetRestaurantsDto,
 } from './dto/get-restaurant.dto';
+import { RequestCoordinateWithRangeDto } from './dto/coordinate-req.dto';
+import { BadRequestException } from '@nestjs/common';
 
 describe('RestaurantGuideService', () => {
   let restaurantGuideService: RestaurantGuideService;
@@ -51,7 +51,11 @@ describe('RestaurantGuideService', () => {
 
   describe('getRestaurantList', () => {
     it('위치 정보가 없으면 BadRequestException를 반환 합니다', async () => {
-      const request: RequestCoordinateWithRangeDto = { validateRange: 0.1 };
+      const request: RequestCoordinateWithRangeDto = {
+        validateRange: 0.1,
+        lat: 0,
+        lon: 0,
+      };
       try {
         await restaurantGuideService.getRestaurantList(request);
       } catch (error) {
